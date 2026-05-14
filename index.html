@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Task Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F6F2;--surface:#FFFFFF;--border:#E2E0D8;--border2:#C8C5BA;
+  --text:#1A1916;--muted:#6B6860;--faint:#A8A69E;
+  --green:#2D6A4F;--green-bg:#D8F3DC;
+  --amber:#7D5A00;--amber-bg:#FFF3CD;
+  --blue:#1A4D8F;--blue-bg:#E8F0FB;
+  --red:#8B2020;--red-bg:#FDECEA;
+  --font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;min-height:100vh}
+.app{max-width:680px;margin:0 auto}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-brand{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.topbar-mode{font-size:12px;padding:3px 10px;border-radius:99px;font-family:var(--mono);font-weight:500}
+.mode-admin{background:#1A1916;color:#F7F6F2}
+.mode-worker{background:var(--green-bg);color:var(--green)}
+.content{padding:20px}
+.screen{display:none}.screen.active{display:block}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text);cursor:pointer;font-size:13px;font-family:var(--font);font-weight:500;transition:all .15s;text-decoration:none}
+.btn:hover{background:var(--bg);border-color:var(--text)}
+.btn-primary{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn-primary:hover{opacity:.85;background:var(--text)}
+.btn-danger{color:var(--red);border-color:transparent;background:none}
+.btn-danger:hover{background:var(--red-bg);border-color:var(--red)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px}
+label{font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin:12px 0 4px}
+input,textarea{width:100%;font-family:var(--font);font-size:14px;border:1px solid var(--border2);border-radius:6px;padding:8px 10px;background:var(--surface);color:var(--text);outline:none}
+input:focus,textarea:focus{border-color:var(--text)}
+textarea{resize:vertical;min-height:90px}
+.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600;font-family:var(--mono)}
+.badge-done{background:var(--green-bg);color:var(--green)}
+.badge-partial{background:var(--blue-bg);color:var(--blue)}
+.badge-pending{background:var(--amber-bg);color:var(--amber)}
+.subtask-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.subtask-row:last-child{border-bottom:none}
+.check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s}
+.check.done{background:var(--green);border-color:var(--green)}
+.subtask-text{flex:1;font-size:14px;line-height:1.5}
+.subtask-text.done{text-decoration:line-through;color:var(--faint)}
+.by-tag{font-size:11px;font-family:var(--mono);color:var(--muted);margin-top:2px}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-top:12px}
+.progress-fill{height:100%;border-radius:2px;background:var(--green);transition:width .4s}
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px}
+.tab{padding:9px 16px;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.active{color:var(--text);border-bottom-color:var(--text)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+.stat-n{font-size:24px;font-weight:600;font-family:var(--mono)}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:var(--surface);border-radius:10px;padding:24px;width:100%;max-width:420px;border:1px solid var(--border)}
+.modal h2{font-size:16px;font-weight:600;margin-bottom:16px}
+.nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.topic-label{font-size:11px;font-family:var(--mono);color:var(--blue);font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.location-label{font-size:13px;color:var(--muted);margin-bottom:10px}
+.setup-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;max-width:480px;margin:0 auto}
+.setup-box h1{font-size:20px;font-weight:600;margin-bottom:6px}
+.step{display:flex;gap:12px;margin-bottom:16px;align-items:flex-start}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--text);color:var(--bg);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-body{flex:1}
+.step-body strong{display:block;margin-bottom:4px;font-size:14px}
+.step-body p,.step-body a{font-size:13px;color:var(--muted);line-height:1.6}
+.step-body a{color:var(--blue)}
+.url-display{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-top:8px}
+.url-text{font-family:var(--mono);font-size:12px;flex:1;word-break:break-all;color:var(--text)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:8px;font-size:13px;font-family:var(--mono);opacity:0;transition:opacity .2s;z-index:100;pointer-events:none}
+.toast.show{opacity:1}
+.saving-indicator{font-size:12px;font-family:var(--mono);color:var(--muted);display:none}
+.saving-indicator.active{display:inline}
+.empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px}
+.loading{text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:13px;letter-spacing:.5px}
+.worker-tap-hint{font-size:11px;color:var(--faint);margin-top:2px}
+.config-required{background:var(--amber-bg);border:1px solid #E8C96A;border-radius:8px;padding:14px;font-size:13px;color:var(--amber);margin-bottom:16px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand">Task Tracker</div>
+    <div id="topbar-right"></div>
+  </div>
+  <div class="content">
+
+    <!-- SETUP SCREEN -->
+    <div id="screen-setup" class="screen active">
+      <div class="setup-box">
+        <h1>Setup required</h1>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:20px">Follow these steps once to get your free permanent task tracker running. Takes about 5 minutes.</p>
+
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Create a free JSONBin account</strong>
+            <p>Go to <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> → Sign up free → Go to <strong>API Keys</strong> → copy your <strong>Access Key</strong>.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Create a bin</strong>
+            <p>In JSONBin, click <strong>+ Create Bin</strong> → paste in <code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:2px 5px;border-radius:3px">{"tasks":[],"nextId":1}</code> → save. Copy the <strong>Bin ID</strong> from the URL (looks like <code style="font-family:var(--mono);font-size:11px">64abc123...</code>).</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Enter your credentials</strong>
+            <label>JSONBin Access Key</label>
+            <input id="setup-apikey" placeholder="$2b$10$..." autocomplete="off"/>
+            <label>Bin ID</label>
+            <input id="setup-binid" placeholder="64abc123def456..."/>
+            <div style="margin-top:12px;display:flex;gap:8px">
+              <button class="btn btn-primary" onclick="saveConfig()">Save & continue</button>
+            </div>
+            <p id="setup-error" style="color:var(--red);font-size:13px;margin-top:8px;display:none"></p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Host on GitHub Pages (free)</strong>
+            <p>Go to <a href="https://github.com" target="_blank">github.com</a> → New repo → upload this HTML file as <code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:2px 5px;border-radius:3px">index.html</code> → Settings → Pages → Deploy from main branch.</p>
+            <p style="margin-top:6px">Your URLs will be:</p>
+            <div style="font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:6px;line-height:2">
+              <div><strong>Admin:</strong> https://yourusername.github.io/your-repo<strong style="color:var(--blue)">/?mode=admin</strong></div>
+              <div><strong>Workers:</strong> https://yourusername.github.io/your-repo<strong style="color:var(--green)">/?mode=worker</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN SCREEN -->
+    <div id="screen-admin" class="screen">
+      <div class="nav">
+        <button class="btn btn-sm btn-primary" onclick="openAddModal()">+ Add task</button>
+        <button class="btn btn-sm" onclick="showTab('paste')">⬆ Paste import</button>
+        <button class="btn btn-sm" onclick="showTab('progress')">📊 Progress</button>
+        <span class="saving-indicator" id="saving-indicator">saving…</span>
+      </div>
+      <div class="tabs">
+        <div class="tab active" id="tab-list" onclick="showTab('list')">Tasks</div>
+        <div class="tab" id="tab-paste" onclick="showTab('paste')">Paste import</div>
+        <div class="tab" id="tab-progress" onclick="showTab('progress')">Progress</div>
+        <div class="tab" id="tab-share" onclick="showTab('share')">Share links</div>
+      </div>
+      <div id="pane-list"><div class="loading">Loading tasks…</div></div>
+      <div id="pane-paste" style="display:none">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Paste rows from a spreadsheet. <strong>Column order: Topic | Location | Subtask 1 | Subtask 2 | …</strong> (tabs or commas). Subtasks can also be slash-separated in one cell.</p>
+        <label>Paste spreadsheet data</label>
+        <textarea id="paste-input" style="min-height:150px" placeholder="AV Ancillary Rooms&#9;Amphitheater and Fitness Center&#9;A/V move to dining hall&#9;Stack up chairs&#9;Bring all kitchen items to kitchen"></textarea>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn btn-primary" onclick="importPaste()">Import</button>
+          <button class="btn" onclick="document.getElementById('paste-input').value='';document.getElementById('paste-msg').textContent=''">Clear</button>
+        </div>
+        <div id="paste-msg" style="margin-top:10px;font-size:13px;color:var(--green)"></div>
+      </div>
+      <div id="pane-progress" style="display:none">
+        <div class="stats" id="stats-row"></div>
+        <div id="progress-detail"></div>
+      </div>
+      <div id="pane-share" style="display:none">
+        <div class="card">
+          <h2 style="margin-bottom:12px;font-size:15px">Your shareable links</h2>
+          <label>Admin link (keep private)</label>
+          <div class="url-display">
+            <span class="url-text" id="admin-url-display">—</span>
+            <button class="btn btn-sm" onclick="copyUrl('admin-url-display','copy-admin')"><span id="copy-admin">Copy</span></button>
+          </div>
+          <label style="margin-top:16px">Worker link (share with team)</label>
+          <div class="url-display">
+            <span class="url-text" id="worker-url-display">—</span>
+            <button class="btn btn-sm" onclick="copyUrl('worker-url-display','copy-worker')"><span id="copy-worker">Copy</span></button>
+          </div>
+          <p style="font-size:13px;color:var(--muted);margin-top:16px;line-height:1.6">Workers who open the worker link see all tasks and can mark subtasks complete — they just enter their name. They cannot add or delete tasks.</p>
+          <div style="margin-top:16px;padding:12px;background:var(--bg);border-radius:6px;font-size:13px;color:var(--muted)">
+            <strong style="color:var(--text)">Note:</strong> If you haven't hosted on GitHub Pages yet, these links only work on your local machine. Follow Step 4 in the setup guide to get permanent public URLs. You can reset your credentials under the reset option below.
+          </div>
+          <button class="btn btn-sm btn-danger" style="margin-top:16px" onclick="resetConfig()">⚙ Reset credentials</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKER SCREEN -->
+    <div id="screen-worker" class="screen">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <p style="font-size:13px;color:var(--muted)">Tap a subtask to mark it complete.</p>
+        <button class="btn btn-sm" onclick="loadTasks(true)">↻ Refresh</button>
+      </div>
+      <div id="worker-task-list"><div class="loading">Loading tasks…</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADD TASK MODAL -->
+<div class="modal-bg" id="add-modal">
+  <div class="modal">
+    <h2>Add task</h2>
+    <label>Topic</label><input id="new-topic" placeholder="e.g. AV Ancillary Rooms"/>
+    <label>Location</label><input id="new-location" placeholder="e.g. Amphitheater and Fitness Center"/>
+    <label>Subtasks (one per line)</label>
+    <textarea id="new-subtasks" placeholder="A/V move to dining hall&#10;Stack up chairs&#10;Bring all kitchen items to kitchen"></textarea>
+    <div style="margin-top:16px;display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="saveTask()">Save</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- COMPLETE MODAL -->
+<div class="modal-bg" id="complete-modal">
+  <div class="modal">
+    <h2>Mark complete</h2>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.5" id="complete-sub"></p>
+    <label>Your name</label>
+    <input id="completer-name" placeholder="Enter your name"/>
+    <div style="margin-top:16px;display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="confirmComplete()">Mark done</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────
+const CONFIG_KEY = 'tasktracker_config';
+let CFG = null;
+
+function loadConfig() {
+  try { CFG = JSON.parse(localStorage.getItem(CONFIG_KEY)); } catch(e) { CFG = null; }
+  return CFG;
+}
+
+function saveConfig() {
+  const apiKey = document.getElementById('setup-apikey').value.trim();
+  const binId  = document.getElementById('setup-binid').value.trim();
+  const err    = document.getElementById('setup-error');
+  if (!apiKey || !binId) { err.textContent = 'Both fields are required.'; err.style.display='block'; return; }
+  CFG = { apiKey, binId };
+  localStorage.setItem(CONFIG_KEY, JSON.stringify(CFG));
+  err.style.display = 'none';
+  init();
+}
+
+function resetConfig() {
+  if (!confirm('This will clear your saved credentials. You will need to re-enter them.')) return;
+  localStorage.removeItem(CONFIG_KEY);
+  CFG = null;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-setup').classList.add('active');
+}
+
+// ─── JSONBIN API ──────────────────────────────────────────
+const JSONBIN_BASE = 'https://api.jsonbin.io/v3';
+
+async function apiFetch(path, method='GET', body=null) {
+  const opts = {
+    method,
+    headers: { 'X-Access-Key': CFG.apiKey, 'Content-Type': 'application/json', 'X-Bin-Versioning': 'false' }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(JSONBIN_BASE + path, opts);
+  if (!r.ok) throw new Error(`API ${r.status}`);
+  return r.json();
+}
+
+async function fetchData() {
+  const r = await apiFetch(`/b/${CFG.binId}/latest`);
+  return r.record;
+}
+
+async function pushData(data) {
+  await apiFetch(`/b/${CFG.binId}`, 'PUT', data);
+}
+
+// ─── STATE ────────────────────────────────────────────────
+let tasks = [];
+let nextId = 1;
+let pendingComplete = null;
+let saving = false;
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ─── LOAD / SAVE ──────────────────────────────────────────
+async function loadTasks(showToast=false) {
+  try {
+    const data = await fetchData();
+    tasks  = data.tasks  || [];
+    nextId = data.nextId || (tasks.length ? Math.max(...tasks.map(t=>t.id))+1 : 1);
+    if (showToast) toast('Tasks refreshed');
+  } catch(e) {
+    toast('Failed to load. Check credentials.');
+  }
+  renderCurrentScreen();
+}
+
+async function persistTasks() {
+  if (saving) return;
+  saving = true;
+  document.getElementById('saving-indicator').classList.add('active');
+  try {
+    await pushData({ tasks, nextId });
+  } catch(e) {
+    toast('Save failed — check your connection.');
+  }
+  saving = false;
+  document.getElementById('saving-indicator').classList.remove('active');
+}
+
+// ─── ROUTING ──────────────────────────────────────────────
+function getMode() {
+  return new URLSearchParams(window.location.search).get('mode') || 'setup';
+}
+
+function renderCurrentScreen() {
+  const mode = getMode();
+  if (mode === 'admin') renderAdmin();
+  if (mode === 'worker') renderWorker();
+}
+
+async function init() {
+  loadConfig();
+  if (!CFG) { show('setup'); return; }
+
+  const mode = getMode();
+  if (mode === 'admin') {
+    show('admin');
+    document.getElementById('topbar-right').innerHTML = '<span class="topbar-mode mode-admin">Admin</span>';
+    await loadTasks();
+    setShareUrls();
+  } else if (mode === 'worker') {
+    show('worker');
+    document.getElementById('topbar-right').innerHTML = '<span class="topbar-mode mode-worker">Worker</span>';
+    await loadTasks();
+  } else {
+    // No mode param — show friendly landing
+    show('setup');
+  }
+}
+
+function show(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + screen).classList.add('active');
+}
+
+// ─── SHARE URLS ───────────────────────────────────────────
+function setShareUrls() {
+  const base = window.location.href.split('?')[0];
+  document.getElementById('admin-url-display').textContent  = base + '?mode=admin';
+  document.getElementById('worker-url-display').textContent = base + '?mode=worker';
+}
+
+function copyUrl(srcId, btnId) {
+  const text = document.getElementById(srcId).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const el = document.getElementById(btnId);
+    el.textContent = 'Copied!';
+    setTimeout(() => el.textContent = 'Copy', 2000);
+  });
+}
+
+// ─── TABS ─────────────────────────────────────────────────
+function showTab(tab) {
+  ['list','paste','progress','share'].forEach(t => {
+    const pane = document.getElementById('pane-' + t);
+    const tabEl = document.getElementById('tab-' + t);
+    if (pane) pane.style.display = t === tab ? 'block' : 'none';
+    if (tabEl) tabEl.classList.toggle('active', t === tab);
+  });
+  if (tab === 'progress') renderProgress();
+  if (tab === 'list') renderAdmin();
+}
+
+// ─── ADMIN RENDER ─────────────────────────────────────────
+function taskStatus(t) {
+  const d = t.subtasks.filter(s=>s.done).length;
+  return d === t.subtasks.length ? 'done' : d > 0 ? 'partial' : 'pending';
+}
+
+function checkSvg(done) {
+  return done
+    ? `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    : '';
+}
+
+function renderAdmin() {
+  const el = document.getElementById('pane-list');
+  if (!el) return;
+  if (!tasks.length) { el.innerHTML = '<div class="empty">No tasks yet. Add one or paste from a spreadsheet.</div>'; return; }
+  el.innerHTML = tasks.map(t => {
+    const done = t.subtasks.filter(s=>s.done).length, total = t.subtasks.length;
+    const st = taskStatus(t);
+    const bc = st==='done'?'badge-done':st==='partial'?'badge-partial':'badge-pending';
+    const bt = st==='done'?'Complete':st==='partial'?`${done}/${total} done`:'Pending';
+    return `<div class="card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px">
+        <div>
+          <div class="topic-label">${esc(t.topic)}</div>
+          <div class="location-label">📍 ${esc(t.location)}</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+          <span class="badge ${bc}">${bt}</span>
+          <button class="btn btn-sm btn-danger" onclick="deleteTask(${t.id})">✕</button>
+        </div>
+      </div>
+      ${t.subtasks.map(s => `<div class="subtask-row">
+        <div class="check ${s.done?'done':''}">${checkSvg(s.done)}</div>
+        <div style="flex:1">
+          <div class="subtask-text ${s.done?'done':''}">${esc(s.text)}</div>
+          ${s.done ? `<div class="by-tag">✓ ${esc(s.by)}</div>` : ''}
+        </div>
+      </div>`).join('')}
+      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(done/total*100)}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderProgress() {
+  const total = tasks.reduce((a,t)=>a+t.subtasks.length,0);
+  const done  = tasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0);
+  const full  = tasks.filter(t=>taskStatus(t)==='done').length;
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat"><div class="stat-n">${tasks.length}</div><div class="stat-l">Tasks</div></div>
+    <div class="stat"><div class="stat-n">${done}/${total}</div><div class="stat-l">Subtasks done</div></div>
+    <div class="stat"><div class="stat-n">${full}</div><div class="stat-l">Fully done</div></div>
+  `;
+  document.getElementById('progress-detail').innerHTML = tasks.map(t => {
+    const dn = t.subtasks.filter(s=>s.done).length, tot = t.subtasks.length;
+    return `<div class="card" style="padding:12px 16px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <div><span style="font-weight:600;font-size:14px">${esc(t.topic)}</span> <span style="font-size:12px;color:var(--muted)">${esc(t.location)}</span></div>
+        <span style="font-family:var(--mono);font-size:13px;color:var(--muted)">${dn}/${tot}</span>
+      </div>
+      <div class="progress-bar" style="margin-top:0;margin-bottom:8px"><div class="progress-fill" style="width:${Math.round(dn/tot*100)}%"></div></div>
+      ${t.subtasks.map(s => `<div style="font-size:12px;color:var(--muted);padding:2px 0">
+        <span style="color:${s.done?'var(--green)':'var(--faint)'};">${s.done?'✓':'○'}</span>
+        ${esc(s.text)}${s.done?` — <strong>${esc(s.by)}</strong>`:''}
+      </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+// ─── ADD / DELETE TASK ────────────────────────────────────
+function openAddModal() {
+  document.getElementById('add-modal').classList.add('open');
+  setTimeout(() => document.getElementById('new-topic').focus(), 50);
+}
+
+function closeModal() {
+  document.querySelectorAll('.modal-bg').forEach(m => m.classList.remove('open'));
+  pendingComplete = null;
+}
+
+async function saveTask() {
+  const topic    = document.getElementById('new-topic').value.trim();
+  const location = document.getElementById('new-location').value.trim();
+  const raw      = document.getElementById('new-subtasks').value.trim();
+  if (!topic || !location || !raw) { alert('Fill in all fields.'); return; }
+  const subtasks = raw.split('\n').map(s=>s.trim()).filter(Boolean).map(text=>({text,done:false,by:''}));
+  if (!subtasks.length) { alert('Add at least one subtask.'); return; }
+  tasks.push({ id: nextId++, topic, location, subtasks });
+  await persistTasks();
+  document.getElementById('new-topic').value = '';
+  document.getElementById('new-location').value = '';
+  document.getElementById('new-subtasks').value = '';
+  closeModal();
+  renderAdmin();
+  toast('Task saved');
+}
+
+async function deleteTask(id) {
+  if (!confirm('Delete this task and all its subtasks?')) return;
+  tasks = tasks.filter(t => t.id !== id);
+  await persistTasks();
+  renderAdmin();
+  toast('Task deleted');
+}
+
+// ─── PASTE IMPORT ─────────────────────────────────────────
+async function importPaste() {
+  const raw = document.getElementById('paste-input').value.trim();
+  const msg = document.getElementById('paste-msg');
+  if (!raw) return;
+  let count = 0;
+  raw.split('\n').filter(l=>l.trim()).forEach(line => {
+    const cols = line.includes('\t') ? line.split('\t') : line.split(',');
+    const c = cols.map(x => x.trim().replace(/^"|"$/g,''));
+    if (c.length < 3) return;
+    const [topic, location, ...rest] = c;
+    const subtasks = rest.filter(Boolean)
+      .flatMap(s => s.split('/').map(x=>x.trim()))
+      .filter(Boolean)
+      .map(text => ({ text, done:false, by:'' }));
+    if (!subtasks.length) return;
+    tasks.push({ id: nextId++, topic, location, subtasks });
+    count++;
+  });
+  if (count) {
+    await persistTasks();
+    msg.style.color = 'var(--green)';
+    msg.textContent = `Imported ${count} task${count!==1?'s':''}.`;
+    document.getElementById('paste-input').value = '';
+    setTimeout(() => showTab('list'), 900);
+    toast(`${count} task${count!==1?'s':''} imported`);
+  } else {
+    msg.style.color = 'var(--red)';
+    msg.textContent = 'No valid rows found. Expected: Topic | Location | Subtask1 | Subtask2 ...';
+  }
+}
+
+// ─── WORKER RENDER ────────────────────────────────────────
+function renderWorker() {
+  const el = document.getElementById('worker-task-list');
+  if (!el) return;
+  if (!tasks.length) { el.innerHTML = '<div class="empty">No tasks yet — check back soon or ask your admin.</div>'; return; }
+  el.innerHTML = tasks.map(t => {
+    const done = t.subtasks.filter(s=>s.done).length, total = t.subtasks.length;
+    return `<div class="card">
+      <div class="topic-label">${esc(t.topic)}</div>
+      <div class="location-label">📍 ${esc(t.location)}</div>
+      ${t.subtasks.map((s,i) => `<div class="subtask-row" style="${!s.done?'cursor:pointer':''}" onclick="${!s.done?`openComplete(${t.id},${i})`:''}">
+        <div class="check ${s.done?'done':''}">${checkSvg(s.done)}</div>
+        <div style="flex:1">
+          <div class="subtask-text ${s.done?'done':''}">${esc(s.text)}</div>
+          ${s.done
+            ? `<div class="by-tag">✓ ${esc(s.by)}</div>`
+            : `<div class="worker-tap-hint">tap to mark complete</div>`}
+        </div>
+      </div>`).join('')}
+      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(done/total*100)}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ─── COMPLETE SUBTASK ─────────────────────────────────────
+function openComplete(taskId, idx) {
+  const task = tasks.find(t => t.id === taskId);
+  if (!task) return;
+  pendingComplete = { taskId, idx };
+  document.getElementById('complete-sub').textContent = task.subtasks[idx].text;
+  document.getElementById('completer-name').value = '';
+  document.getElementById('complete-modal').classList.add('open');
+  setTimeout(() => document.getElementById('completer-name').focus(), 60);
+}
+
+async function confirmComplete() {
+  const name = document.getElementById('completer-name').value.trim();
+  if (!name) { alert('Please enter your name.'); return; }
+  const task = tasks.find(t => t.id === pendingComplete.taskId);
+  task.subtasks[pendingComplete.idx].done = true;
+  task.subtasks[pendingComplete.idx].by   = name;
+  await persistTasks();
+  closeModal();
+  renderWorker();
+  toast('Marked complete ✓');
+}
+
+// ─── KEYBOARD ─────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Enter' && document.getElementById('complete-modal').classList.contains('open')) confirmComplete();
+  if (e.key === 'Enter' && document.getElementById('add-modal').classList.contains('open') && e.target.tagName !== 'TEXTAREA') saveTask();
+});
+
+// ─── BOOT ─────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
