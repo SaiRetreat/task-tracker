@@ -123,20 +123,20 @@ textarea{resize:vertical;min-height:70px}
   </div>
   <div class="content">
     <div id="screen-admin" class="screen">
-      <div class="nav">
-        <button class="btn btn-sm btn-primary" onclick="openAddModal()">+ Add task</button>
-        <button class="btn btn-sm" onclick="showTab('paste')">&#8593; Import</button>
-        <button class="btn btn-sm" onclick="showTab('progress')">Progress</button>
-        <button class="btn btn-sm" onclick="loadData(true)">Refresh</button>
-        <button class="btn btn-sm" onclick="exportCSV()">CSV</button>
-        <button class="btn btn-sm" style="color:var(--red);border-color:var(--border2)" onclick="confirmReset()">Reset</button>
-        <span class="saving" id="saving-ind">saving...</span>
-      </div>
-      <div class="tabs">
-        <div class="tab active" id="tab-list" onclick="showTab('list')">Tasks</div>
-        <div class="tab" id="tab-paste" onclick="showTab('paste')">Paste import</div>
-        <div class="tab" id="tab-progress" onclick="showTab('progress')">Progress</div>
-        <div class="tab" id="tab-share" onclick="showTab('share')">Links</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);margin-bottom:16px;gap:8px;flex-wrap:wrap">
+        <div class="tabs" style="border:none;margin:0;flex:1">
+          <div class="tab active" id="tab-list" onclick="showTab('list')">Tasks</div>
+          <div class="tab" id="tab-paste" onclick="showTab('paste')">Import</div>
+          <div class="tab" id="tab-progress" onclick="showTab('progress')">Progress</div>
+          <div class="tab" id="tab-share" onclick="showTab('share')">Links</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;padding-bottom:4px;flex-shrink:0">
+          <button class="btn btn-sm btn-primary" onclick="openAddModal()">+ Add task</button>
+          <button class="btn btn-sm" onclick="loadData(true)" title="Refresh">&#8635;</button>
+          <button class="btn btn-sm" onclick="exportCSV()" title="Export CSV">CSV</button>
+          <button class="btn btn-sm" style="color:var(--red)" onclick="confirmReset()" title="Reset all completions">Reset</button>
+          <span class="saving" id="saving-ind">saving...</span>
+        </div>
       </div>
       <div id="pane-list"><div class="loading">Loading...</div></div>
       <div id="pane-paste" style="display:none">
@@ -182,6 +182,16 @@ textarea{resize:vertical;min-height:70px}
     <input id="new-location" placeholder="e.g. Amphitheater and Fitness Center"/>
     <label>Subtasks (one per line)</label>
     <textarea id="new-subtasks" placeholder="Move A/V to dining hall&#10;Stack up chairs&#10;Clean kitchen space"></textarea>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:2px">
+      <div style="flex:1;min-width:160px">
+        <label>Due date &amp; time (optional)</label>
+        <input type="datetime-local" id="new-due"/>
+      </div>
+      <div style="flex:1;min-width:160px">
+        <label>Assigned volunteer(s) (optional)</label>
+        <input id="new-assigned" placeholder="e.g. John, Mary"/>
+      </div>
+    </div>
     <div style="margin-top:14px;display:flex;gap:8px">
       <button class="btn btn-primary" onclick="saveTask()">Save</button>
       <button class="btn" onclick="closeModal()">Cancel</button>
@@ -569,12 +579,16 @@ function closeModal(){ document.querySelectorAll('.modal-bg').forEach(function(m
 async function saveTask(){
   var location=document.getElementById('new-location').value.trim();
   var raw=document.getElementById('new-subtasks').value.trim();
+  var due=document.getElementById('new-due').value;
+  var assigned=document.getElementById('new-assigned').value.trim();
   if(!location||!raw){alert('Fill in location and at least one subtask.');return;}
-  var subtasks=raw.split('\n').map(function(s){return s.trim();}).filter(Boolean).map(function(text){return {text:text,done:false,unable:false,by:'',note:'',reason:'',completedAt:null,priority:'normal',due:'',assigned:''};});
+  var subtasks=raw.split('\n').map(function(s){return s.trim();}).filter(Boolean).map(function(text){return {text:text,done:false,unable:false,by:'',note:'',reason:'',completedAt:null,priority:'normal',due:due,assigned:assigned};});
   tasks.push({id:nextId++,location:location,subtasks:subtasks});
   await saveData();
   document.getElementById('new-location').value='';
   document.getElementById('new-subtasks').value='';
+  document.getElementById('new-due').value='';
+  document.getElementById('new-assigned').value='';
   closeModal(); renderAdmin(); toast('Task group saved');
 }
 
