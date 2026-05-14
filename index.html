@@ -23,7 +23,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15
 .topbar-brand{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
 .topbar-mode{font-size:12px;padding:3px 10px;border-radius:99px;font-family:var(--mono);font-weight:500}
 .mode-admin{background:#1A1916;color:#F7F6F2}
-.mode-volunteer{background:var(--green-bg);color:var(--green)}
+.mode-worker{background:var(--green-bg);color:var(--green)}
 .content{padding:20px}
 .screen{display:none}.screen.active{display:block}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text);cursor:pointer;font-size:13px;font-family:var(--font);font-weight:500;transition:all .15s;text-decoration:none}
@@ -81,7 +81,7 @@ textarea{resize:vertical;min-height:90px}
 .saving-indicator.active{display:inline}
 .empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px}
 .loading{text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:13px;letter-spacing:.5px}
-.volunteer-tap-hint{font-size:11px;color:var(--faint);margin-top:2px}
+.worker-tap-hint{font-size:11px;color:var(--faint);margin-top:2px}
 .config-required{background:var(--amber-bg);border:1px solid #E8C96A;border-radius:8px;padding:14px;font-size:13px;color:var(--amber);margin-bottom:16px}
 </style>
 </head>
@@ -111,7 +111,7 @@ textarea{resize:vertical;min-height:90px}
           <div class="step-num">2</div>
           <div class="step-body">
             <strong>Create a bin</strong>
-            <p>In JSONBin, click <strong>+ Create Bin</strong> → paste in <code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:2px 5px;border-radius:3px">{"tasks":[],"nextId":1}</code> → save. Copy the <strong>Bin ID</strong> from the URL (looks like <code style="font-family:var(--mono);font-size:11px">64abc123...</code>).</p>
+            <p>In JSONBin, click <strong>+ Create Bin</strong> → paste in <code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:2px 5px;border-radius:3px">{"tasks":[],"nextId":1}</code> → save. Copy the <strong>Bin ID</strong> from the URL. Then click the bin's <strong>Settings</strong> (gear icon) → set <strong>Read Access</strong> to <strong>Public</strong>. This lets volunteers load tasks without needing credentials.</p>
           </div>
         </div>
 
@@ -138,7 +138,7 @@ textarea{resize:vertical;min-height:90px}
             <p style="margin-top:6px">Your URLs will be:</p>
             <div style="font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:6px;line-height:2">
               <div><strong>Admin:</strong> https://yourusername.github.io/your-repo<strong style="color:var(--blue)">/?mode=admin</strong></div>
-              <div><strong>volunteers:</strong> https://yourusername.github.io/your-repo<strong style="color:var(--green)">/?mode=volunteer</strong></div>
+              <div><strong>Workers:</strong> https://yourusername.github.io/your-repo<strong style="color:var(--green)">/?mode=worker</strong></div>
             </div>
           </div>
         </div>
@@ -182,12 +182,12 @@ textarea{resize:vertical;min-height:90px}
             <span class="url-text" id="admin-url-display">—</span>
             <button class="btn btn-sm" onclick="copyUrl('admin-url-display','copy-admin')"><span id="copy-admin">Copy</span></button>
           </div>
-          <label style="margin-top:16px">volunteer link (share with team)</label>
+          <label style="margin-top:16px">Worker link (share with team)</label>
           <div class="url-display">
-            <span class="url-text" id="volunteer-url-display">—</span>
-            <button class="btn btn-sm" onclick="copyUrl('volunteer-url-display','copy-volunteer')"><span id="copy-volunteer">Copy</span></button>
+            <span class="url-text" id="worker-url-display">—</span>
+            <button class="btn btn-sm" onclick="copyUrl('worker-url-display','copy-worker')"><span id="copy-worker">Copy</span></button>
           </div>
-          <p style="font-size:13px;color:var(--muted);margin-top:16px;line-height:1.6">volunteers who open the volunteer link see all tasks and can mark subtasks complete — they just enter their name. They cannot add or delete tasks.</p>
+          <p style="font-size:13px;color:var(--muted);margin-top:16px;line-height:1.6">Workers who open the worker link see all tasks and can mark subtasks complete — they just enter their name. They cannot add or delete tasks.</p>
           <div style="margin-top:16px;padding:12px;background:var(--bg);border-radius:6px;font-size:13px;color:var(--muted)">
             <strong style="color:var(--text)">Note:</strong> If you haven't hosted on GitHub Pages yet, these links only work on your local machine. Follow Step 4 in the setup guide to get permanent public URLs. You can reset your credentials under the reset option below.
           </div>
@@ -196,13 +196,13 @@ textarea{resize:vertical;min-height:90px}
       </div>
     </div>
 
-    <!-- volunteer SCREEN -->
-    <div id="screen-volunteer" class="screen">
+    <!-- WORKER SCREEN -->
+    <div id="screen-worker" class="screen">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
         <p style="font-size:13px;color:var(--muted)">Tap a subtask to mark it complete.</p>
         <button class="btn btn-sm" onclick="loadTasks(true)">↻ Refresh</button>
       </div>
-      <div id="volunteer-task-list"><div class="loading">Loading tasks…</div></div>
+      <div id="worker-task-list"><div class="loading">Loading tasks…</div></div>
     </div>
 
   </div>
@@ -241,11 +241,22 @@ textarea{resize:vertical;min-height:90px}
 
 <script>
 // ─── CONFIG ───────────────────────────────────────────────
+// ─── CONFIG ───────────────────────────────────────────────
+// Bin ID is shared publicly (read-only for volunteers, write needs API key)
+// Admin sets this once; it gets saved to localStorage AND embedded so volunteers can read
 const CONFIG_KEY = 'tasktracker_config';
+// HARDCODED_BIN_ID: admin fills this in at setup, then re-uploads the file with it set.
+// Volunteers need no credentials — they use the public bin ID to read.
+const HARDCODED_BIN_ID = ''; // ← filled automatically when admin saves config and re-exports
+
 let CFG = null;
 
 function loadConfig() {
   try { CFG = JSON.parse(localStorage.getItem(CONFIG_KEY)); } catch(e) { CFG = null; }
+  // For volunteer mode: only need binId (public read). Pull from localStorage or hardcoded.
+  if (!CFG && HARDCODED_BIN_ID) {
+    CFG = { binId: HARDCODED_BIN_ID, apiKey: null };
+  }
   return CFG;
 }
 
@@ -257,7 +268,35 @@ function saveConfig() {
   CFG = { apiKey, binId };
   localStorage.setItem(CONFIG_KEY, JSON.stringify(CFG));
   err.style.display = 'none';
-  init();
+  // Show the volunteer file instructions
+  showExportInstructions(binId);
+}
+
+function showExportInstructions(binId) {
+  const err = document.getElementById('setup-error');
+  err.style.display = 'block';
+  err.style.color = 'var(--green)';
+  err.innerHTML = `
+    ✓ Admin credentials saved!<br><br>
+    <strong>One more step to activate volunteer links:</strong><br>
+    Download the updated file below — it has your Bin ID baked in so volunteers load tasks automatically without any setup.<br><br>
+    <button class="btn btn-primary btn-sm" onclick="downloadPatched()">⬇ Download updated index.html</button><br><br>
+    Upload that file to GitHub (replace your current index.html) and you're done.
+  `;
+}
+
+function downloadPatched() {
+  // Fetch the current page HTML and inject the bin ID
+  const src = document.documentElement.outerHTML;
+  const patched = src.replace(
+    "const HARDCODED_BIN_ID = '';",
+    `const HARDCODED_BIN_ID = '${CFG.binId}';`
+  );
+  const blob = new Blob([patched], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'index.html';
+  a.click();
 }
 
 function resetConfig() {
@@ -274,8 +313,10 @@ const JSONBIN_BASE = 'https://api.jsonbin.io/v3';
 async function apiFetch(path, method='GET', body=null) {
   const opts = {
     method,
-    headers: { 'X-Access-Key': CFG.apiKey, 'Content-Type': 'application/json', 'X-Bin-Versioning': 'false' }
+    headers: { 'Content-Type': 'application/json', 'X-Bin-Versioning': 'false' }
   };
+  // Only attach API key if we have one (admin) — volunteers do public reads
+  if (CFG && CFG.apiKey) opts.headers['X-Access-Key'] = CFG.apiKey;
   if (body) opts.body = JSON.stringify(body);
   const r = await fetch(JSONBIN_BASE + path, opts);
   if (!r.ok) throw new Error(`API ${r.status}`);
@@ -340,27 +381,36 @@ function getMode() {
 function renderCurrentScreen() {
   const mode = getMode();
   if (mode === 'admin') renderAdmin();
-  if (mode === 'volunteer') rendervolunteer();
+  if (mode === 'volunteer') renderVolunteer();
 }
 
 async function init() {
   loadConfig();
-  if (!CFG) { show('setup'); return; }
-
   const mode = getMode();
+
+  if (mode === 'volunteer') {
+    if (!CFG || !CFG.binId) {
+      show('volunteer');
+      document.getElementById('volunteer-task-list').innerHTML =
+        '<div class="empty" style="color:var(--red)">This app isn\'t configured yet. Ask your admin to finish setup.</div>';
+      return;
+    }
+    show('volunteer');
+    document.getElementById('topbar-right').innerHTML = '<span class="topbar-mode mode-volunteer">Volunteer</span>';
+    await loadTasks();
+    return;
+  }
+
   if (mode === 'admin') {
+    if (!CFG || !CFG.apiKey) { show('setup'); return; }
     show('admin');
     document.getElementById('topbar-right').innerHTML = '<span class="topbar-mode mode-admin">Admin</span>';
     await loadTasks();
     setShareUrls();
-  } else if (mode === 'volunteer') {
-    show('volunteer');
-    document.getElementById('topbar-right').innerHTML = '<span class="topbar-mode mode-volunteer">volunteer</span>';
-    await loadTasks();
-  } else {
-    // No mode param — show friendly landing
-    show('setup');
+    return;
   }
+
+  show('setup');
 }
 
 function show(screen) {
@@ -372,7 +422,7 @@ function show(screen) {
 function setShareUrls() {
   const base = window.location.href.split('?')[0];
   document.getElementById('admin-url-display').textContent  = base + '?mode=admin';
-  document.getElementById('volunteer-url-display').textContent = base + '?mode=volunteer';
+  document.getElementById('worker-url-display').textContent = base + '?mode=worker';
 }
 
 function copyUrl(srcId, btnId) {
@@ -533,8 +583,9 @@ async function importPaste() {
   }
 }
 
-// ─── volunteer RENDER ────────────────────────────────────────
-function rendervolunteer() {
+
+// ─── VOLUNTEER RENDER ────────────────────────────────────────
+function renderVolunteer() {
   const el = document.getElementById('volunteer-task-list');
   if (!el) return;
   if (!tasks.length) { el.innerHTML = '<div class="empty">No tasks yet — check back soon or ask your admin.</div>'; return; }
@@ -576,7 +627,7 @@ async function confirmComplete() {
   task.subtasks[pendingComplete.idx].by   = name;
   await persistTasks();
   closeModal();
-  rendervolunteer();
+  renderVolunteer();
   toast('Marked complete ✓');
 }
 
