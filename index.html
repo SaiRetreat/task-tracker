@@ -23,17 +23,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15
 .topbar-brand{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
 .topbar-mode{font-size:12px;padding:3px 10px;border-radius:99px;font-family:var(--mono);font-weight:500}
 .mode-admin{background:#1A1916;color:#F7F6F2}
-.mode-worker{background:var(--green-bg);color:var(--green)}
+.mode-volunteer{background:var(--green-bg);color:var(--green)}
 .content{padding:20px}
 .screen{display:none}.screen.active{display:block}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text);cursor:pointer;font-size:13px;font-family:var(--font);font-weight:500;transition:all .15s;text-decoration:none}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text);cursor:pointer;font-size:13px;font-family:var(--font);font-weight:500;transition:all .15s}
 .btn:hover{background:var(--bg);border-color:var(--text)}
 .btn-primary{background:var(--text);color:var(--bg);border-color:var(--text)}
 .btn-primary:hover{opacity:.85;background:var(--text)}
 .btn-danger{color:var(--red);border-color:transparent;background:none}
 .btn-danger:hover{background:var(--red-bg);border-color:var(--red)}
 .btn-sm{padding:5px 10px;font-size:12px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px}
 label{font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin:12px 0 4px}
 input,textarea{width:100%;font-family:var(--font);font-size:14px;border:1px solid var(--border2);border-radius:6px;padding:8px 10px;background:var(--surface);color:var(--text);outline:none}
 input:focus,textarea:focus{border-color:var(--text)}
@@ -42,14 +41,26 @@ textarea{resize:vertical;min-height:90px}
 .badge-done{background:var(--green-bg);color:var(--green)}
 .badge-partial{background:var(--blue-bg);color:var(--blue)}
 .badge-pending{background:var(--amber-bg);color:var(--amber)}
-.subtask-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.group{margin-bottom:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface)}
+.group-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;gap:10px}
+.group-header:hover{background:var(--bg)}
+.group-title{font-size:15px;font-weight:600;flex:1}
+.group-meta{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.group-body{border-top:1px solid var(--border);display:none}
+.group-body.open{display:block}
+.task-item{border-bottom:1px solid var(--border);padding:14px 16px}
+.task-item:last-child{border-bottom:none}
+.task-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.location-label{font-size:13px;color:var(--muted);margin-bottom:8px}
+.subtask-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
 .subtask-row:last-child{border-bottom:none}
 .check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s}
 .check.done{background:var(--green);border-color:var(--green)}
 .subtask-text{flex:1;font-size:14px;line-height:1.5}
 .subtask-text.done{text-decoration:line-through;color:var(--faint)}
 .by-tag{font-size:11px;font-family:var(--mono);color:var(--muted);margin-top:2px}
-.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-top:12px}
+.tap-hint{font-size:11px;color:var(--faint);margin-top:2px}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-top:10px}
 .progress-fill{height:100%;border-radius:2px;background:var(--green);transition:width .4s}
 .tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px}
 .tab{padding:9px 16px;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
@@ -60,29 +71,19 @@ textarea{resize:vertical;min-height:90px}
 .stat-l{font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50;align-items:center;justify-content:center;padding:20px}
 .modal-bg.open{display:flex}
-.modal{background:var(--surface);border-radius:10px;padding:24px;width:100%;max-width:420px;border:1px solid var(--border)}
+.modal{background:var(--surface);border-radius:10px;padding:24px;width:100%;max-width:420px;border:1px solid var(--border);max-height:90vh;overflow-y:auto}
 .modal h2{font-size:16px;font-weight:600;margin-bottom:16px}
 .nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
-.topic-label{font-size:11px;font-family:var(--mono);color:var(--blue);font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
-.location-label{font-size:13px;color:var(--muted);margin-bottom:10px}
-.setup-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;max-width:480px;margin:0 auto}
-.setup-box h1{font-size:20px;font-weight:600;margin-bottom:6px}
-.step{display:flex;gap:12px;margin-bottom:16px;align-items:flex-start}
-.step-num{width:24px;height:24px;border-radius:50%;background:var(--text);color:var(--bg);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.step-body{flex:1}
-.step-body strong{display:block;margin-bottom:4px;font-size:14px}
-.step-body p,.step-body a{font-size:13px;color:var(--muted);line-height:1.6}
-.step-body a{color:var(--blue)}
-.url-display{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-top:8px}
-.url-text{font-family:var(--mono);font-size:12px;flex:1;word-break:break-all;color:var(--text)}
+.url-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-top:6px}
+.url-text{font-family:var(--mono);font-size:12px;flex:1;word-break:break-all}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:8px;font-size:13px;font-family:var(--mono);opacity:0;transition:opacity .2s;z-index:100;pointer-events:none}
 .toast.show{opacity:1}
-.saving-indicator{font-size:12px;font-family:var(--mono);color:var(--muted);display:none}
-.saving-indicator.active{display:inline}
+.saving{font-size:12px;font-family:var(--mono);color:var(--muted);display:none}
+.saving.on{display:inline}
 .empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px}
-.loading{text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:13px;letter-spacing:.5px}
-.worker-tap-hint{font-size:11px;color:var(--faint);margin-top:2px}
-.config-required{background:var(--amber-bg);border:1px solid #E8C96A;border-radius:8px;padding:14px;font-size:13px;color:var(--amber);margin-bottom:16px}
+.loading{text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:13px}
+.chevron{transition:transform .2s;font-size:16px;color:var(--muted);display:inline-block}
+.chevron.open{transform:rotate(180deg)}
 </style>
 </head>
 <body>
@@ -93,129 +94,77 @@ textarea{resize:vertical;min-height:90px}
   </div>
   <div class="content">
 
-    <!-- SETUP SCREEN -->
-    <div id="screen-setup" class="screen active">
-      <div class="setup-box">
-        <h1>Setup required</h1>
-        <p style="font-size:14px;color:var(--muted);margin-bottom:20px">Follow these steps once to get your free permanent task tracker running. Takes about 5 minutes.</p>
-
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-body">
-            <strong>Create a free JSONBin account</strong>
-            <p>Go to <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> → Sign up free → Go to <strong>API Keys</strong> → copy your <strong>Access Key</strong>.</p>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-body">
-            <strong>Create a bin</strong>
-            <p>In JSONBin, click <strong>+ Create Bin</strong> → paste in <code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:2px 5px;border-radius:3px">{"tasks":[],"nextId":1}</code> → save. Copy the <strong>Bin ID</strong> from the URL. Then click the bin's <strong>Settings</strong> (gear icon) → set <strong>Read Access</strong> to <strong>Public</strong>. This lets volunteers load tasks without needing credentials.</p>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-body">
-            <strong>Enter your credentials</strong>
-            <label>JSONBin Access Key</label>
-            <input id="setup-apikey" placeholder="$2b$10$..." autocomplete="off"/>
-            <label>Bin ID</label>
-            <input id="setup-binid" placeholder="64abc123def456..."/>
-            <div style="margin-top:12px;display:flex;gap:8px">
-              <button class="btn btn-primary" onclick="saveConfig()">Save & continue</button>
-            </div>
-            <p id="setup-error" style="color:var(--red);font-size:13px;margin-top:8px;display:none"></p>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="step-num">4</div>
-          <div class="step-body">
-            <strong>Host on GitHub Pages (free)</strong>
-            <p>Go to <a href="https://github.com" target="_blank">github.com</a> → New repo → upload this HTML file as <code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:2px 5px;border-radius:3px">index.html</code> → Settings → Pages → Deploy from main branch.</p>
-            <p style="margin-top:6px">Your URLs will be:</p>
-            <div style="font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:6px;line-height:2">
-              <div><strong>Admin:</strong> https://yourusername.github.io/your-repo<strong style="color:var(--blue)">/?mode=admin</strong></div>
-              <div><strong>Workers:</strong> https://yourusername.github.io/your-repo<strong style="color:var(--green)">/?mode=worker</strong></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ADMIN SCREEN -->
     <div id="screen-admin" class="screen">
       <div class="nav">
         <button class="btn btn-sm btn-primary" onclick="openAddModal()">+ Add task</button>
         <button class="btn btn-sm" onclick="showTab('paste')">⬆ Paste import</button>
         <button class="btn btn-sm" onclick="showTab('progress')">📊 Progress</button>
-        <span class="saving-indicator" id="saving-indicator">saving…</span>
+        <button class="btn btn-sm" onclick="loadData(true)">↻ Refresh</button>
+        <span class="saving" id="saving-ind">saving…</span>
       </div>
       <div class="tabs">
-        <div class="tab active" id="tab-list" onclick="showTab('list')">Tasks</div>
-        <div class="tab" id="tab-paste" onclick="showTab('paste')">Paste import</div>
-        <div class="tab" id="tab-progress" onclick="showTab('progress')">Progress</div>
-        <div class="tab" id="tab-share" onclick="showTab('share')">Share links</div>
+        <div class="tab active" id="tab-list"     onclick="showTab('list')">Tasks</div>
+        <div class="tab"        id="tab-paste"    onclick="showTab('paste')">Paste import</div>
+        <div class="tab"        id="tab-progress" onclick="showTab('progress')">Progress</div>
+        <div class="tab"        id="tab-share"    onclick="showTab('share')">Links</div>
       </div>
-      <div id="pane-list"><div class="loading">Loading tasks…</div></div>
+      <div id="pane-list"><div class="loading">Loading…</div></div>
       <div id="pane-paste" style="display:none">
-        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Paste rows from a spreadsheet. <strong>Column order: Topic | Location | Subtask 1 | Subtask 2 | …</strong> (tabs or commas). Subtasks can also be slash-separated in one cell.</p>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">
+          <strong>Column order: Topic | Location | Subtask 1 | Subtask 2 | …</strong><br>
+          Tabs or commas between columns. Subtasks can also be slash-separated in one cell.
+        </p>
         <label>Paste spreadsheet data</label>
-        <textarea id="paste-input" style="min-height:150px" placeholder="AV Ancillary Rooms&#9;Amphitheater and Fitness Center&#9;A/V move to dining hall&#9;Stack up chairs&#9;Bring all kitchen items to kitchen"></textarea>
+        <textarea id="paste-input" style="min-height:160px"
+          placeholder="AV Ancillary Rooms&#9;Amphitheater&#9;Move A/V to dining hall&#9;Stack chairs&#9;Clean kitchen"></textarea>
         <div style="margin-top:10px;display:flex;gap:8px">
           <button class="btn btn-primary" onclick="importPaste()">Import</button>
           <button class="btn" onclick="document.getElementById('paste-input').value='';document.getElementById('paste-msg').textContent=''">Clear</button>
         </div>
-        <div id="paste-msg" style="margin-top:10px;font-size:13px;color:var(--green)"></div>
+        <div id="paste-msg" style="margin-top:10px;font-size:13px"></div>
       </div>
       <div id="pane-progress" style="display:none">
         <div class="stats" id="stats-row"></div>
         <div id="progress-detail"></div>
       </div>
       <div id="pane-share" style="display:none">
-        <div class="card">
-          <h2 style="margin-bottom:12px;font-size:15px">Your shareable links</h2>
-          <label>Admin link (keep private)</label>
-          <div class="url-display">
-            <span class="url-text" id="admin-url-display">—</span>
-            <button class="btn btn-sm" onclick="copyUrl('admin-url-display','copy-admin')"><span id="copy-admin">Copy</span></button>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px">
+          <h2 style="font-size:15px;margin-bottom:16px">Shareable links</h2>
+          <label>Admin (keep private)</label>
+          <div class="url-box">
+            <span class="url-text" id="admin-url">—</span>
+            <button class="btn btn-sm" onclick="copyUrl('admin-url','ca')"><span id="ca">Copy</span></button>
           </div>
-          <label style="margin-top:16px">Worker link (share with team)</label>
-          <div class="url-display">
-            <span class="url-text" id="worker-url-display">—</span>
-            <button class="btn btn-sm" onclick="copyUrl('worker-url-display','copy-worker')"><span id="copy-worker">Copy</span></button>
+          <label style="margin-top:16px">Volunteer (share with team)</label>
+          <div class="url-box">
+            <span class="url-text" id="vol-url">—</span>
+            <button class="btn btn-sm" onclick="copyUrl('vol-url','cv')"><span id="cv">Copy</span></button>
           </div>
-          <p style="font-size:13px;color:var(--muted);margin-top:16px;line-height:1.6">Workers who open the worker link see all tasks and can mark subtasks complete — they just enter their name. They cannot add or delete tasks.</p>
-          <div style="margin-top:16px;padding:12px;background:var(--bg);border-radius:6px;font-size:13px;color:var(--muted)">
-            <strong style="color:var(--text)">Note:</strong> If you haven't hosted on GitHub Pages yet, these links only work on your local machine. Follow Step 4 in the setup guide to get permanent public URLs. You can reset your credentials under the reset option below.
-          </div>
-          <button class="btn btn-sm btn-danger" style="margin-top:16px" onclick="resetConfig()">⚙ Reset credentials</button>
+          <p style="font-size:13px;color:var(--muted);margin-top:14px;line-height:1.6">Volunteers can view and complete tasks — they just enter their name. They cannot add or delete tasks.</p>
         </div>
       </div>
     </div>
 
-    <!-- WORKER SCREEN -->
-    <div id="screen-worker" class="screen">
+    <div id="screen-volunteer" class="screen">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-        <p style="font-size:13px;color:var(--muted)">Tap a subtask to mark it complete.</p>
-        <button class="btn btn-sm" onclick="loadTasks(true)">↻ Refresh</button>
+        <p style="font-size:13px;color:var(--muted)">Tap a category to expand, then tap a subtask to mark it done.</p>
+        <button class="btn btn-sm" onclick="loadData(true)">↻ Refresh</button>
       </div>
-      <div id="worker-task-list"><div class="loading">Loading tasks…</div></div>
+      <div id="vol-task-list"><div class="loading">Loading…</div></div>
     </div>
 
   </div>
 </div>
 
-<!-- ADD TASK MODAL -->
 <div class="modal-bg" id="add-modal">
   <div class="modal">
     <h2>Add task</h2>
-    <label>Topic</label><input id="new-topic" placeholder="e.g. AV Ancillary Rooms"/>
-    <label>Location</label><input id="new-location" placeholder="e.g. Amphitheater and Fitness Center"/>
+    <label>Topic (category)</label>
+    <input id="new-topic" placeholder="e.g. AV Ancillary Rooms"/>
+    <label>Location</label>
+    <input id="new-location" placeholder="e.g. Amphitheater and Fitness Center"/>
     <label>Subtasks (one per line)</label>
-    <textarea id="new-subtasks" placeholder="A/V move to dining hall&#10;Stack up chairs&#10;Bring all kitchen items to kitchen"></textarea>
+    <textarea id="new-subtasks" placeholder="Move A/V to dining hall&#10;Stack up chairs&#10;Clean kitchen space"></textarea>
     <div style="margin-top:16px;display:flex;gap:8px">
       <button class="btn btn-primary" onclick="saveTask()">Save</button>
       <button class="btn" onclick="closeModal()">Cancel</button>
@@ -223,7 +172,6 @@ textarea{resize:vertical;min-height:90px}
   </div>
 </div>
 
-<!-- COMPLETE MODAL -->
 <div class="modal-bg" id="complete-modal">
   <div class="modal">
     <h2>Mark complete</h2>
@@ -240,405 +188,351 @@ textarea{resize:vertical;min-height:90px}
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────
-// ─── CONFIG ───────────────────────────────────────────────
-// Bin ID is shared publicly (read-only for volunteers, write needs API key)
-// Admin sets this once; it gets saved to localStorage AND embedded so volunteers can read
-const CONFIG_KEY = 'tasktracker_config';
-// HARDCODED_BIN_ID: admin fills this in at setup, then re-uploads the file with it set.
-// Volunteers need no credentials — they use the public bin ID to read.
-const HARDCODED_BIN_ID = ''; // ← filled automatically when admin saves config and re-exports
+const API_KEY = '$2a$10$NrfVE4jDUcOGoO6.3Z9kyuBsPMNZ63FaibBUBDH2Xa270MC4k9/Oe';
+const BIN_ID  = '6a05e2d8250b1311c34d4055';
+const BASE    = 'https://api.jsonbin.io/v3';
 
-let CFG = null;
-
-function loadConfig() {
-  try { CFG = JSON.parse(localStorage.getItem(CONFIG_KEY)); } catch(e) { CFG = null; }
-  // For volunteer mode: only need binId (public read). Pull from localStorage or hardcoded.
-  if (!CFG && HARDCODED_BIN_ID) {
-    CFG = { binId: HARDCODED_BIN_ID, apiKey: null };
-  }
-  return CFG;
-}
-
-function saveConfig() {
-  const apiKey = document.getElementById('setup-apikey').value.trim();
-  const binId  = document.getElementById('setup-binid').value.trim();
-  const err    = document.getElementById('setup-error');
-  if (!apiKey || !binId) { err.textContent = 'Both fields are required.'; err.style.display='block'; return; }
-  CFG = { apiKey, binId };
-  localStorage.setItem(CONFIG_KEY, JSON.stringify(CFG));
-  err.style.display = 'none';
-  // Show the volunteer file instructions
-  showExportInstructions(binId);
-}
-
-function showExportInstructions(binId) {
-  const err = document.getElementById('setup-error');
-  err.style.display = 'block';
-  err.style.color = 'var(--green)';
-  err.innerHTML = `
-    ✓ Admin credentials saved!<br><br>
-    <strong>One more step to activate volunteer links:</strong><br>
-    Download the updated file below — it has your Bin ID baked in so volunteers load tasks automatically without any setup.<br><br>
-    <button class="btn btn-primary btn-sm" onclick="downloadPatched()">⬇ Download updated index.html</button><br><br>
-    Upload that file to GitHub (replace your current index.html) and you're done.
-  `;
-}
-
-function downloadPatched() {
-  // Fetch the current page HTML and inject the bin ID
-  const src = document.documentElement.outerHTML;
-  const patched = src.replace(
-    "const HARDCODED_BIN_ID = '';",
-    `const HARDCODED_BIN_ID = '${CFG.binId}';`
-  );
-  const blob = new Blob([patched], { type: 'text/html' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'index.html';
-  a.click();
-}
-
-function resetConfig() {
-  if (!confirm('This will clear your saved credentials. You will need to re-enter them.')) return;
-  localStorage.removeItem(CONFIG_KEY);
-  CFG = null;
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-setup').classList.add('active');
-}
-
-// ─── JSONBIN API ──────────────────────────────────────────
-const JSONBIN_BASE = 'https://api.jsonbin.io/v3';
-
-async function apiFetch(path, method='GET', body=null) {
-  const opts = {
-    method,
-    headers: { 'Content-Type': 'application/json', 'X-Bin-Versioning': 'false' }
-  };
-  // Only attach API key if we have one (admin) — volunteers do public reads
-  if (CFG && CFG.apiKey) opts.headers['X-Access-Key'] = CFG.apiKey;
-  if (body) opts.body = JSON.stringify(body);
-  const r = await fetch(JSONBIN_BASE + path, opts);
-  if (!r.ok) throw new Error(`API ${r.status}`);
-  return r.json();
-}
-
-async function fetchData() {
-  const r = await apiFetch(`/b/${CFG.binId}/latest`);
-  return r.record;
-}
-
-async function pushData(data) {
-  await apiFetch(`/b/${CFG.binId}`, 'PUT', data);
-}
-
-// ─── STATE ────────────────────────────────────────────────
 let tasks = [];
 let nextId = 1;
 let pendingComplete = null;
-let saving = false;
+let isSaving = false;
+let openGroups = {};
 
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function toast(msg) {
+function toast(msg){
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
 }
 
-// ─── LOAD / SAVE ──────────────────────────────────────────
-async function loadTasks(showToast=false) {
-  try {
-    const data = await fetchData();
-    tasks  = data.tasks  || [];
-    nextId = data.nextId || (tasks.length ? Math.max(...tasks.map(t=>t.id))+1 : 1);
-    if (showToast) toast('Tasks refreshed');
-  } catch(e) {
-    toast('Failed to load. Check credentials.');
-  }
-  renderCurrentScreen();
+function checkSvg(){
+  return '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 }
 
-async function persistTasks() {
-  if (saving) return;
-  saving = true;
-  document.getElementById('saving-indicator').classList.add('active');
-  try {
-    await pushData({ tasks, nextId });
-  } catch(e) {
-    toast('Save failed — check your connection.');
-  }
-  saving = false;
-  document.getElementById('saving-indicator').classList.remove('active');
-}
-
-// ─── ROUTING ──────────────────────────────────────────────
-function getMode() {
-  return new URLSearchParams(window.location.search).get('mode') || 'setup';
-}
-
-function renderCurrentScreen() {
-  const mode = getMode();
-  if (mode === 'admin') renderAdmin();
-  if (mode === 'volunteer') renderVolunteer();
-}
-
-async function init() {
-  loadConfig();
-  const mode = getMode();
-
-  if (mode === 'volunteer') {
-    if (!CFG || !CFG.binId) {
-      show('volunteer');
-      document.getElementById('volunteer-task-list').innerHTML =
-        '<div class="empty" style="color:var(--red)">This app isn\'t configured yet. Ask your admin to finish setup.</div>';
-      return;
-    }
-    show('volunteer');
-    document.getElementById('topbar-right').innerHTML = '<span class="topbar-mode mode-volunteer">Volunteer</span>';
-    await loadTasks();
-    return;
-  }
-
-  if (mode === 'admin') {
-    if (!CFG || !CFG.apiKey) { show('setup'); return; }
-    show('admin');
-    document.getElementById('topbar-right').innerHTML = '<span class="topbar-mode mode-admin">Admin</span>';
-    await loadTasks();
-    setShareUrls();
-    return;
-  }
-
-  show('setup');
-}
-
-function show(screen) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + screen).classList.add('active');
-}
-
-// ─── SHARE URLS ───────────────────────────────────────────
-function setShareUrls() {
-  const base = window.location.href.split('?')[0];
-  document.getElementById('admin-url-display').textContent  = base + '?mode=admin';
-  document.getElementById('worker-url-display').textContent = base + '?mode=worker';
-}
-
-function copyUrl(srcId, btnId) {
-  const text = document.getElementById(srcId).textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const el = document.getElementById(btnId);
-    el.textContent = 'Copied!';
-    setTimeout(() => el.textContent = 'Copy', 2000);
-  });
-}
-
-// ─── TABS ─────────────────────────────────────────────────
-function showTab(tab) {
-  ['list','paste','progress','share'].forEach(t => {
-    const pane = document.getElementById('pane-' + t);
-    const tabEl = document.getElementById('tab-' + t);
-    if (pane) pane.style.display = t === tab ? 'block' : 'none';
-    if (tabEl) tabEl.classList.toggle('active', t === tab);
-  });
-  if (tab === 'progress') renderProgress();
-  if (tab === 'list') renderAdmin();
-}
-
-// ─── ADMIN RENDER ─────────────────────────────────────────
-function taskStatus(t) {
+function taskStatus(t){
   const d = t.subtasks.filter(s=>s.done).length;
-  return d === t.subtasks.length ? 'done' : d > 0 ? 'partial' : 'pending';
+  return d===t.subtasks.length ? 'done' : d>0 ? 'partial' : 'pending';
 }
 
-function checkSvg(done) {
-  return done
-    ? `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-    : '';
+function groupByTopic(list){
+  const map={}, order=[];
+  list.forEach(t=>{
+    if(!map[t.topic]){map[t.topic]=[];order.push(t.topic);}
+    map[t.topic].push(t);
+  });
+  return order.map(topic=>({topic, tasks:map[topic]}));
 }
 
-function renderAdmin() {
-  const el = document.getElementById('pane-list');
-  if (!el) return;
-  if (!tasks.length) { el.innerHTML = '<div class="empty">No tasks yet. Add one or paste from a spreadsheet.</div>'; return; }
-  el.innerHTML = tasks.map(t => {
-    const done = t.subtasks.filter(s=>s.done).length, total = t.subtasks.length;
-    const st = taskStatus(t);
-    const bc = st==='done'?'badge-done':st==='partial'?'badge-partial':'badge-pending';
-    const bt = st==='done'?'Complete':st==='partial'?`${done}/${total} done`:'Pending';
-    return `<div class="card">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px">
-        <div>
-          <div class="topic-label">${esc(t.topic)}</div>
-          <div class="location-label">📍 ${esc(t.location)}</div>
-        </div>
-        <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-          <span class="badge ${bc}">${bt}</span>
-          <button class="btn btn-sm btn-danger" onclick="deleteTask(${t.id})">✕</button>
-        </div>
-      </div>
-      ${t.subtasks.map(s => `<div class="subtask-row">
-        <div class="check ${s.done?'done':''}">${checkSvg(s.done)}</div>
+function groupProgress(gTasks){
+  return {
+    total: gTasks.reduce((a,t)=>a+t.subtasks.length,0),
+    done:  gTasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0)
+  };
+}
+
+function toggleGroup(key){
+  openGroups[key] = !openGroups[key];
+  const body = document.getElementById('gb-'+key);
+  const chev = document.getElementById('gc-'+key);
+  if(body) body.classList.toggle('open', openGroups[key]);
+  if(chev) chev.classList.toggle('open', openGroups[key]);
+}
+
+async function apiGet(){
+  const r = await fetch(`${BASE}/b/${BIN_ID}/latest`,{
+    headers:{'X-Access-Key':API_KEY,'X-Bin-Versioning':'false'}
+  });
+  if(!r.ok) throw new Error('GET '+r.status);
+  return (await r.json()).record;
+}
+
+async function apiPut(data){
+  const r = await fetch(`${BASE}/b/${BIN_ID}`,{
+    method:'PUT',
+    headers:{'X-Access-Key':API_KEY,'Content-Type':'application/json','X-Bin-Versioning':'false'},
+    body:JSON.stringify(data)
+  });
+  if(!r.ok) throw new Error('PUT '+r.status);
+  return r.json();
+}
+
+async function loadData(showToast=false){
+  try{
+    const rec = await apiGet();
+    tasks  = Array.isArray(rec.tasks) ? rec.tasks : [];
+    nextId = rec.nextId || (tasks.length ? Math.max(...tasks.map(t=>t.id))+1 : 1);
+    if(showToast) toast('Refreshed');
+  }catch(e){
+    console.error(e);
+    toast('Failed to load — check connection');
+  }
+  renderCurrent();
+}
+
+async function saveData(){
+  if(isSaving) return;
+  isSaving=true;
+  const ind=document.getElementById('saving-ind');
+  if(ind) ind.classList.add('on');
+  try{
+    await apiPut({tasks, nextId});
+  }catch(e){
+    console.error(e);
+    toast('Save failed');
+  }
+  isSaving=false;
+  if(ind) ind.classList.remove('on');
+}
+
+function getMode(){ return new URLSearchParams(window.location.search).get('mode'); }
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+}
+
+function renderCurrent(){
+  const m=getMode();
+  if(m==='admin')     renderAdmin();
+  if(m==='volunteer') renderVolunteer();
+}
+
+async function init(){
+  const mode=getMode();
+  if(mode==='admin'){
+    show('admin');
+    document.getElementById('topbar-right').innerHTML='<span class="topbar-mode mode-admin">Admin</span>';
+    await loadData();
+    setShareUrls();
+  } else if(mode==='volunteer'){
+    show('volunteer');
+    document.getElementById('topbar-right').innerHTML='<span class="topbar-mode mode-volunteer">Volunteer</span>';
+    await loadData();
+  } else {
+    window.location.replace(window.location.pathname+'?mode=volunteer');
+  }
+}
+
+function setShareUrls(){
+  const base=window.location.href.split('?')[0];
+  document.getElementById('admin-url').textContent=base+'?mode=admin';
+  document.getElementById('vol-url').textContent=base+'?mode=volunteer';
+}
+
+function copyUrl(srcId,btnId){
+  navigator.clipboard.writeText(document.getElementById(srcId).textContent).then(()=>{
+    const el=document.getElementById(btnId);
+    el.textContent='Copied!'; setTimeout(()=>el.textContent='Copy',2000);
+  });
+}
+
+function showTab(tab){
+  ['list','paste','progress','share'].forEach(t=>{
+    const p=document.getElementById('pane-'+t);
+    const b=document.getElementById('tab-'+t);
+    if(p) p.style.display=t===tab?'block':'none';
+    if(b) b.classList.toggle('active',t===tab);
+  });
+  if(tab==='progress') renderProgress();
+  if(tab==='list')     renderAdmin();
+}
+
+function makeKey(topic){ return btoa(encodeURIComponent(topic)).replace(/[^a-z0-9]/gi,'').slice(0,20); }
+
+function buildGroupHtml(g, isAdmin){
+  const key=makeKey(g.topic);
+  const {total,done}=groupProgress(g.tasks);
+  const pct=Math.round(done/total*100);
+  const allDone=done===total;
+  const bc=allDone?'badge-done':done>0?'badge-partial':'badge-pending';
+  const bt=allDone?'Done':done>0?pct+'%':'Pending';
+
+  // admin: default open; volunteer: default closed
+  if(openGroups[key]===undefined) openGroups[key]=isAdmin;
+  const isOpen=openGroups[key];
+
+  const tasksHtml=g.tasks.map(t=>{
+    const tdone=t.subtasks.filter(s=>s.done).length;
+    const ttotal=t.subtasks.length;
+    const st=taskStatus(t);
+    const tbc=st==='done'?'badge-done':st==='partial'?'badge-partial':'badge-pending';
+    const tbt=st==='done'?'Complete':st==='partial'?`${tdone}/${ttotal} done`:'Pending';
+
+    const subsHtml=t.subtasks.map((s,i)=>{
+      const clickable=!s.done&&!isAdmin;
+      return `<div class="subtask-row"${clickable?` style="cursor:pointer" onclick="openComplete(${t.id},${i})"`:''}>
+        <div class="check${s.done?' done':''}">${s.done?checkSvg():''}</div>
         <div style="flex:1">
-          <div class="subtask-text ${s.done?'done':''}">${esc(s.text)}</div>
-          ${s.done ? `<div class="by-tag">✓ ${esc(s.by)}</div>` : ''}
+          <div class="subtask-text${s.done?' done':''}">${esc(s.text)}</div>
+          ${s.done?`<div class="by-tag">✓ ${esc(s.by)}</div>`:(!isAdmin?'<div class="tap-hint">tap to mark complete</div>':'')}
         </div>
-      </div>`).join('')}
-      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(done/total*100)}%"></div></div>
-    </div>`;
-  }).join('');
-}
+      </div>`;
+    }).join('');
 
-function renderProgress() {
-  const total = tasks.reduce((a,t)=>a+t.subtasks.length,0);
-  const done  = tasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0);
-  const full  = tasks.filter(t=>taskStatus(t)==='done').length;
-  document.getElementById('stats-row').innerHTML = `
-    <div class="stat"><div class="stat-n">${tasks.length}</div><div class="stat-l">Tasks</div></div>
-    <div class="stat"><div class="stat-n">${done}/${total}</div><div class="stat-l">Subtasks done</div></div>
-    <div class="stat"><div class="stat-n">${full}</div><div class="stat-l">Fully done</div></div>
-  `;
-  document.getElementById('progress-detail').innerHTML = tasks.map(t => {
-    const dn = t.subtasks.filter(s=>s.done).length, tot = t.subtasks.length;
-    return `<div class="card" style="padding:12px 16px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-        <div><span style="font-weight:600;font-size:14px">${esc(t.topic)}</span> <span style="font-size:12px;color:var(--muted)">${esc(t.location)}</span></div>
-        <span style="font-family:var(--mono);font-size:13px;color:var(--muted)">${dn}/${tot}</span>
+    return `<div class="task-item">
+      <div class="task-header">
+        <div class="location-label">📍 ${esc(t.location)}</div>
+        <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+          <span class="badge ${tbc}">${tbt}</span>
+          ${isAdmin?`<button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteTask(${t.id})">✕</button>`:''}
+        </div>
       </div>
-      <div class="progress-bar" style="margin-top:0;margin-bottom:8px"><div class="progress-fill" style="width:${Math.round(dn/tot*100)}%"></div></div>
-      ${t.subtasks.map(s => `<div style="font-size:12px;color:var(--muted);padding:2px 0">
-        <span style="color:${s.done?'var(--green)':'var(--faint)'};">${s.done?'✓':'○'}</span>
-        ${esc(s.text)}${s.done?` — <strong>${esc(s.by)}</strong>`:''}
+      ${subsHtml}
+      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(tdone/ttotal*100)}%"></div></div>
+    </div>`;
+  }).join('');
+
+  return `<div class="group">
+    <div class="group-header" onclick="toggleGroup('${key}')">
+      <div class="group-title">${esc(g.topic)}</div>
+      <div class="group-meta">
+        <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">${done}/${total}</span>
+        <span class="badge ${bc}">${bt}</span>
+        <span class="chevron${isOpen?' open':''}" id="gc-${key}">▾</span>
+      </div>
+    </div>
+    <div class="group-body${isOpen?' open':''}" id="gb-${key}">${tasksHtml}</div>
+  </div>`;
+}
+
+function renderAdmin(){
+  const el=document.getElementById('pane-list');
+  if(!el) return;
+  if(!tasks.length){el.innerHTML='<div class="empty">No tasks yet. Add one or paste from a spreadsheet.</div>';return;}
+  el.innerHTML=groupByTopic(tasks).map(g=>buildGroupHtml(g,true)).join('');
+}
+
+function renderVolunteer(){
+  const el=document.getElementById('vol-task-list');
+  if(!el) return;
+  if(!tasks.length){el.innerHTML='<div class="empty">No tasks yet — check back soon.</div>';return;}
+  el.innerHTML=groupByTopic(tasks).map(g=>buildGroupHtml(g,false)).join('');
+}
+
+function renderProgress(){
+  const total=tasks.reduce((a,t)=>a+t.subtasks.length,0);
+  const done=tasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0);
+  const full=tasks.filter(t=>taskStatus(t)==='done').length;
+  document.getElementById('stats-row').innerHTML=`
+    <div class="stat"><div class="stat-n">${tasks.length}</div><div class="stat-l">Tasks</div></div>
+    <div class="stat"><div class="stat-n">${done}/${total}</div><div class="stat-l">Subtasks</div></div>
+    <div class="stat"><div class="stat-n">${full}</div><div class="stat-l">Complete</div></div>
+  `;
+  document.getElementById('progress-detail').innerHTML=groupByTopic(tasks).map(g=>{
+    const {total:gt,done:gd}=groupProgress(g.tasks);
+    const pct=Math.round(gd/gt*100);
+    return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span style="font-weight:600;font-size:14px">${esc(g.topic)}</span>
+        <span style="font-family:var(--mono);font-size:13px;color:var(--muted)">${gd}/${gt} (${pct}%)</span>
+      </div>
+      <div class="progress-bar" style="margin-top:0;margin-bottom:10px"><div class="progress-fill" style="width:${pct}%"></div></div>
+      ${g.tasks.map(t=>`<div style="margin-bottom:8px">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">📍 ${esc(t.location)}</div>
+        ${t.subtasks.map(s=>`<div style="font-size:12px;padding:2px 0;color:var(--muted)">
+          <span style="color:${s.done?'var(--green)':'var(--faint)'}">${s.done?'✓':'○'}</span>
+          ${esc(s.text)}${s.done?` — <strong>${esc(s.by)}</strong>`:''}
+        </div>`).join('')}
       </div>`).join('')}
     </div>`;
   }).join('');
 }
 
-// ─── ADD / DELETE TASK ────────────────────────────────────
-function openAddModal() {
+function openAddModal(){
   document.getElementById('add-modal').classList.add('open');
-  setTimeout(() => document.getElementById('new-topic').focus(), 50);
+  setTimeout(()=>document.getElementById('new-topic').focus(),50);
 }
 
-function closeModal() {
-  document.querySelectorAll('.modal-bg').forEach(m => m.classList.remove('open'));
-  pendingComplete = null;
+function closeModal(){
+  document.querySelectorAll('.modal-bg').forEach(m=>m.classList.remove('open'));
+  pendingComplete=null;
 }
 
-async function saveTask() {
-  const topic    = document.getElementById('new-topic').value.trim();
-  const location = document.getElementById('new-location').value.trim();
-  const raw      = document.getElementById('new-subtasks').value.trim();
-  if (!topic || !location || !raw) { alert('Fill in all fields.'); return; }
-  const subtasks = raw.split('\n').map(s=>s.trim()).filter(Boolean).map(text=>({text,done:false,by:''}));
-  if (!subtasks.length) { alert('Add at least one subtask.'); return; }
-  tasks.push({ id: nextId++, topic, location, subtasks });
-  await persistTasks();
-  document.getElementById('new-topic').value = '';
-  document.getElementById('new-location').value = '';
-  document.getElementById('new-subtasks').value = '';
+async function saveTask(){
+  const topic=document.getElementById('new-topic').value.trim();
+  const location=document.getElementById('new-location').value.trim();
+  const raw=document.getElementById('new-subtasks').value.trim();
+  if(!topic||!location||!raw){alert('Fill in all fields.');return;}
+  const subtasks=raw.split('\n').map(s=>s.trim()).filter(Boolean).map(text=>({text,done:false,by:''}));
+  if(!subtasks.length){alert('Add at least one subtask.');return;}
+  tasks.push({id:nextId++,topic,location,subtasks});
+  await saveData();
+  document.getElementById('new-topic').value='';
+  document.getElementById('new-location').value='';
+  document.getElementById('new-subtasks').value='';
   closeModal();
   renderAdmin();
   toast('Task saved');
 }
 
-async function deleteTask(id) {
-  if (!confirm('Delete this task and all its subtasks?')) return;
-  tasks = tasks.filter(t => t.id !== id);
-  await persistTasks();
+async function deleteTask(id){
+  if(!confirm('Delete this task?')) return;
+  tasks=tasks.filter(t=>t.id!==id);
+  await saveData();
   renderAdmin();
   toast('Task deleted');
 }
 
-// ─── PASTE IMPORT ─────────────────────────────────────────
-async function importPaste() {
-  const raw = document.getElementById('paste-input').value.trim();
-  const msg = document.getElementById('paste-msg');
-  if (!raw) return;
-  let count = 0;
-  raw.split('\n').filter(l=>l.trim()).forEach(line => {
-    const cols = line.includes('\t') ? line.split('\t') : line.split(',');
-    const c = cols.map(x => x.trim().replace(/^"|"$/g,''));
-    if (c.length < 3) return;
-    const [topic, location, ...rest] = c;
-    const subtasks = rest.filter(Boolean)
-      .flatMap(s => s.split('/').map(x=>x.trim()))
+async function importPaste(){
+  const raw=document.getElementById('paste-input').value.trim();
+  const msg=document.getElementById('paste-msg');
+  if(!raw) return;
+  let count=0;
+  raw.split('\n').filter(l=>l.trim()).forEach(line=>{
+    const cols=line.includes('\t')?line.split('\t'):line.split(',');
+    const c=cols.map(x=>x.trim().replace(/^"|"$/g,''));
+    if(c.length<3) return;
+    const [topic,location,...rest]=c;
+    const subtasks=rest.filter(Boolean)
+      .flatMap(s=>s.split('/').map(x=>x.trim()))
       .filter(Boolean)
-      .map(text => ({ text, done:false, by:'' }));
-    if (!subtasks.length) return;
-    tasks.push({ id: nextId++, topic, location, subtasks });
+      .map(text=>({text,done:false,by:''}));
+    if(!subtasks.length) return;
+    tasks.push({id:nextId++,topic,location,subtasks});
     count++;
   });
-  if (count) {
-    await persistTasks();
-    msg.style.color = 'var(--green)';
-    msg.textContent = `Imported ${count} task${count!==1?'s':''}.`;
-    document.getElementById('paste-input').value = '';
-    setTimeout(() => showTab('list'), 900);
+  if(count){
+    await saveData();
+    msg.style.color='var(--green)';
+    msg.textContent=`Imported ${count} task${count!==1?'s':''}.`;
+    document.getElementById('paste-input').value='';
+    setTimeout(()=>showTab('list'),900);
     toast(`${count} task${count!==1?'s':''} imported`);
   } else {
-    msg.style.color = 'var(--red)';
-    msg.textContent = 'No valid rows found. Expected: Topic | Location | Subtask1 | Subtask2 ...';
+    msg.style.color='var(--red)';
+    msg.textContent='No valid rows found. Expected: Topic | Location | Subtask1 | Subtask2 ...';
   }
 }
 
-
-// ─── VOLUNTEER RENDER ────────────────────────────────────────
-function renderVolunteer() {
-  const el = document.getElementById('volunteer-task-list');
-  if (!el) return;
-  if (!tasks.length) { el.innerHTML = '<div class="empty">No tasks yet — check back soon or ask your admin.</div>'; return; }
-  el.innerHTML = tasks.map(t => {
-    const done = t.subtasks.filter(s=>s.done).length, total = t.subtasks.length;
-    return `<div class="card">
-      <div class="topic-label">${esc(t.topic)}</div>
-      <div class="location-label">📍 ${esc(t.location)}</div>
-      ${t.subtasks.map((s,i) => `<div class="subtask-row" style="${!s.done?'cursor:pointer':''}" onclick="${!s.done?`openComplete(${t.id},${i})`:''}">
-        <div class="check ${s.done?'done':''}">${checkSvg(s.done)}</div>
-        <div style="flex:1">
-          <div class="subtask-text ${s.done?'done':''}">${esc(s.text)}</div>
-          ${s.done
-            ? `<div class="by-tag">✓ ${esc(s.by)}</div>`
-            : `<div class="volunteer-tap-hint">tap to mark complete</div>`}
-        </div>
-      </div>`).join('')}
-      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(done/total*100)}%"></div></div>
-    </div>`;
-  }).join('');
-}
-
-// ─── COMPLETE SUBTASK ─────────────────────────────────────
-function openComplete(taskId, idx) {
-  const task = tasks.find(t => t.id === taskId);
-  if (!task) return;
-  pendingComplete = { taskId, idx };
-  document.getElementById('complete-sub').textContent = task.subtasks[idx].text;
-  document.getElementById('completer-name').value = '';
+function openComplete(taskId,idx){
+  const task=tasks.find(t=>t.id===taskId);
+  if(!task) return;
+  pendingComplete={taskId,idx};
+  document.getElementById('complete-sub').textContent=task.subtasks[idx].text;
+  document.getElementById('completer-name').value='';
   document.getElementById('complete-modal').classList.add('open');
-  setTimeout(() => document.getElementById('completer-name').focus(), 60);
+  setTimeout(()=>document.getElementById('completer-name').focus(),60);
 }
 
-async function confirmComplete() {
-  const name = document.getElementById('completer-name').value.trim();
-  if (!name) { alert('Please enter your name.'); return; }
-  const task = tasks.find(t => t.id === pendingComplete.taskId);
-  task.subtasks[pendingComplete.idx].done = true;
-  task.subtasks[pendingComplete.idx].by   = name;
-  await persistTasks();
+async function confirmComplete(){
+  const name=document.getElementById('completer-name').value.trim();
+  if(!name){alert('Please enter your name.');return;}
+  const task=tasks.find(t=>t.id===pendingComplete.taskId);
+  task.subtasks[pendingComplete.idx].done=true;
+  task.subtasks[pendingComplete.idx].by=name;
+  await saveData();
   closeModal();
   renderVolunteer();
   toast('Marked complete ✓');
 }
 
-// ─── KEYBOARD ─────────────────────────────────────────────
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
-  if (e.key === 'Enter' && document.getElementById('complete-modal').classList.contains('open')) confirmComplete();
-  if (e.key === 'Enter' && document.getElementById('add-modal').classList.contains('open') && e.target.tagName !== 'TEXTAREA') saveTask();
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeModal();
+  if(e.key==='Enter'&&document.getElementById('complete-modal').classList.contains('open')) confirmComplete();
+  if(e.key==='Enter'&&document.getElementById('add-modal').classList.contains('open')&&e.target.tagName!=='TEXTAREA') saveTask();
 });
 
-// ─── BOOT ─────────────────────────────────────────────────
 init();
 </script>
 </body>
