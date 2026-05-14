@@ -23,7 +23,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15
 .topbar-brand{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
 .topbar-mode{font-size:12px;padding:3px 10px;border-radius:99px;font-family:var(--mono);font-weight:500}
 .mode-admin{background:#1A1916;color:#F7F6F2}
-.mode-worker{background:var(--green-bg);color:var(--green)}
+.mode-volunteer{background:var(--green-bg);color:var(--green)}
 .content{padding:20px}
 .screen{display:none}.screen.active{display:block}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text);cursor:pointer;font-size:13px;font-family:var(--font);font-weight:500;transition:all .15s;text-decoration:none}
@@ -81,7 +81,7 @@ textarea{resize:vertical;min-height:90px}
 .saving-indicator.active{display:inline}
 .empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px}
 .loading{text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:13px;letter-spacing:.5px}
-.worker-tap-hint{font-size:11px;color:var(--faint);margin-top:2px}
+.volunteer-tap-hint{font-size:11px;color:var(--faint);margin-top:2px}
 .config-required{background:var(--amber-bg);border:1px solid #E8C96A;border-radius:8px;padding:14px;font-size:13px;color:var(--amber);margin-bottom:16px}
 </style>
 </head>
@@ -138,7 +138,7 @@ textarea{resize:vertical;min-height:90px}
             <p style="margin-top:6px">Your URLs will be:</p>
             <div style="font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:6px;line-height:2">
               <div><strong>Admin:</strong> https://yourusername.github.io/your-repo<strong style="color:var(--blue)">/?mode=admin</strong></div>
-              <div><strong>Workers:</strong> https://yourusername.github.io/your-repo<strong style="color:var(--green)">/?mode=worker</strong></div>
+              <div><strong>volunteers:</strong> https://yourusername.github.io/your-repo<strong style="color:var(--green)">/?mode=volunteer</strong></div>
             </div>
           </div>
         </div>
@@ -182,12 +182,12 @@ textarea{resize:vertical;min-height:90px}
             <span class="url-text" id="admin-url-display">—</span>
             <button class="btn btn-sm" onclick="copyUrl('admin-url-display','copy-admin')"><span id="copy-admin">Copy</span></button>
           </div>
-          <label style="margin-top:16px">Worker link (share with team)</label>
+          <label style="margin-top:16px">volunteer link (share with team)</label>
           <div class="url-display">
-            <span class="url-text" id="worker-url-display">—</span>
-            <button class="btn btn-sm" onclick="copyUrl('worker-url-display','copy-worker')"><span id="copy-worker">Copy</span></button>
+            <span class="url-text" id="volunteer-url-display">—</span>
+            <button class="btn btn-sm" onclick="copyUrl('volunteer-url-display','copy-volunteer')"><span id="copy-volunteer">Copy</span></button>
           </div>
-          <p style="font-size:13px;color:var(--muted);margin-top:16px;line-height:1.6">Workers who open the worker link see all tasks and can mark subtasks complete — they just enter their name. They cannot add or delete tasks.</p>
+          <p style="font-size:13px;color:var(--muted);margin-top:16px;line-height:1.6">volunteers who open the volunteer link see all tasks and can mark subtasks complete — they just enter their name. They cannot add or delete tasks.</p>
           <div style="margin-top:16px;padding:12px;background:var(--bg);border-radius:6px;font-size:13px;color:var(--muted)">
             <strong style="color:var(--text)">Note:</strong> If you haven't hosted on GitHub Pages yet, these links only work on your local machine. Follow Step 4 in the setup guide to get permanent public URLs. You can reset your credentials under the reset option below.
           </div>
@@ -196,13 +196,13 @@ textarea{resize:vertical;min-height:90px}
       </div>
     </div>
 
-    <!-- WORKER SCREEN -->
-    <div id="screen-worker" class="screen">
+    <!-- volunteer SCREEN -->
+    <div id="screen-volunteer" class="screen">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
         <p style="font-size:13px;color:var(--muted)">Tap a subtask to mark it complete.</p>
         <button class="btn btn-sm" onclick="loadTasks(true)">↻ Refresh</button>
       </div>
-      <div id="worker-task-list"><div class="loading">Loading tasks…</div></div>
+      <div id="volunteer-task-list"><div class="loading">Loading tasks…</div></div>
     </div>
 
   </div>
@@ -340,7 +340,7 @@ function getMode() {
 function renderCurrentScreen() {
   const mode = getMode();
   if (mode === 'admin') renderAdmin();
-  if (mode === 'worker') renderWorker();
+  if (mode === 'volunteer') rendervolunteer();
 }
 
 async function init() {
@@ -353,9 +353,9 @@ async function init() {
     document.getElementById('topbar-right').innerHTML = '<span class="topbar-mode mode-admin">Admin</span>';
     await loadTasks();
     setShareUrls();
-  } else if (mode === 'worker') {
-    show('worker');
-    document.getElementById('topbar-right').innerHTML = '<span class="topbar-mode mode-worker">Worker</span>';
+  } else if (mode === 'volunteer') {
+    show('volunteer');
+    document.getElementById('topbar-right').innerHTML = '<span class="topbar-mode mode-volunteer">volunteer</span>';
     await loadTasks();
   } else {
     // No mode param — show friendly landing
@@ -372,7 +372,7 @@ function show(screen) {
 function setShareUrls() {
   const base = window.location.href.split('?')[0];
   document.getElementById('admin-url-display').textContent  = base + '?mode=admin';
-  document.getElementById('worker-url-display').textContent = base + '?mode=worker';
+  document.getElementById('volunteer-url-display').textContent = base + '?mode=volunteer';
 }
 
 function copyUrl(srcId, btnId) {
@@ -533,9 +533,9 @@ async function importPaste() {
   }
 }
 
-// ─── WORKER RENDER ────────────────────────────────────────
-function renderWorker() {
-  const el = document.getElementById('worker-task-list');
+// ─── volunteer RENDER ────────────────────────────────────────
+function rendervolunteer() {
+  const el = document.getElementById('volunteer-task-list');
   if (!el) return;
   if (!tasks.length) { el.innerHTML = '<div class="empty">No tasks yet — check back soon or ask your admin.</div>'; return; }
   el.innerHTML = tasks.map(t => {
@@ -549,7 +549,7 @@ function renderWorker() {
           <div class="subtask-text ${s.done?'done':''}">${esc(s.text)}</div>
           ${s.done
             ? `<div class="by-tag">✓ ${esc(s.by)}</div>`
-            : `<div class="worker-tap-hint">tap to mark complete</div>`}
+            : `<div class="volunteer-tap-hint">tap to mark complete</div>`}
         </div>
       </div>`).join('')}
       <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(done/total*100)}%"></div></div>
@@ -576,7 +576,7 @@ async function confirmComplete() {
   task.subtasks[pendingComplete.idx].by   = name;
   await persistTasks();
   closeModal();
-  renderWorker();
+  rendervolunteer();
   toast('Marked complete ✓');
 }
 
