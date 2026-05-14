@@ -18,72 +18,108 @@
   --font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
 }
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;min-height:100vh}
-.app{max-width:680px;margin:0 auto}
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.app{max-width:700px;margin:0 auto}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
 .topbar-brand{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
 .topbar-mode{font-size:12px;padding:3px 10px;border-radius:99px;font-family:var(--mono);font-weight:500}
 .mode-admin{background:#1A1916;color:#F7F6F2}
 .mode-volunteer{background:var(--green-bg);color:var(--green)}
 .content{padding:20px}
 .screen{display:none}.screen.active{display:block}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text);cursor:pointer;font-size:13px;font-family:var(--font);font-weight:500;transition:all .15s}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text);cursor:pointer;font-size:13px;font-family:var(--font);font-weight:500;transition:all .12s}
 .btn:hover{background:var(--bg);border-color:var(--text)}
 .btn-primary{background:var(--text);color:var(--bg);border-color:var(--text)}
-.btn-primary:hover{opacity:.85;background:var(--text)}
-.btn-danger{color:var(--red);border-color:transparent;background:none}
+.btn-primary:hover{opacity:.82;background:var(--text)}
+.btn-danger{color:var(--red);border-color:transparent;background:none;padding:4px 7px}
 .btn-danger:hover{background:var(--red-bg);border-color:var(--red)}
-.btn-sm{padding:5px 10px;font-size:12px}
+.btn-ghost{border-color:transparent;background:none;color:var(--muted);padding:4px 7px}
+.btn-ghost:hover{background:var(--bg);color:var(--text);border-color:var(--border)}
+.btn-sm{padding:4px 9px;font-size:12px}
+.btn-xs{padding:3px 7px;font-size:11px}
 label{font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin:12px 0 4px}
-input,textarea{width:100%;font-family:var(--font);font-size:14px;border:1px solid var(--border2);border-radius:6px;padding:8px 10px;background:var(--surface);color:var(--text);outline:none}
-input:focus,textarea:focus{border-color:var(--text)}
-textarea{resize:vertical;min-height:90px}
-.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:600;font-family:var(--mono)}
+input,textarea,select{width:100%;font-family:var(--font);font-size:14px;border:1px solid var(--border2);border-radius:6px;padding:7px 10px;background:var(--surface);color:var(--text);outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--text)}
+textarea{resize:vertical;min-height:80px}
+.badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;font-family:var(--mono)}
 .badge-done{background:var(--green-bg);color:var(--green)}
 .badge-partial{background:var(--blue-bg);color:var(--blue)}
 .badge-pending{background:var(--amber-bg);color:var(--amber)}
+
+/* priority colors */
+.pri-urgent{border-left:3px solid #C0392B}
+.pri-high{border-left:3px solid #E67E22}
+.pri-normal{border-left:3px solid transparent}
+.pri-low{border-left:3px solid #95A5A6}
+.pri-dot-urgent{background:#C0392B}
+.pri-dot-high{background:#E67E22}
+.pri-dot-normal{background:#3498DB}
+.pri-dot-low{background:#95A5A6}
+.pri-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+
+/* groups */
 .group{margin-bottom:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface)}
-.group-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;gap:10px}
+.group-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;user-select:none;gap:10px}
 .group-header:hover{background:var(--bg)}
 .group-title{font-size:15px;font-weight:600;flex:1}
-.group-meta{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.group-meta{display:flex;align-items:center;gap:7px;flex-shrink:0}
 .group-body{border-top:1px solid var(--border);display:none}
 .group-body.open{display:block}
-.task-item{border-bottom:1px solid var(--border);padding:14px 16px}
+.task-item{border-bottom:1px solid var(--border);padding:13px 16px}
 .task-item:last-child{border-bottom:none}
-.task-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
-.location-label{font-size:13px;color:var(--muted);margin-bottom:8px}
-.subtask-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.location-label{font-size:13px;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.due-badge{font-size:11px;font-family:var(--mono);padding:1px 7px;border-radius:4px;background:var(--amber-bg);color:var(--amber)}
+.due-badge.overdue{background:var(--red-bg);color:var(--red)}
+
+/* subtasks */
+.subtask-row{display:flex;align-items:flex-start;gap:9px;padding:6px 0;border-bottom:1px solid var(--border)}
 .subtask-row:last-child{border-bottom:none}
-.check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s}
+.check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .12s;cursor:pointer}
 .check.done{background:var(--green);border-color:var(--green)}
+.check:hover:not(.done){border-color:var(--text)}
 .subtask-text{flex:1;font-size:14px;line-height:1.5}
 .subtask-text.done{text-decoration:line-through;color:var(--faint)}
 .by-tag{font-size:11px;font-family:var(--mono);color:var(--muted);margin-top:2px}
+.note-tag{font-size:11px;color:var(--muted);font-style:italic;margin-top:1px}
 .tap-hint{font-size:11px;color:var(--faint);margin-top:2px}
 .progress-bar{height:3px;background:var(--border);border-radius:2px;margin-top:10px}
 .progress-fill{height:100%;border-radius:2px;background:var(--green);transition:width .4s}
-.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px}
-.tab{padding:9px 16px;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+
+/* inline edit */
+.inline-edit{display:none;width:100%;font-size:14px;padding:4px 7px;border:1px solid var(--text);border-radius:4px;font-family:var(--font);background:var(--surface);color:var(--text);outline:none}
+.inline-edit.active{display:block}
+.edit-actions{display:none;gap:4px;margin-top:4px}
+.edit-actions.active{display:flex}
+
+/* tabs */
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px;overflow-x:auto}
+.tab{padding:9px 14px;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tab.active{color:var(--text);border-bottom-color:var(--text)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
-.stat-n{font-size:24px;font-weight:600;font-family:var(--mono)}
-.stat-l{font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50;align-items:center;justify-content:center;padding:20px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px;text-align:center}
+.stat-n{font-size:22px;font-weight:600;font-family:var(--mono)}
+.stat-l{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.nav{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:50;align-items:center;justify-content:center;padding:16px}
 .modal-bg.open{display:flex}
-.modal{background:var(--surface);border-radius:10px;padding:24px;width:100%;max-width:420px;border:1px solid var(--border);max-height:90vh;overflow-y:auto}
-.modal h2{font-size:16px;font-weight:600;margin-bottom:16px}
-.nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
-.url-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-top:6px}
+.modal{background:var(--surface);border-radius:10px;padding:22px;width:100%;max-width:440px;border:1px solid var(--border);max-height:92vh;overflow-y:auto}
+.modal h2{font-size:16px;font-weight:600;margin-bottom:14px}
+.url-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:9px 13px;display:flex;align-items:center;gap:8px;margin-top:5px}
 .url-text{font-family:var(--mono);font-size:12px;flex:1;word-break:break-all}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:8px;font-size:13px;font-family:var(--mono);opacity:0;transition:opacity .2s;z-index:100;pointer-events:none}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:9px 18px;border-radius:8px;font-size:13px;font-family:var(--mono);opacity:0;transition:opacity .2s;z-index:100;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 .saving{font-size:12px;font-family:var(--mono);color:var(--muted);display:none}
 .saving.on{display:inline}
-.empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px}
-.loading{text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:13px}
-.chevron{transition:transform .2s;font-size:16px;color:var(--muted);display:inline-block}
+.empty{text-align:center;padding:36px 20px;color:var(--muted);font-size:14px}
+.loading{text-align:center;padding:36px;color:var(--muted);font-family:var(--mono);font-size:13px}
+.chevron{transition:transform .18s;font-size:14px;color:var(--muted);display:inline-block;margin-left:2px}
 .chevron.open{transform:rotate(180deg)}
+.filter-bar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.filter-btn{padding:5px 12px;font-size:12px;border-radius:99px;border:1px solid var(--border2);background:var(--surface);cursor:pointer;font-family:var(--font);color:var(--muted);transition:all .12s}
+.filter-btn.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.task-actions{display:flex;gap:4px;align-items:center;flex-shrink:0}
+.divider{height:1px;background:var(--border);margin:12px 0}
+.add-subtask-row{display:flex;gap:6px;margin-top:8px}
+.add-subtask-row input{font-size:13px;padding:5px 8px}
 </style>
 </head>
 <body>
@@ -94,12 +130,15 @@ textarea{resize:vertical;min-height:90px}
   </div>
   <div class="content">
 
+    <!-- ADMIN -->
     <div id="screen-admin" class="screen">
       <div class="nav">
         <button class="btn btn-sm btn-primary" onclick="openAddModal()">+ Add task</button>
-        <button class="btn btn-sm" onclick="showTab('paste')">⬆ Paste import</button>
+        <button class="btn btn-sm" onclick="showTab('paste')">⬆ Import</button>
         <button class="btn btn-sm" onclick="showTab('progress')">📊 Progress</button>
         <button class="btn btn-sm" onclick="loadData(true)">↻ Refresh</button>
+        <button class="btn btn-sm" onclick="exportCSV()">⬇ CSV</button>
+        <button class="btn btn-sm btn-danger" style="color:var(--red)" onclick="confirmReset()">↺ Reset</button>
         <span class="saving" id="saving-ind">saving…</span>
       </div>
       <div class="tabs">
@@ -110,45 +149,38 @@ textarea{resize:vertical;min-height:90px}
       </div>
       <div id="pane-list"><div class="loading">Loading…</div></div>
       <div id="pane-paste" style="display:none">
-        <p style="font-size:13px;color:var(--muted);margin-bottom:12px">
-          <strong>Column order: Topic | Location | Subtask 1 | Subtask 2 | …</strong><br>
-          Tabs or commas between columns. Subtasks can also be slash-separated in one cell.
-        </p>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px"><strong>Column order: Topic | Location | Subtask 1 | Subtask 2 | …</strong><br>Tabs or commas. Subtasks can be slash-separated in one cell.</p>
         <label>Paste spreadsheet data</label>
-        <textarea id="paste-input" style="min-height:160px"
-          placeholder="AV Ancillary Rooms&#9;Amphitheater&#9;Move A/V to dining hall&#9;Stack chairs&#9;Clean kitchen"></textarea>
+        <textarea id="paste-input" style="min-height:150px" placeholder="AV Ancillary Rooms&#9;Amphitheater&#9;Move A/V to dining hall&#9;Stack chairs&#9;Clean kitchen"></textarea>
         <div style="margin-top:10px;display:flex;gap:8px">
-          <button class="btn btn-primary" onclick="importPaste()">Import</button>
-          <button class="btn" onclick="document.getElementById('paste-input').value='';document.getElementById('paste-msg').textContent=''">Clear</button>
+          <button class="btn btn-primary btn-sm" onclick="importPaste()">Import</button>
+          <button class="btn btn-sm" onclick="document.getElementById('paste-input').value='';document.getElementById('paste-msg').textContent=''">Clear</button>
         </div>
-        <div id="paste-msg" style="margin-top:10px;font-size:13px"></div>
+        <div id="paste-msg" style="margin-top:8px;font-size:13px"></div>
       </div>
       <div id="pane-progress" style="display:none">
         <div class="stats" id="stats-row"></div>
         <div id="progress-detail"></div>
       </div>
       <div id="pane-share" style="display:none">
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px">
-          <h2 style="font-size:15px;margin-bottom:16px">Shareable links</h2>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px">
+          <h2 style="font-size:15px;margin-bottom:14px">Shareable links</h2>
           <label>Admin (keep private)</label>
-          <div class="url-box">
-            <span class="url-text" id="admin-url">—</span>
-            <button class="btn btn-sm" onclick="copyUrl('admin-url','ca')"><span id="ca">Copy</span></button>
-          </div>
-          <label style="margin-top:16px">Volunteer (share with team)</label>
-          <div class="url-box">
-            <span class="url-text" id="vol-url">—</span>
-            <button class="btn btn-sm" onclick="copyUrl('vol-url','cv')"><span id="cv">Copy</span></button>
-          </div>
-          <p style="font-size:13px;color:var(--muted);margin-top:14px;line-height:1.6">Volunteers can view and complete tasks — they just enter their name. They cannot add or delete tasks.</p>
+          <div class="url-box"><span class="url-text" id="admin-url">—</span><button class="btn btn-sm" onclick="copyUrl('admin-url','ca')"><span id="ca">Copy</span></button></div>
+          <label style="margin-top:14px">Volunteer (share with team)</label>
+          <div class="url-box"><span class="url-text" id="vol-url">—</span><button class="btn btn-sm" onclick="copyUrl('vol-url','cv')"><span id="cv">Copy</span></button></div>
+          <p style="font-size:13px;color:var(--muted);margin-top:12px;line-height:1.6">Volunteers can view tasks, mark subtasks complete, and leave notes. They cannot add, edit, or delete tasks.</p>
         </div>
       </div>
     </div>
 
+    <!-- VOLUNTEER -->
     <div id="screen-volunteer" class="screen">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-        <p style="font-size:13px;color:var(--muted)">Tap a category to expand, then tap a subtask to mark it done.</p>
-        <button class="btn btn-sm" onclick="loadData(true)">↻ Refresh</button>
+      <div class="filter-bar">
+        <span style="font-size:13px;color:var(--muted)">Show:</span>
+        <button class="filter-btn active" id="filter-all" onclick="setFilter('all')">All</button>
+        <button class="filter-btn" id="filter-incomplete" onclick="setFilter('incomplete')">Incomplete only</button>
+        <button class="btn btn-sm" style="margin-left:auto" onclick="loadData(true)">↻ Refresh</button>
       </div>
       <div id="vol-task-list"><div class="loading">Loading…</div></div>
     </div>
@@ -156,6 +188,7 @@ textarea{resize:vertical;min-height:90px}
   </div>
 </div>
 
+<!-- ADD TASK MODAL -->
 <div class="modal-bg" id="add-modal">
   <div class="modal">
     <h2>Add task</h2>
@@ -163,23 +196,48 @@ textarea{resize:vertical;min-height:90px}
     <input id="new-topic" placeholder="e.g. AV Ancillary Rooms"/>
     <label>Location</label>
     <input id="new-location" placeholder="e.g. Amphitheater and Fitness Center"/>
+    <label>Priority</label>
+    <select id="new-priority">
+      <option value="normal">Normal</option>
+      <option value="urgent">🔴 Urgent</option>
+      <option value="high">🟠 High</option>
+      <option value="low">⚪ Low</option>
+    </select>
+    <label>Due time (optional)</label>
+    <input id="new-due" type="time" placeholder="14:00"/>
     <label>Subtasks (one per line)</label>
     <textarea id="new-subtasks" placeholder="Move A/V to dining hall&#10;Stack up chairs&#10;Clean kitchen space"></textarea>
-    <div style="margin-top:16px;display:flex;gap:8px">
+    <div style="margin-top:14px;display:flex;gap:8px">
       <button class="btn btn-primary" onclick="saveTask()">Save</button>
       <button class="btn" onclick="closeModal()">Cancel</button>
     </div>
   </div>
 </div>
 
+<!-- COMPLETE MODAL -->
 <div class="modal-bg" id="complete-modal">
   <div class="modal">
     <h2>Mark complete</h2>
-    <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.5" id="complete-sub"></p>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.5" id="complete-sub"></p>
     <label>Your name</label>
     <input id="completer-name" placeholder="Enter your name"/>
-    <div style="margin-top:16px;display:flex;gap:8px">
+    <label>Note (optional)</label>
+    <input id="completer-note" placeholder="e.g. moved to storage room B"/>
+    <div style="margin-top:14px;display:flex;gap:8px">
       <button class="btn btn-primary" onclick="confirmComplete()">Mark done</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- UNDO COMPLETE MODAL -->
+<div class="modal-bg" id="undo-modal">
+  <div class="modal">
+    <h2>Undo completion?</h2>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:6px" id="undo-sub"></p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Completed by <strong id="undo-by"></strong>. This will mark it incomplete again.</p>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="confirmUndo()">Undo completion</button>
       <button class="btn" onclick="closeModal()">Cancel</button>
     </div>
   </div>
@@ -195,285 +253,423 @@ const BASE    = 'https://api.jsonbin.io/v3';
 let tasks = [];
 let nextId = 1;
 let pendingComplete = null;
+let pendingUndo = null;
 let isSaving = false;
 let openGroups = {};
+let volFilter = 'all';
 
+// ── helpers ──────────────────────────────────────────────
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-function toast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2200);
+function toast(msg,dur=2200){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
 }
-
-function checkSvg(){
-  return '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-}
-
-function taskStatus(t){
-  const d = t.subtasks.filter(s=>s.done).length;
-  return d===t.subtasks.length ? 'done' : d>0 ? 'partial' : 'pending';
-}
-
+function checkSvg(){ return '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+function taskStatus(t){ const d=t.subtasks.filter(s=>s.done).length; return d===t.subtasks.length?'done':d>0?'partial':'pending'; }
+function fmtTime(iso){ if(!iso) return ''; try{ return new Date(iso).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } }
+function isOverdue(due){ if(!due) return false; const[h,m]=due.split(':').map(Number); const now=new Date(); return now.getHours()*60+now.getMinutes() > h*60+m; }
 function groupByTopic(list){
-  const map={}, order=[];
-  list.forEach(t=>{
-    if(!map[t.topic]){map[t.topic]=[];order.push(t.topic);}
-    map[t.topic].push(t);
-  });
-  return order.map(topic=>({topic, tasks:map[topic]}));
+  const map={},order=[];
+  list.forEach(t=>{ if(!map[t.topic]){map[t.topic]=[];order.push(t.topic);} map[t.topic].push(t); });
+  return order.map(topic=>({topic,tasks:map[topic]}));
 }
-
-function groupProgress(gTasks){
-  return {
-    total: gTasks.reduce((a,t)=>a+t.subtasks.length,0),
-    done:  gTasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0)
-  };
-}
-
+function groupProgress(gTasks){ return {total:gTasks.reduce((a,t)=>a+t.subtasks.length,0),done:gTasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0)}; }
+function makeKey(topic){ return btoa(encodeURIComponent(topic)).replace(/[^a-z0-9]/gi,'').slice(0,20); }
 function toggleGroup(key){
-  openGroups[key] = !openGroups[key];
-  const body = document.getElementById('gb-'+key);
-  const chev = document.getElementById('gc-'+key);
-  if(body) body.classList.toggle('open', openGroups[key]);
-  if(chev) chev.classList.toggle('open', openGroups[key]);
+  openGroups[key]=!openGroups[key];
+  const b=document.getElementById('gb-'+key),c=document.getElementById('gc-'+key);
+  if(b) b.classList.toggle('open',openGroups[key]);
+  if(c) c.classList.toggle('open',openGroups[key]);
 }
 
+// ── API ───────────────────────────────────────────────────
 async function apiGet(){
-  const r = await fetch(`${BASE}/b/${BIN_ID}/latest`,{
-    headers:{'X-Master-Key':API_KEY,'X-Bin-Versioning':'false'}
-  });
+  const r=await fetch(`${BASE}/b/${BIN_ID}/latest`,{headers:{'X-Master-Key':API_KEY,'X-Bin-Versioning':'false'}});
   if(!r.ok) throw new Error('GET '+r.status);
   return (await r.json()).record;
 }
-
 async function apiPut(data){
-  const r = await fetch(`${BASE}/b/${BIN_ID}`,{
-    method:'PUT',
-    headers:{'X-Master-Key':API_KEY,'Content-Type':'application/json','X-Bin-Versioning':'false'},
-    body:JSON.stringify(data)
-  });
+  const r=await fetch(`${BASE}/b/${BIN_ID}`,{method:'PUT',headers:{'X-Master-Key':API_KEY,'Content-Type':'application/json','X-Bin-Versioning':'false'},body:JSON.stringify(data)});
   if(!r.ok) throw new Error('PUT '+r.status);
   return r.json();
 }
-
 async function loadData(showToast=false){
   try{
-    const rec = await apiGet();
-    tasks  = Array.isArray(rec.tasks) ? rec.tasks : [];
-    nextId = rec.nextId || (tasks.length ? Math.max(...tasks.map(t=>t.id))+1 : 1);
+    const rec=await apiGet();
+    tasks=Array.isArray(rec.tasks)?rec.tasks:[];
+    nextId=rec.nextId||(tasks.length?Math.max(...tasks.map(t=>t.id))+1:1);
     if(showToast) toast('Refreshed');
-  }catch(e){
-    console.error(e);
-    toast('Failed to load — check connection');
-  }
+  }catch(e){ console.error(e); toast('Failed to load'); }
   renderCurrent();
 }
-
 async function saveData(){
   if(isSaving) return;
   isSaving=true;
   const ind=document.getElementById('saving-ind');
   if(ind) ind.classList.add('on');
-  try{
-    await apiPut({tasks, nextId});
-  }catch(e){
-    console.error(e);
-    toast('Save failed');
-  }
+  try{ await apiPut({tasks,nextId}); }
+  catch(e){ console.error(e); toast('Save failed — check connection'); }
   isSaving=false;
   if(ind) ind.classList.remove('on');
 }
 
+// ── routing ───────────────────────────────────────────────
 function getMode(){ return new URLSearchParams(window.location.search).get('mode'); }
-
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+id).classList.add('active');
-}
-
-function renderCurrent(){
-  const m=getMode();
-  if(m==='admin')     renderAdmin();
-  if(m==='volunteer') renderVolunteer();
-}
-
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById('screen-'+id).classList.add('active'); }
+function renderCurrent(){ const m=getMode(); if(m==='admin') renderAdmin(); if(m==='volunteer') renderVolunteer(); }
 async function init(){
   const mode=getMode();
   if(mode==='admin'){
     show('admin');
     document.getElementById('topbar-right').innerHTML='<span class="topbar-mode mode-admin">Admin</span>';
-    await loadData();
-    setShareUrls();
+    await loadData(); setShareUrls();
   } else if(mode==='volunteer'){
     show('volunteer');
     document.getElementById('topbar-right').innerHTML='<span class="topbar-mode mode-volunteer">Volunteer</span>';
     await loadData();
-  } else {
-    window.location.replace(window.location.pathname+'?mode=volunteer');
-  }
+  } else { window.location.replace(window.location.pathname+'?mode=volunteer'); }
 }
 
+// ── share / tabs ──────────────────────────────────────────
 function setShareUrls(){
   const base=window.location.href.split('?')[0];
   document.getElementById('admin-url').textContent=base+'?mode=admin';
   document.getElementById('vol-url').textContent=base+'?mode=volunteer';
 }
-
-function copyUrl(srcId,btnId){
-  navigator.clipboard.writeText(document.getElementById(srcId).textContent).then(()=>{
-    const el=document.getElementById(btnId);
-    el.textContent='Copied!'; setTimeout(()=>el.textContent='Copy',2000);
-  });
-}
-
+function copyUrl(src,btn){ navigator.clipboard.writeText(document.getElementById(src).textContent).then(()=>{ const el=document.getElementById(btn); el.textContent='Copied!'; setTimeout(()=>el.textContent='Copy',2000); }); }
 function showTab(tab){
   ['list','paste','progress','share'].forEach(t=>{
-    const p=document.getElementById('pane-'+t);
-    const b=document.getElementById('tab-'+t);
+    const p=document.getElementById('pane-'+t),b=document.getElementById('tab-'+t);
     if(p) p.style.display=t===tab?'block':'none';
     if(b) b.classList.toggle('active',t===tab);
   });
   if(tab==='progress') renderProgress();
-  if(tab==='list')     renderAdmin();
+  if(tab==='list') renderAdmin();
 }
 
-function makeKey(topic){ return btoa(encodeURIComponent(topic)).replace(/[^a-z0-9]/gi,'').slice(0,20); }
+// ── filter ────────────────────────────────────────────────
+function setFilter(f){
+  volFilter=f;
+  document.getElementById('filter-all').classList.toggle('active',f==='all');
+  document.getElementById('filter-incomplete').classList.toggle('active',f==='incomplete');
+  renderVolunteer();
+}
 
+// ── build group HTML ──────────────────────────────────────
 function buildGroupHtml(g, isAdmin){
   const key=makeKey(g.topic);
-  const {total,done}=groupProgress(g.tasks);
+  let gTasks=g.tasks;
+  if(!isAdmin && volFilter==='incomplete') gTasks=gTasks.filter(t=>t.subtasks.some(s=>!s.done));
+  if(!gTasks.length) return '';
+  const {total,done}=groupProgress(gTasks);
   const pct=Math.round(done/total*100);
   const allDone=done===total;
   const bc=allDone?'badge-done':done>0?'badge-partial':'badge-pending';
   const bt=allDone?'Done':done>0?pct+'%':'Pending';
-
-  // admin: default open; volunteer: default closed
   if(openGroups[key]===undefined) openGroups[key]=isAdmin;
   const isOpen=openGroups[key];
 
-  const tasksHtml=g.tasks.map(t=>{
-    const tdone=t.subtasks.filter(s=>s.done).length;
-    const ttotal=t.subtasks.length;
+  const tasksHtml=gTasks.map(t=>{
+    const tdone=t.subtasks.filter(s=>s.done).length,ttotal=t.subtasks.length;
     const st=taskStatus(t);
     const tbc=st==='done'?'badge-done':st==='partial'?'badge-partial':'badge-pending';
     const tbt=st==='done'?'Complete':st==='partial'?`${tdone}/${ttotal} done`:'Pending';
+    const priClass=`pri-${t.priority||'normal'}`;
+    const overdueFlag=t.due&&isOverdue(t.due)&&st!=='done';
 
-    const subsHtml=t.subtasks.map((s,i)=>{
-      const clickable=!s.done&&!isAdmin;
-      return `<div class="subtask-row"${clickable?` style="cursor:pointer" onclick="openComplete(${t.id},${i})"`:''}>
-        <div class="check${s.done?' done':''}">${s.done?checkSvg():''}</div>
-        <div style="flex:1">
-          <div class="subtask-text${s.done?' done':''}">${esc(s.text)}</div>
-          ${s.done?`<div class="by-tag">✓ ${esc(s.by)}</div>`:(!isAdmin?'<div class="tap-hint">tap to mark complete</div>':'')}
-        </div>
-      </div>`;
+    let subs=t.subtasks;
+    if(!isAdmin && volFilter==='incomplete') subs=subs.filter(s=>!s.done);
+
+    const subsHtml=subs.map((s,i)=>{
+      const realIdx=t.subtasks.indexOf(s);
+      if(isAdmin){
+        return `<div class="subtask-row" id="sr-${t.id}-${realIdx}">
+          <div class="check${s.done?' done':''}" onclick="${s.done?`openUndo(${t.id},${realIdx})`:`adminCheck(${t.id},${realIdx})`}" title="${s.done?'Click to undo':'Click to complete'}">${s.done?checkSvg():''}</div>
+          <div style="flex:1">
+            <div class="subtask-text${s.done?' done':''}" id="st-${t.id}-${realIdx}" ondblclick="startEditSubtask(${t.id},${realIdx})">${esc(s.text)}</div>
+            <input class="inline-edit" id="se-${t.id}-${realIdx}" value="${esc(s.text)}" onkeydown="subtaskEditKey(event,${t.id},${realIdx})"/>
+            <div class="edit-actions" id="sea-${t.id}-${realIdx}">
+              <button class="btn btn-xs btn-primary" onclick="saveSubtaskEdit(${t.id},${realIdx})">Save</button>
+              <button class="btn btn-xs" onclick="cancelSubtaskEdit(${t.id},${realIdx})">Cancel</button>
+            </div>
+            ${s.done?`<div class="by-tag">✓ ${esc(s.by)} · ${fmtTime(s.completedAt)}${s.note?` · <em>${esc(s.note)}</em>`:''}</div>`:''}
+          </div>
+          <button class="btn-danger btn" onclick="removeSubtask(${t.id},${realIdx})" title="Remove subtask">✕</button>
+        </div>`;
+      } else {
+        const clickable=!s.done;
+        return `<div class="subtask-row"${clickable?` style="cursor:pointer" onclick="openComplete(${t.id},${realIdx})"`:''}>
+          <div class="check${s.done?' done':''}">${s.done?checkSvg():''}</div>
+          <div style="flex:1">
+            <div class="subtask-text${s.done?' done':''}">${esc(s.text)}</div>
+            ${s.done?`<div class="by-tag">✓ ${esc(s.by)} · ${fmtTime(s.completedAt)}</div>${s.note?`<div class="note-tag">"${esc(s.note)}"</div>`:''}`:
+              '<div class="tap-hint">tap to mark complete</div>'}
+          </div>
+        </div>`;
+      }
     }).join('');
 
-    return `<div class="task-item">
-      <div class="task-header">
-        <div class="location-label">📍 ${esc(t.location)}</div>
-        <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+    const addSubtaskRow=isAdmin?`<div class="add-subtask-row">
+      <input id="add-sub-${t.id}" placeholder="Add subtask…" onkeydown="if(event.key==='Enter') addSubtask(${t.id})"/>
+      <button class="btn btn-sm btn-primary" onclick="addSubtask(${t.id})">Add</button>
+    </div>`:'';
+
+    return `<div class="task-item ${priClass}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px">
+        <div style="flex:1">
+          <div class="location-label">
+            📍 <span id="loc-${t.id}" ondblclick="${isAdmin?`startEditField(${t.id},'location')`:''}">${esc(t.location)}</span>
+            ${t.due?`<span class="due-badge${overdueFlag?' overdue':''}">⏱ ${t.due}${overdueFlag?' OVERDUE':''}</span>`:''}
+          </div>
+          <input class="inline-edit" id="loc-edit-${t.id}" value="${esc(t.location)}" onkeydown="fieldEditKey(event,${t.id},'location')" style="margin-bottom:4px"/>
+          <div class="edit-actions" id="loc-ea-${t.id}">
+            <button class="btn btn-xs btn-primary" onclick="saveFieldEdit(${t.id},'location')">Save</button>
+            <button class="btn btn-xs" onclick="cancelFieldEdit(${t.id},'location')">Cancel</button>
+          </div>
+        </div>
+        <div class="task-actions">
           <span class="badge ${tbc}">${tbt}</span>
-          ${isAdmin?`<button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteTask(${t.id})">✕</button>`:''}
+          ${isAdmin?`
+          <select class="btn btn-xs" style="width:auto;padding:3px 6px;font-size:11px" onchange="changePriority(${t.id},this.value)" title="Priority">
+            <option value="normal" ${(t.priority||'normal')==='normal'?'selected':''}>◦ Normal</option>
+            <option value="urgent" ${t.priority==='urgent'?'selected':''}>🔴 Urgent</option>
+            <option value="high"   ${t.priority==='high'?'selected':''}>🟠 High</option>
+            <option value="low"    ${t.priority==='low'?'selected':''}>⚪ Low</option>
+          </select>
+          <input type="time" class="btn btn-xs" style="width:auto;padding:3px 6px;font-size:11px;border:1px solid var(--border2)" value="${t.due||''}" onchange="changeDue(${t.id},this.value)" title="Due time"/>
+          <button class="btn btn-danger" onclick="deleteTask(${t.id})" title="Delete task">🗑</button>`:''}
         </div>
       </div>
       ${subsHtml}
+      ${addSubtaskRow}
       <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(tdone/ttotal*100)}%"></div></div>
     </div>`;
   }).join('');
 
   return `<div class="group">
     <div class="group-header" onclick="toggleGroup('${key}')">
-      <div class="group-title">${esc(g.topic)}</div>
+      <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
+        <div class="group-title" id="gtitle-${key}" ondblclick="${isAdmin?`event.stopPropagation();startEditTopic('${key}',${JSON.stringify(g.topic)})`:''}">${esc(g.topic)}</div>
+      </div>
       <div class="group-meta">
         <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">${done}/${total}</span>
         <span class="badge ${bc}">${bt}</span>
         <span class="chevron${isOpen?' open':''}" id="gc-${key}">▾</span>
       </div>
     </div>
+    <div id="gtitle-edit-wrap-${key}" style="display:none;padding:10px 16px;border-top:1px solid var(--border)">
+      <input id="gtitle-edit-${key}" style="font-size:14px" value="${esc(g.topic)}"/>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <button class="btn btn-sm btn-primary" onclick="saveTopicEdit('${key}',${JSON.stringify(g.topic)})">Save</button>
+        <button class="btn btn-sm" onclick="cancelTopicEdit('${key}')">Cancel</button>
+      </div>
+    </div>
     <div class="group-body${isOpen?' open':''}" id="gb-${key}">${tasksHtml}</div>
   </div>`;
 }
 
+// ── render admin ──────────────────────────────────────────
 function renderAdmin(){
   const el=document.getElementById('pane-list');
   if(!el) return;
   if(!tasks.length){el.innerHTML='<div class="empty">No tasks yet. Add one or paste from a spreadsheet.</div>';return;}
-  el.innerHTML=groupByTopic(tasks).map(g=>buildGroupHtml(g,true)).join('');
+  const sortedTasks=[...tasks].sort((a,b)=>{const p={urgent:0,high:1,normal:2,low:3};return (p[a.priority||'normal']||2)-(p[b.priority||'normal']||2);});
+  el.innerHTML=groupByTopic(sortedTasks).map(g=>buildGroupHtml(g,true)).join('');
 }
 
+// ── render volunteer ──────────────────────────────────────
 function renderVolunteer(){
   const el=document.getElementById('vol-task-list');
   if(!el) return;
   if(!tasks.length){el.innerHTML='<div class="empty">No tasks yet — check back soon.</div>';return;}
-  el.innerHTML=groupByTopic(tasks).map(g=>buildGroupHtml(g,false)).join('');
+  const html=groupByTopic(tasks).map(g=>buildGroupHtml(g,false)).join('');
+  el.innerHTML=html||'<div class="empty">All tasks complete! 🎉</div>';
 }
 
+// ── render progress ───────────────────────────────────────
 function renderProgress(){
   const total=tasks.reduce((a,t)=>a+t.subtasks.length,0);
   const done=tasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0);
   const full=tasks.filter(t=>taskStatus(t)==='done').length;
+  const pct=total?Math.round(done/total*100):0;
   document.getElementById('stats-row').innerHTML=`
     <div class="stat"><div class="stat-n">${tasks.length}</div><div class="stat-l">Tasks</div></div>
     <div class="stat"><div class="stat-n">${done}/${total}</div><div class="stat-l">Subtasks</div></div>
     <div class="stat"><div class="stat-n">${full}</div><div class="stat-l">Complete</div></div>
+    <div class="stat"><div class="stat-n">${pct}%</div><div class="stat-l">Overall</div></div>
   `;
   document.getElementById('progress-detail').innerHTML=groupByTopic(tasks).map(g=>{
     const {total:gt,done:gd}=groupProgress(g.tasks);
-    const pct=Math.round(gd/gt*100);
-    return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+    const gp=Math.round(gd/gt*100);
+    return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 16px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
         <span style="font-weight:600;font-size:14px">${esc(g.topic)}</span>
-        <span style="font-family:var(--mono);font-size:13px;color:var(--muted)">${gd}/${gt} (${pct}%)</span>
+        <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">${gd}/${gt} (${gp}%)</span>
       </div>
-      <div class="progress-bar" style="margin-top:0;margin-bottom:10px"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="progress-bar" style="margin-top:0;margin-bottom:10px"><div class="progress-fill" style="width:${gp}%"></div></div>
       ${g.tasks.map(t=>`<div style="margin-bottom:8px">
-        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">📍 ${esc(t.location)}</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:3px">📍 ${esc(t.location)}</div>
         ${t.subtasks.map(s=>`<div style="font-size:12px;padding:2px 0;color:var(--muted)">
           <span style="color:${s.done?'var(--green)':'var(--faint)'}">${s.done?'✓':'○'}</span>
-          ${esc(s.text)}${s.done?` — <strong>${esc(s.by)}</strong>`:''}
+          ${esc(s.text)}${s.done?` — <strong>${esc(s.by)}</strong> <span style="color:var(--faint)">${fmtTime(s.completedAt)}</span>${s.note?` <em>"${esc(s.note)}"</em>`:''}` :''}
         </div>`).join('')}
       </div>`).join('')}
     </div>`;
   }).join('');
 }
 
-function openAddModal(){
-  document.getElementById('add-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('new-topic').focus(),50);
-}
-
-function closeModal(){
-  document.querySelectorAll('.modal-bg').forEach(m=>m.classList.remove('open'));
-  pendingComplete=null;
-}
-
+// ── add task ──────────────────────────────────────────────
+function openAddModal(){ document.getElementById('add-modal').classList.add('open'); setTimeout(()=>document.getElementById('new-topic').focus(),50); }
+function closeModal(){ document.querySelectorAll('.modal-bg').forEach(m=>m.classList.remove('open')); pendingComplete=null; pendingUndo=null; }
 async function saveTask(){
   const topic=document.getElementById('new-topic').value.trim();
   const location=document.getElementById('new-location').value.trim();
   const raw=document.getElementById('new-subtasks').value.trim();
-  if(!topic||!location||!raw){alert('Fill in all fields.');return;}
-  const subtasks=raw.split('\n').map(s=>s.trim()).filter(Boolean).map(text=>({text,done:false,by:''}));
-  if(!subtasks.length){alert('Add at least one subtask.');return;}
-  tasks.push({id:nextId++,topic,location,subtasks});
+  const priority=document.getElementById('new-priority').value;
+  const due=document.getElementById('new-due').value;
+  if(!topic||!location||!raw){alert('Fill in topic, location and at least one subtask.');return;}
+  const subtasks=raw.split('\n').map(s=>s.trim()).filter(Boolean).map(text=>({text,done:false,by:'',note:'',completedAt:null}));
+  tasks.push({id:nextId++,topic,location,priority,due,subtasks});
   await saveData();
-  document.getElementById('new-topic').value='';
-  document.getElementById('new-location').value='';
-  document.getElementById('new-subtasks').value='';
-  closeModal();
-  renderAdmin();
-  toast('Task saved');
+  ['new-topic','new-location','new-subtasks','new-due'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('new-priority').value='normal';
+  closeModal(); renderAdmin(); toast('Task saved');
 }
 
-async function deleteTask(id){
-  if(!confirm('Delete this task?')) return;
-  tasks=tasks.filter(t=>t.id!==id);
-  await saveData();
-  renderAdmin();
-  toast('Task deleted');
+// ── delete task ───────────────────────────────────────────
+async function deleteTask(id){ if(!confirm('Delete this task?')) return; tasks=tasks.filter(t=>t.id!==id); await saveData(); renderAdmin(); toast('Task deleted'); }
+
+// ── add/remove subtask ────────────────────────────────────
+async function addSubtask(taskId){
+  const inp=document.getElementById('add-sub-'+taskId);
+  const text=inp.value.trim(); if(!text) return;
+  const task=tasks.find(t=>t.id===taskId); if(!task) return;
+  task.subtasks.push({text,done:false,by:'',note:'',completedAt:null});
+  inp.value='';
+  await saveData(); renderAdmin(); toast('Subtask added');
+}
+async function removeSubtask(taskId,idx){
+  if(!confirm('Remove this subtask?')) return;
+  const task=tasks.find(t=>t.id===taskId); if(!task) return;
+  task.subtasks.splice(idx,1);
+  await saveData(); renderAdmin(); toast('Subtask removed');
 }
 
+// ── inline edit: subtask text ─────────────────────────────
+function startEditSubtask(taskId,idx){
+  document.getElementById('st-'+taskId+'-'+idx).style.display='none';
+  const inp=document.getElementById('se-'+taskId+'-'+idx);
+  const ea=document.getElementById('sea-'+taskId+'-'+idx);
+  inp.classList.add('active'); ea.classList.add('active'); inp.focus(); inp.select();
+}
+function cancelSubtaskEdit(taskId,idx){
+  const task=tasks.find(t=>t.id===taskId);
+  const inp=document.getElementById('se-'+taskId+'-'+idx);
+  inp.value=esc(task.subtasks[idx].text);
+  inp.classList.remove('active');
+  document.getElementById('sea-'+taskId+'-'+idx).classList.remove('active');
+  document.getElementById('st-'+taskId+'-'+idx).style.display='';
+}
+async function saveSubtaskEdit(taskId,idx){
+  const inp=document.getElementById('se-'+taskId+'-'+idx);
+  const val=inp.value.trim(); if(!val){alert('Subtask text cannot be empty.');return;}
+  const task=tasks.find(t=>t.id===taskId);
+  task.subtasks[idx].text=val;
+  await saveData(); renderAdmin(); toast('Saved');
+}
+function subtaskEditKey(e,taskId,idx){ if(e.key==='Enter') saveSubtaskEdit(taskId,idx); if(e.key==='Escape') cancelSubtaskEdit(taskId,idx); }
+
+// ── inline edit: location ─────────────────────────────────
+function startEditField(taskId,field){
+  document.getElementById('loc-'+taskId).parentElement.style.display='none';
+  document.getElementById('loc-edit-'+taskId).classList.add('active');
+  document.getElementById('loc-ea-'+taskId).classList.add('active');
+  document.getElementById('loc-edit-'+taskId).focus();
+}
+function cancelFieldEdit(taskId,field){
+  document.getElementById('loc-edit-'+taskId).classList.remove('active');
+  document.getElementById('loc-ea-'+taskId).classList.remove('active');
+  document.getElementById('loc-'+taskId).parentElement.style.display='';
+}
+async function saveFieldEdit(taskId,field){
+  const val=document.getElementById('loc-edit-'+taskId).value.trim();
+  if(!val){alert('Location cannot be empty.');return;}
+  const task=tasks.find(t=>t.id===taskId); task.location=val;
+  await saveData(); renderAdmin(); toast('Saved');
+}
+function fieldEditKey(e,taskId,field){ if(e.key==='Enter') saveFieldEdit(taskId,field); if(e.key==='Escape') cancelFieldEdit(taskId,field); }
+
+// ── inline edit: topic ────────────────────────────────────
+function startEditTopic(key,oldTopic){
+  document.getElementById('gtitle-'+key).style.display='none';
+  document.getElementById('gtitle-edit-wrap-'+key).style.display='block';
+  document.getElementById('gtitle-edit-'+key).focus();
+}
+function cancelTopicEdit(key){
+  document.getElementById('gtitle-edit-wrap-'+key).style.display='none';
+  document.getElementById('gtitle-'+key).style.display='';
+}
+async function saveTopicEdit(key,oldTopic){
+  const val=document.getElementById('gtitle-edit-'+key).value.trim();
+  if(!val){alert('Topic cannot be empty.');return;}
+  tasks.forEach(t=>{ if(t.topic===oldTopic) t.topic=val; });
+  await saveData(); renderAdmin(); toast('Topic updated');
+}
+
+// ── priority / due ────────────────────────────────────────
+async function changePriority(taskId,val){ const t=tasks.find(t=>t.id===taskId); if(t){t.priority=val; await saveData(); renderAdmin();} }
+async function changeDue(taskId,val){ const t=tasks.find(t=>t.id===taskId); if(t){t.due=val; await saveData(); renderAdmin();} }
+
+// ── admin check (without name prompt) ────────────────────
+async function adminCheck(taskId,idx){
+  const task=tasks.find(t=>t.id===taskId); if(!task) return;
+  task.subtasks[idx].done=true;
+  task.subtasks[idx].by='Admin';
+  task.subtasks[idx].completedAt=new Date().toISOString();
+  task.subtasks[idx].note='';
+  await saveData(); renderAdmin(); toast('Marked complete');
+}
+
+// ── volunteer complete ────────────────────────────────────
+function openComplete(taskId,idx){
+  const task=tasks.find(t=>t.id===taskId); if(!task) return;
+  pendingComplete={taskId,idx};
+  document.getElementById('complete-sub').textContent=task.subtasks[idx].text;
+  document.getElementById('completer-name').value='';
+  document.getElementById('completer-note').value='';
+  document.getElementById('complete-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('completer-name').focus(),60);
+}
+async function confirmComplete(){
+  const name=document.getElementById('completer-name').value.trim();
+  if(!name){alert('Please enter your name.');return;}
+  const note=document.getElementById('completer-note').value.trim();
+  const task=tasks.find(t=>t.id===pendingComplete.taskId);
+  task.subtasks[pendingComplete.idx].done=true;
+  task.subtasks[pendingComplete.idx].by=name;
+  task.subtasks[pendingComplete.idx].note=note;
+  task.subtasks[pendingComplete.idx].completedAt=new Date().toISOString();
+  await saveData(); closeModal(); renderVolunteer(); toast('Marked complete ✓');
+}
+
+// ── undo completion ───────────────────────────────────────
+function openUndo(taskId,idx){
+  const task=tasks.find(t=>t.id===taskId); if(!task) return;
+  const s=task.subtasks[idx];
+  pendingUndo={taskId,idx};
+  document.getElementById('undo-sub').textContent=s.text;
+  document.getElementById('undo-by').textContent=s.by+(s.completedAt?' on '+fmtTime(s.completedAt):'');
+  document.getElementById('undo-modal').classList.add('open');
+}
+async function confirmUndo(){
+  const task=tasks.find(t=>t.id===pendingUndo.taskId);
+  const s=task.subtasks[pendingUndo.idx];
+  s.done=false; s.by=''; s.note=''; s.completedAt=null;
+  await saveData(); closeModal(); renderAdmin(); toast('Completion undone');
+}
+
+// ── import ────────────────────────────────────────────────
 async function importPaste(){
   const raw=document.getElementById('paste-input').value.trim();
   const msg=document.getElementById('paste-msg');
@@ -484,49 +680,40 @@ async function importPaste(){
     const c=cols.map(x=>x.trim().replace(/^"|"$/g,''));
     if(c.length<3) return;
     const [topic,location,...rest]=c;
-    const subtasks=rest.filter(Boolean)
-      .flatMap(s=>s.split('/').map(x=>x.trim()))
-      .filter(Boolean)
-      .map(text=>({text,done:false,by:''}));
+    const subtasks=rest.filter(Boolean).flatMap(s=>s.split('/').map(x=>x.trim())).filter(Boolean).map(text=>({text,done:false,by:'',note:'',completedAt:null}));
     if(!subtasks.length) return;
-    tasks.push({id:nextId++,topic,location,subtasks});
+    tasks.push({id:nextId++,topic,location,priority:'normal',due:'',subtasks});
     count++;
   });
   if(count){
     await saveData();
-    msg.style.color='var(--green)';
-    msg.textContent=`Imported ${count} task${count!==1?'s':''}.`;
+    msg.style.color='var(--green)'; msg.textContent=`Imported ${count} task${count!==1?'s':''}.`;
     document.getElementById('paste-input').value='';
     setTimeout(()=>showTab('list'),900);
     toast(`${count} task${count!==1?'s':''} imported`);
-  } else {
-    msg.style.color='var(--red)';
-    msg.textContent='No valid rows found. Expected: Topic | Location | Subtask1 | Subtask2 ...';
-  }
+  } else { msg.style.color='var(--red)'; msg.textContent='No valid rows found. Expected: Topic | Location | Subtask1 | Subtask2 ...'; }
 }
 
-function openComplete(taskId,idx){
-  const task=tasks.find(t=>t.id===taskId);
-  if(!task) return;
-  pendingComplete={taskId,idx};
-  document.getElementById('complete-sub').textContent=task.subtasks[idx].text;
-  document.getElementById('completer-name').value='';
-  document.getElementById('complete-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('completer-name').focus(),60);
+// ── reset ─────────────────────────────────────────────────
+async function confirmReset(){
+  const choice=confirm('Reset ALL completions (keeps tasks, clears who did what)?\n\nClick OK to reset completions only.\nClick Cancel to do nothing.');
+  if(!choice) return;
+  tasks.forEach(t=>t.subtasks.forEach(s=>{ s.done=false; s.by=''; s.note=''; s.completedAt=null; }));
+  await saveData(); renderAdmin(); toast('All completions reset');
 }
 
-async function confirmComplete(){
-  const name=document.getElementById('completer-name').value.trim();
-  if(!name){alert('Please enter your name.');return;}
-  const task=tasks.find(t=>t.id===pendingComplete.taskId);
-  task.subtasks[pendingComplete.idx].done=true;
-  task.subtasks[pendingComplete.idx].by=name;
-  await saveData();
-  closeModal();
-  renderVolunteer();
-  toast('Marked complete ✓');
+// ── CSV export ────────────────────────────────────────────
+function exportCSV(){
+  const rows=[['Topic','Location','Subtask','Status','Completed By','Completed At','Note']];
+  tasks.forEach(t=>t.subtasks.forEach(s=>rows.push([t.topic,t.location,s.text,s.done?'Done':'Pending',s.by||'',s.completedAt?fmtTime(s.completedAt):'',s.note||''])));
+  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='task-tracker-'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click(); toast('CSV downloaded');
 }
 
+// ── keyboard ──────────────────────────────────────────────
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape') closeModal();
   if(e.key==='Enter'&&document.getElementById('complete-modal').classList.contains('open')) confirmComplete();
