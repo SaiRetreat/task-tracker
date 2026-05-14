@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Task Tracker</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -120,13 +118,19 @@ textarea{resize:vertical;min-height:90px}
           <div class="step-body">
             <strong>Enter your credentials</strong>
             <label>JSONBin Access Key</label>
-            <input id="setup-apikey" placeholder="$2b$10$..." autocomplete="off"/>
+            <input id="setup-apikey" placeholder="$2b$10$..." autocomplete="off">
             <label>Bin ID</label>
-            <input id="setup-binid" placeholder="64abc123def456..."/>
+            <input id="setup-binid" placeholder="64abc123def456...">
             <div style="margin-top:12px;display:flex;gap:8px">
-              <button class="btn btn-primary" onclick="saveConfig()">Save & continue</button>
+              <button class="btn btn-primary" onclick="saveConfig()">Save &amp; continue</button>
             </div>
-            <p id="setup-error" style="color:var(--red);font-size:13px;margin-top:8px;display:none"></p>
+            <p id="setup-error" style="color: var(--green); font-size: 13px; margin-top: 8px; display: block;">
+    ✓ Admin credentials saved!<br><br>
+    <strong>One more step to activate volunteer links:</strong><br>
+    Download the updated file below — it has your Bin ID baked in so volunteers load tasks automatically without any setup.<br><br>
+    <button class="btn btn-primary btn-sm" onclick="downloadPatched()">⬇ Download updated index.html</button><br><br>
+    Upload that file to GitHub (replace your current index.html) and you're done.
+  </p>
           </div>
         </div>
 
@@ -163,7 +167,7 @@ textarea{resize:vertical;min-height:90px}
       <div id="pane-paste" style="display:none">
         <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Paste rows from a spreadsheet. <strong>Column order: Topic | Location | Subtask 1 | Subtask 2 | …</strong> (tabs or commas). Subtasks can also be slash-separated in one cell.</p>
         <label>Paste spreadsheet data</label>
-        <textarea id="paste-input" style="min-height:150px" placeholder="AV Ancillary Rooms&#9;Amphitheater and Fitness Center&#9;A/V move to dining hall&#9;Stack up chairs&#9;Bring all kitchen items to kitchen"></textarea>
+        <textarea id="paste-input" style="min-height:150px" placeholder="AV Ancillary Rooms	Amphitheater and Fitness Center	A/V move to dining hall	Stack up chairs	Bring all kitchen items to kitchen"></textarea>
         <div style="margin-top:10px;display:flex;gap:8px">
           <button class="btn btn-primary" onclick="importPaste()">Import</button>
           <button class="btn" onclick="document.getElementById('paste-input').value='';document.getElementById('paste-msg').textContent=''">Clear</button>
@@ -212,10 +216,12 @@ textarea{resize:vertical;min-height:90px}
 <div class="modal-bg" id="add-modal">
   <div class="modal">
     <h2>Add task</h2>
-    <label>Topic</label><input id="new-topic" placeholder="e.g. AV Ancillary Rooms"/>
-    <label>Location</label><input id="new-location" placeholder="e.g. Amphitheater and Fitness Center"/>
+    <label>Topic</label><input id="new-topic" placeholder="e.g. AV Ancillary Rooms">
+    <label>Location</label><input id="new-location" placeholder="e.g. Amphitheater and Fitness Center">
     <label>Subtasks (one per line)</label>
-    <textarea id="new-subtasks" placeholder="A/V move to dining hall&#10;Stack up chairs&#10;Bring all kitchen items to kitchen"></textarea>
+    <textarea id="new-subtasks" placeholder="A/V move to dining hall
+Stack up chairs
+Bring all kitchen items to kitchen"></textarea>
     <div style="margin-top:16px;display:flex;gap:8px">
       <button class="btn btn-primary" onclick="saveTask()">Save</button>
       <button class="btn" onclick="closeModal()">Cancel</button>
@@ -229,7 +235,7 @@ textarea{resize:vertical;min-height:90px}
     <h2>Mark complete</h2>
     <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.5" id="complete-sub"></p>
     <label>Your name</label>
-    <input id="completer-name" placeholder="Enter your name"/>
+    <input id="completer-name" placeholder="Enter your name">
     <div style="margin-top:16px;display:flex;gap:8px">
       <button class="btn btn-primary" onclick="confirmComplete()">Mark done</button>
       <button class="btn" onclick="closeModal()">Cancel</button>
@@ -247,7 +253,7 @@ textarea{resize:vertical;min-height:90px}
 const CONFIG_KEY = 'tasktracker_config';
 // HARDCODED_BIN_ID: admin fills this in at setup, then re-uploads the file with it set.
 // Volunteers need no credentials — they use the public bin ID to read.
-const HARDCODED_BIN_ID = ''; // ← filled automatically when admin saves config and re-exports
+const HARDCODED_BIN_ID = '6a05e2d8250b1311c34d4055'; // ← filled automatically when admin saves config and re-exports
 
 let CFG = null;
 
@@ -641,5 +647,6 @@ document.addEventListener('keydown', e => {
 // ─── BOOT ─────────────────────────────────────────────────
 init();
 </script>
-</body>
-</html>
+
+
+</body></html>
