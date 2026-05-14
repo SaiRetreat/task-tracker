@@ -15,6 +15,7 @@
   --amber:#7D5A00;--amber-bg:#FFF3CD;
   --blue:#1A4D8F;--blue-bg:#E8F0FB;
   --red:#8B2020;--red-bg:#FDECEA;
+  --orange:#8B4500;--orange-bg:#FEF0E6;
   --font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
 }
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;min-height:100vh}
@@ -32,25 +33,27 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15
 .btn-primary:hover{opacity:.82;background:var(--text)}
 .btn-danger{color:var(--red);border-color:transparent;background:none;padding:4px 7px}
 .btn-danger:hover{background:var(--red-bg);border-color:var(--red)}
+.btn-warn{background:var(--orange-bg);color:var(--orange);border-color:#F0B27A}
+.btn-warn:hover{opacity:.85;background:var(--orange-bg)}
 .btn-sm{padding:4px 9px;font-size:12px}
 .btn-xs{padding:3px 7px;font-size:11px}
 label{font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin:12px 0 4px}
 input,textarea,select{width:100%;font-family:var(--font);font-size:14px;border:1px solid var(--border2);border-radius:6px;padding:7px 10px;background:var(--surface);color:var(--text);outline:none}
 input:focus,textarea:focus,select:focus{border-color:var(--text)}
-textarea{resize:vertical;min-height:80px}
+textarea{resize:vertical;min-height:70px}
 .badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;font-family:var(--mono)}
 .badge-done{background:var(--green-bg);color:var(--green)}
 .badge-partial{background:var(--blue-bg);color:var(--blue)}
 .badge-pending{background:var(--amber-bg);color:var(--amber)}
-
-/* priority indicators on subtasks */
-.pri-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-family:var(--mono);padding:1px 6px;border-radius:99px;font-weight:600;flex-shrink:0}
+.badge-blocked{background:var(--red-bg);color:var(--red)}
+.pri-pill{display:inline-flex;align-items:center;font-size:10px;font-family:var(--mono);padding:1px 6px;border-radius:99px;font-weight:600;flex-shrink:0}
 .pri-urgent{background:#FDECEA;color:#8B2020}
 .pri-high{background:#FFF3CD;color:#7D5A00}
-.pri-normal{display:none}
-.pri-low{background:var(--bg);color:var(--faint)}
-
-/* groups */
+.pri-low{background:var(--bg);color:var(--faint);border:1px solid var(--border)}
+.unable-pill{display:inline-flex;align-items:center;font-size:10px;font-family:var(--mono);padding:1px 7px;border-radius:99px;font-weight:600;background:var(--red-bg);color:var(--red);flex-shrink:0}
+.due-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-family:var(--mono);padding:1px 7px;border-radius:99px;background:var(--amber-bg);color:var(--amber);flex-shrink:0}
+.due-pill.overdue{background:var(--red-bg);color:var(--red)}
+.assigned-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-family:var(--mono);padding:1px 7px;border-radius:99px;background:var(--blue-bg);color:var(--blue);flex-shrink:0}
 .group{margin-bottom:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface)}
 .group-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;gap:10px}
 .group-header:hover{background:var(--bg)}
@@ -58,45 +61,41 @@ textarea{resize:vertical;min-height:80px}
 .group-meta{display:flex;align-items:center;gap:7px;flex-shrink:0}
 .group-body{border-top:1px solid var(--border);display:none}
 .group-body.open{display:block}
-
-/* subtasks */
 .subtask-row{display:flex;align-items:flex-start;gap:9px;padding:10px 16px;border-bottom:1px solid var(--border)}
 .subtask-row:last-child{border-bottom:none}
-.check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .12s;cursor:pointer}
+.subtask-row.is-unable{background:#FFFAF9}
+.check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;transition:all .12s;cursor:pointer}
 .check.done{background:var(--green);border-color:var(--green)}
-.check:hover:not(.done){border-color:var(--text)}
+.check.unable{background:var(--red-bg);border-color:var(--red);color:var(--red);font-size:11px;font-weight:700}
+.check:hover:not(.done):not(.unable){border-color:var(--text)}
 .subtask-main{flex:1;min-width:0}
 .subtask-text{font-size:14px;line-height:1.5}
 .subtask-text.done{text-decoration:line-through;color:var(--faint)}
+.subtask-text.unable-txt{color:var(--muted)}
 .by-tag{font-size:11px;font-family:var(--mono);color:var(--muted);margin-top:2px}
-.note-tag{font-size:11px;color:var(--muted);font-style:italic;margin-top:1px}
-.tap-hint{font-size:11px;color:var(--faint);margin-top:2px}
-.subtask-actions{display:flex;align-items:center;gap:3px;flex-shrink:0}
-.progress-bar{height:3px;background:var(--border);border-radius:2px;margin:10px 16px 0}
-.progress-bar-inner{height:100%;border-radius:2px;background:var(--green);transition:width .4s}
-
-/* inline edit */
+.note-tag{font-size:11px;color:var(--muted);font-style:italic}
+.unable-reason{font-size:11px;color:var(--red);font-style:italic;margin-top:2px}
+.tap-hint{font-size:11px;color:var(--faint);margin-top:3px}
+.subtask-actions{display:flex;align-items:flex-start;gap:3px;flex-shrink:0;padding-top:1px}
+.sub-meta-edit{background:var(--bg);border-radius:6px;padding:8px 10px;margin-top:6px;display:none;border:1px solid var(--border)}
+.sub-meta-edit.open{display:block}
 .inline-edit{display:none;width:100%;font-size:13px;padding:4px 7px;border:1px solid var(--text);border-radius:4px;font-family:var(--font);background:var(--surface);color:var(--text);outline:none;margin-top:3px}
 .inline-edit.active{display:block}
 .edit-actions{display:none;gap:4px;margin-top:4px}
 .edit-actions.active{display:flex}
-
-/* add subtask */
 .add-sub-wrap{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:6px}
 .add-sub-wrap input{font-size:13px;padding:5px 8px}
-
-/* tabs */
 .tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px;overflow-x:auto}
 .tab{padding:9px 14px;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tab.active{color:var(--text);border-bottom-color:var(--text)}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px;text-align:center}
-.stat-n{font-size:22px;font-weight:600;font-family:var(--mono)}
+.stat-n{font-size:20px;font-weight:600;font-family:var(--mono)}
 .stat-l{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
 .nav{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:50;align-items:center;justify-content:center;padding:16px}
 .modal-bg.open{display:flex}
-.modal{background:var(--surface);border-radius:10px;padding:22px;width:100%;max-width:440px;border:1px solid var(--border);max-height:92vh;overflow-y:auto}
+.modal{background:var(--surface);border-radius:10px;padding:22px;width:100%;max-width:460px;border:1px solid var(--border);max-height:92vh;overflow-y:auto}
 .modal h2{font-size:16px;font-weight:600;margin-bottom:14px}
 .url-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:9px 13px;display:flex;align-items:center;gap:8px;margin-top:5px}
 .url-text{font-family:var(--mono);font-size:12px;flex:1;word-break:break-all}
@@ -111,6 +110,9 @@ textarea{resize:vertical;min-height:80px}
 .filter-bar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
 .filter-btn{padding:5px 12px;font-size:12px;border-radius:99px;border:1px solid var(--border2);background:var(--surface);cursor:pointer;font-family:var(--font);color:var(--muted);transition:all .12s}
 .filter-btn.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.progress-bar{height:3px;background:var(--border);border-radius:2px}
+.progress-bar-inner{height:100%;border-radius:2px;background:var(--green);transition:width .4s}
+.section-bar{background:var(--bg);border-bottom:1px solid var(--border);padding:5px 16px;display:flex;align-items:center;justify-content:space-between}
 </style>
 </head>
 <body>
@@ -120,32 +122,27 @@ textarea{resize:vertical;min-height:80px}
     <div id="topbar-right"></div>
   </div>
   <div class="content">
-
-    <!-- ADMIN -->
     <div id="screen-admin" class="screen">
       <div class="nav">
         <button class="btn btn-sm btn-primary" onclick="openAddModal()">+ Add task</button>
-        <button class="btn btn-sm" onclick="showTab('paste')">⬆ Import</button>
-        <button class="btn btn-sm" onclick="showTab('progress')">📊 Progress</button>
-        <button class="btn btn-sm" onclick="loadData(true)">↻ Refresh</button>
-        <button class="btn btn-sm" onclick="exportCSV()">⬇ CSV</button>
-        <button class="btn btn-sm" style="color:var(--red);border-color:var(--border2)" onclick="confirmReset()">↺ Reset</button>
-        <span class="saving" id="saving-ind">saving…</span>
+        <button class="btn btn-sm" onclick="showTab('paste')">&#8593; Import</button>
+        <button class="btn btn-sm" onclick="showTab('progress')">Progress</button>
+        <button class="btn btn-sm" onclick="loadData(true)">Refresh</button>
+        <button class="btn btn-sm" onclick="exportCSV()">CSV</button>
+        <button class="btn btn-sm" style="color:var(--red);border-color:var(--border2)" onclick="confirmReset()">Reset</button>
+        <span class="saving" id="saving-ind">saving...</span>
       </div>
       <div class="tabs">
-        <div class="tab active" id="tab-list"     onclick="showTab('list')">Tasks</div>
-        <div class="tab"        id="tab-paste"    onclick="showTab('paste')">Paste import</div>
-        <div class="tab"        id="tab-progress" onclick="showTab('progress')">Progress</div>
-        <div class="tab"        id="tab-share"    onclick="showTab('share')">Links</div>
+        <div class="tab active" id="tab-list" onclick="showTab('list')">Tasks</div>
+        <div class="tab" id="tab-paste" onclick="showTab('paste')">Paste import</div>
+        <div class="tab" id="tab-progress" onclick="showTab('progress')">Progress</div>
+        <div class="tab" id="tab-share" onclick="showTab('share')">Links</div>
       </div>
-      <div id="pane-list"><div class="loading">Loading…</div></div>
+      <div id="pane-list"><div class="loading">Loading...</div></div>
       <div id="pane-paste" style="display:none">
-        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">
-          <strong>Column order: Location | Subtask 1 | Subtask 2 | …</strong><br>
-          Tabs or commas between columns. Subtasks can be slash-separated in one cell.
-        </p>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px"><strong>Column order: Location | Subtask 1 | Subtask 2 ...</strong><br>Tabs or commas. Subtasks can be slash-separated in one cell.</p>
         <label>Paste spreadsheet data</label>
-        <textarea id="paste-input" style="min-height:150px" placeholder="Amphitheater&#9;Move A/V to dining hall&#9;Stack chairs&#9;Clean kitchen"></textarea>
+        <textarea id="paste-input" style="min-height:140px" placeholder="Amphitheater&#9;Move A/V to dining hall&#9;Stack chairs&#9;Clean kitchen"></textarea>
         <div style="margin-top:10px;display:flex;gap:8px">
           <button class="btn btn-primary btn-sm" onclick="importPaste()">Import</button>
           <button class="btn btn-sm" onclick="document.getElementById('paste-input').value='';document.getElementById('paste-msg').textContent=''">Clear</button>
@@ -160,29 +157,24 @@ textarea{resize:vertical;min-height:80px}
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px">
           <h2 style="font-size:15px;margin-bottom:14px">Shareable links</h2>
           <label>Admin (keep private)</label>
-          <div class="url-box"><span class="url-text" id="admin-url">—</span><button class="btn btn-sm" onclick="copyUrl('admin-url','ca')"><span id="ca">Copy</span></button></div>
+          <div class="url-box"><span class="url-text" id="admin-url">-</span><button class="btn btn-sm" onclick="copyUrl('admin-url','ca')"><span id="ca">Copy</span></button></div>
           <label style="margin-top:14px">Volunteer (share with team)</label>
-          <div class="url-box"><span class="url-text" id="vol-url">—</span><button class="btn btn-sm" onclick="copyUrl('vol-url','cv')"><span id="cv">Copy</span></button></div>
-          <p style="font-size:13px;color:var(--muted);margin-top:12px;line-height:1.6">Volunteers can view tasks, mark subtasks complete, and leave notes. They cannot edit or delete tasks.</p>
+          <div class="url-box"><span class="url-text" id="vol-url">-</span><button class="btn btn-sm" onclick="copyUrl('vol-url','cv')"><span id="cv">Copy</span></button></div>
         </div>
       </div>
     </div>
-
-    <!-- VOLUNTEER -->
     <div id="screen-volunteer" class="screen">
       <div class="filter-bar">
         <span style="font-size:13px;color:var(--muted)">Show:</span>
         <button class="filter-btn active" id="filter-all" onclick="setFilter('all')">All</button>
         <button class="filter-btn" id="filter-incomplete" onclick="setFilter('incomplete')">Incomplete only</button>
-        <button class="btn btn-sm" style="margin-left:auto" onclick="loadData(true)">↻ Refresh</button>
+        <button class="btn btn-sm" style="margin-left:auto" onclick="loadData(true)">Refresh</button>
       </div>
-      <div id="vol-task-list"><div class="loading">Loading…</div></div>
+      <div id="vol-task-list"><div class="loading">Loading...</div></div>
     </div>
-
   </div>
 </div>
 
-<!-- ADD TASK MODAL -->
 <div class="modal-bg" id="add-modal">
   <div class="modal">
     <h2>Add task group</h2>
@@ -197,7 +189,6 @@ textarea{resize:vertical;min-height:80px}
   </div>
 </div>
 
-<!-- COMPLETE MODAL -->
 <div class="modal-bg" id="complete-modal">
   <div class="modal">
     <h2>Mark complete</h2>
@@ -206,19 +197,35 @@ textarea{resize:vertical;min-height:80px}
     <input id="completer-name" placeholder="Enter your name"/>
     <label>Note (optional)</label>
     <input id="completer-note" placeholder="e.g. moved to storage room B"/>
-    <div style="margin-top:14px;display:flex;gap:8px">
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn btn-primary" onclick="confirmComplete()">Mark done</button>
+      <button class="btn btn-warn" onclick="switchToUnable()">Can't complete instead</button>
       <button class="btn" onclick="closeModal()">Cancel</button>
     </div>
   </div>
 </div>
 
-<!-- UNDO MODAL -->
+<div class="modal-bg" id="unable-modal">
+  <div class="modal">
+    <h2>Unable to complete</h2>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.5" id="unable-sub"></p>
+    <label>Your name</label>
+    <input id="unable-name" placeholder="Enter your name"/>
+    <label>Reason why (required)</label>
+    <textarea id="unable-reason" placeholder="e.g. Equipment missing, door was locked, area inaccessible..." style="min-height:80px"></textarea>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-warn" onclick="confirmUnable()">Submit</button>
+      <button class="btn" onclick="switchToComplete()">Mark complete instead</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-bg" id="undo-modal">
   <div class="modal">
-    <h2>Undo completion?</h2>
+    <h2 id="undo-title">Undo?</h2>
     <p style="font-size:14px;color:var(--muted);margin-bottom:6px" id="undo-sub"></p>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Completed by <strong id="undo-by"></strong>. This will mark it incomplete again.</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px" id="undo-desc"></p>
     <div style="display:flex;gap:8px">
       <button class="btn btn-primary" onclick="confirmUndo()">Undo</button>
       <button class="btn" onclick="closeModal()">Cancel</button>
@@ -229,324 +236,392 @@ textarea{resize:vertical;min-height:80px}
 <div class="toast" id="toast"></div>
 
 <script>
-const API_KEY = '$2a$10$NrfVE4jDUcOGoO6.3Z9kyuBsPMNZ63FaibBUBDH2Xa270MC4k9/Oe';
-const BIN_ID  = '6a05ecc8250b1311c34d8a47';
-const BASE    = 'https://api.jsonbin.io/v3';
+var API_KEY = '$2a$10$NrfVE4jDUcOGoO6.3Z9kyuBsPMNZ63FaibBUBDH2Xa270MC4k9/Oe';
+var BIN_ID  = '6a05ecc8250b1311c34d8a47';
+var BASE    = 'https://api.jsonbin.io/v3';
 
-// tasks shape: { id, location, subtasks: [{text, done, by, note, completedAt, priority}] }
-let tasks = [];
-let nextId = 1;
-let pendingComplete = null;
-let pendingUndo = null;
-let isSaving = false;
-let openGroups = {};
-let volFilter = 'all';
+var tasks = [];
+var nextId = 1;
+var pendingComplete = null;
+var pendingUndo = null;
+var isSaving = false;
+var openGroups = {};
+var volFilter = 'all';
 
-// ── helpers ───────────────────────────────────────────────
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function toast(msg,dur=2200){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),dur); }
+function toast(msg,dur){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},dur||2200); }
 function checkSvg(){ return '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
 function fmtTime(iso){ if(!iso) return ''; try{ return new Date(iso).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } }
+function fmtDue(due){ if(!due) return ''; try{ var d=new Date(due); return d.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return due; } }
+function isOverdue(due){ if(!due) return false; try{ return new Date(due)<new Date(); }catch(e){ return false; } }
+function priLabel(p){ return p==='urgent'?'Urgent':p==='high'?'High':p==='low'?'Low':''; }
+
+function migrate(s){
+  if(!s.priority) s.priority='normal';
+  if(s.unable===undefined) s.unable=false;
+  if(!s.reason) s.reason='';
+  if(!s.assigned) s.assigned='';
+  if(!s.due) s.due='';
+  if(!s.note) s.note='';
+  return s;
+}
 
 function groupByLocation(list){
-  const map={},order=[];
-  list.forEach(t=>{ if(!map[t.location]){map[t.location]=[];order.push(t.location);} map[t.location].push(t); });
-  return order.map(loc=>({location:loc, tasks:map[loc]}));
+  var map={},order=[];
+  list.forEach(function(t){
+    if(!map[t.location]){map[t.location]=[];order.push(t.location);}
+    map[t.location].push(t);
+  });
+  return order.map(function(loc){return {location:loc,tasks:map[loc]};});
 }
+
 function groupProgress(gTasks){
-  return { total:gTasks.reduce((a,t)=>a+t.subtasks.length,0), done:gTasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0) };
+  return {
+    total:gTasks.reduce(function(a,t){return a+t.subtasks.length;},0),
+    done:gTasks.reduce(function(a,t){return a+t.subtasks.filter(function(s){return s.done;}).length;},0),
+    unable:gTasks.reduce(function(a,t){return a+t.subtasks.filter(function(s){return s.unable;}).length;},0)
+  };
 }
-function taskStatus(t){ const d=t.subtasks.filter(s=>s.done).length; return d===t.subtasks.length?'done':d>0?'partial':'pending'; }
+
 function makeKey(str){ try{ return btoa(encodeURIComponent(str)).replace(/[^a-z0-9]/gi,'').slice(0,20); }catch(e){ return Math.random().toString(36).slice(2,10); } }
 
-// ── API ───────────────────────────────────────────────────
+function priOrd(p){ return p==='urgent'?0:p==='high'?1:p==='low'?3:2; }
+
 async function apiGet(){
-  const r=await fetch(`${BASE}/b/${BIN_ID}/latest`,{headers:{'X-Master-Key':API_KEY,'X-Bin-Versioning':'false'}});
+  var r=await fetch(BASE+'/b/'+BIN_ID+'/latest',{headers:{'X-Master-Key':API_KEY,'X-Bin-Versioning':'false'}});
   if(!r.ok) throw new Error('GET '+r.status);
   return (await r.json()).record;
 }
+
 async function apiPut(data){
-  const r=await fetch(`${BASE}/b/${BIN_ID}`,{method:'PUT',headers:{'X-Master-Key':API_KEY,'Content-Type':'application/json','X-Bin-Versioning':'false'},body:JSON.stringify(data)});
+  var r=await fetch(BASE+'/b/'+BIN_ID,{method:'PUT',headers:{'X-Master-Key':API_KEY,'Content-Type':'application/json','X-Bin-Versioning':'false'},body:JSON.stringify(data)});
   if(!r.ok) throw new Error('PUT '+r.status);
   return r.json();
 }
-async function loadData(showToast=false){
+
+async function loadData(showToast){
   try{
-    const rec=await apiGet();
+    var rec=await apiGet();
     tasks=Array.isArray(rec.tasks)?rec.tasks:[];
-    nextId=rec.nextId||(tasks.length?Math.max(...tasks.map(t=>t.id))+1:1);
-    // migrate old tasks that have topic but no subtask priority
-    tasks.forEach(t=>{ t.subtasks.forEach(s=>{ if(!s.priority) s.priority='normal'; }); });
+    nextId=rec.nextId||(tasks.length?Math.max.apply(null,tasks.map(function(t){return t.id;}))+1:1);
+    tasks.forEach(function(t){t.subtasks.forEach(function(s){migrate(s);});});
     if(showToast) toast('Refreshed');
-  }catch(e){ console.error(e); toast('Failed to load — check connection'); }
+  }catch(e){ console.error(e); toast('Failed to load'); }
   renderCurrent();
 }
+
 async function saveData(){
   if(isSaving) return;
   isSaving=true;
-  const ind=document.getElementById('saving-ind');
+  var ind=document.getElementById('saving-ind');
   if(ind) ind.classList.add('on');
-  try{ await apiPut({tasks,nextId}); }
+  try{ await apiPut({tasks:tasks,nextId:nextId}); }
   catch(e){ console.error(e); toast('Save failed'); }
   isSaving=false;
   if(ind) ind.classList.remove('on');
 }
 
-// ── routing ───────────────────────────────────────────────
 function getMode(){ return new URLSearchParams(window.location.search).get('mode'); }
-function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById('screen-'+id).classList.add('active'); }
-function renderCurrent(){ const m=getMode(); if(m==='admin') renderAdmin(); if(m==='volunteer') renderVolunteer(); }
+function show(id){ document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');}); document.getElementById('screen-'+id).classList.add('active'); }
+function renderCurrent(){ var m=getMode(); if(m==='admin') renderAdmin(); if(m==='volunteer') renderVolunteer(); }
+
 async function init(){
-  const mode=getMode();
+  var mode=getMode();
   if(mode==='admin'){
     show('admin');
     document.getElementById('topbar-right').innerHTML='<span class="topbar-mode mode-admin">Admin</span>';
-    await loadData(); setShareUrls();
+    await loadData(false); setShareUrls();
   } else if(mode==='volunteer'){
     show('volunteer');
     document.getElementById('topbar-right').innerHTML='<span class="topbar-mode mode-volunteer">Volunteer</span>';
-    await loadData();
-  } else { window.location.replace(window.location.pathname+'?mode=volunteer'); }
+    await loadData(false);
+  } else {
+    window.location.replace(window.location.pathname+'?mode=volunteer');
+  }
 }
 
-// ── share / tabs ──────────────────────────────────────────
-function setShareUrls(){ const base=window.location.href.split('?')[0]; document.getElementById('admin-url').textContent=base+'?mode=admin'; document.getElementById('vol-url').textContent=base+'?mode=volunteer'; }
-function copyUrl(src,btn){ navigator.clipboard.writeText(document.getElementById(src).textContent).then(()=>{ const el=document.getElementById(btn); el.textContent='Copied!'; setTimeout(()=>el.textContent='Copy',2000); }); }
+function setShareUrls(){
+  var base=window.location.href.split('?')[0];
+  document.getElementById('admin-url').textContent=base+'?mode=admin';
+  document.getElementById('vol-url').textContent=base+'?mode=volunteer';
+}
+
+function copyUrl(src,btn){
+  navigator.clipboard.writeText(document.getElementById(src).textContent).then(function(){
+    var el=document.getElementById(btn); el.textContent='Copied!'; setTimeout(function(){el.textContent='Copy';},2000);
+  });
+}
+
 function showTab(tab){
-  ['list','paste','progress','share'].forEach(t=>{ const p=document.getElementById('pane-'+t),b=document.getElementById('tab-'+t); if(p) p.style.display=t===tab?'block':'none'; if(b) b.classList.toggle('active',t===tab); });
+  ['list','paste','progress','share'].forEach(function(t){
+    var p=document.getElementById('pane-'+t),b=document.getElementById('tab-'+t);
+    if(p) p.style.display=t===tab?'block':'none';
+    if(b) b.classList.toggle('active',t===tab);
+  });
   if(tab==='progress') renderProgress();
   if(tab==='list') renderAdmin();
 }
-function setFilter(f){ volFilter=f; document.getElementById('filter-all').classList.toggle('active',f==='all'); document.getElementById('filter-incomplete').classList.toggle('active',f==='incomplete'); renderVolunteer(); }
-function toggleGroup(key){ openGroups[key]=!openGroups[key]; const b=document.getElementById('gb-'+key),c=document.getElementById('gc-'+key); if(b) b.classList.toggle('open',openGroups[key]); if(c) c.classList.toggle('open',openGroups[key]); }
 
-// ── render group ──────────────────────────────────────────
-function priLabel(p){ return p==='urgent'?'🔴 Urgent':p==='high'?'🟠 High':p==='low'?'⚪ Low':''; }
-
-function buildSubtaskAdmin(t, s, realIdx){
-  const pid = `${t.id}-${realIdx}`;
-  return `<div class="subtask-row" id="sr-${pid}">
-    <div class="check${s.done?' done':''}" onclick="${s.done?`openUndo(${t.id},${realIdx})`:`adminCheck(${t.id},${realIdx})`}" title="${s.done?'Undo':'Complete'}">${s.done?checkSvg():''}</div>
-    <div class="subtask-main">
-      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-        <span class="subtask-text${s.done?' done':''}" id="st-${pid}" ondblclick="startEditSubtask(${t.id},${realIdx})">${esc(s.text)}</span>
-        ${s.priority&&s.priority!=='normal'?`<span class="pri-pill pri-${s.priority}">${priLabel(s.priority)}</span>`:''}
-      </div>
-      <input class="inline-edit" id="se-${pid}" value="${esc(s.text)}" onkeydown="subtaskEditKey(event,${t.id},${realIdx})"/>
-      <div class="edit-actions" id="sea-${pid}">
-        <button class="btn btn-xs btn-primary" onclick="saveSubtaskEdit(${t.id},${realIdx})">Save</button>
-        <button class="btn btn-xs" onclick="cancelSubtaskEdit(${t.id},${realIdx})">Cancel</button>
-      </div>
-      ${s.done?`<div class="by-tag">✓ ${esc(s.by)} · ${fmtTime(s.completedAt)}${s.note?` · <em>${esc(s.note)}</em>`:''}</div>`:''}
-    </div>
-    <div class="subtask-actions">
-      <select style="border:1px solid var(--border2);border-radius:4px;font-size:11px;padding:2px 4px;background:var(--surface);cursor:pointer;font-family:var(--font)" onchange="changeSubPriority(${t.id},${realIdx},this.value)" title="Priority">
-        <option value="normal" ${(s.priority||'normal')==='normal'?'selected':''}>◦ Normal</option>
-        <option value="urgent" ${s.priority==='urgent'?'selected':''}>🔴 Urgent</option>
-        <option value="high"   ${s.priority==='high'?'selected':''}>🟠 High</option>
-        <option value="low"    ${s.priority==='low'?'selected':''}>⚪ Low</option>
-      </select>
-      <button class="btn btn-danger" onclick="removeSubtask(${t.id},${realIdx})" title="Remove">✕</button>
-    </div>
-  </div>`;
+function setFilter(f){
+  volFilter=f;
+  document.getElementById('filter-all').classList.toggle('active',f==='all');
+  document.getElementById('filter-incomplete').classList.toggle('active',f==='incomplete');
+  renderVolunteer();
 }
 
-function buildSubtaskVolunteer(t, s, realIdx){
-  if(volFilter==='incomplete' && s.done) return '';
-  return `<div class="subtask-row"${!s.done?` style="cursor:pointer" onclick="openComplete(${t.id},${realIdx})"`:''}>
-    <div class="check${s.done?' done':''}">${s.done?checkSvg():''}</div>
-    <div class="subtask-main">
-      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-        <span class="subtask-text${s.done?' done':''}">${esc(s.text)}</span>
-        ${s.priority&&s.priority!=='normal'?`<span class="pri-pill pri-${s.priority}">${priLabel(s.priority)}</span>`:''}
-      </div>
-      ${s.done
-        ?`<div class="by-tag">✓ ${esc(s.by)} · ${fmtTime(s.completedAt)}</div>${s.note?`<div class="note-tag">"${esc(s.note)}"</div>`:''}`
-        :`<div class="tap-hint">tap to mark complete</div>`}
-    </div>
-  </div>`;
+function toggleGroup(key){
+  openGroups[key]=!openGroups[key];
+  var b=document.getElementById('gb-'+key),c=document.getElementById('gc-'+key);
+  if(b) b.classList.toggle('open',openGroups[key]);
+  if(c) c.classList.toggle('open',openGroups[key]);
 }
 
-function buildLocationGroup(g, isAdmin){
-  const key = makeKey(g.location);
-  const {total, done} = groupProgress(g.tasks);
+function toggleSubMeta(pid){
+  var el=document.getElementById('sme-'+pid);
+  if(el) el.classList.toggle('open');
+}
 
-  // for volunteer incomplete filter: count visible subtasks
-  let visibleTotal = total, visibleDone = done;
-  if(!isAdmin && volFilter==='incomplete'){
-    visibleTotal = g.tasks.reduce((a,t)=>a+t.subtasks.filter(s=>!s.done).length, 0);
-    visibleDone = 0;
-    if(visibleTotal===0) return ''; // skip fully complete locations in incomplete filter
+function buildSubAdmin(t,s,i){
+  var pid=t.id+'-'+i;
+  var od=isOverdue(s.due);
+  var pills='';
+  if(s.priority&&s.priority!=='normal') pills+='<span class="pri-pill pri-'+s.priority+'">'+priLabel(s.priority)+'</span> ';
+  if(s.due) pills+='<span class="due-pill'+(od?' overdue':'')+'">Due: '+esc(fmtDue(s.due))+(od?' OVERDUE':'')+'</span> ';
+  if(s.assigned) pills+='<span class="assigned-pill">'+esc(s.assigned)+'</span> ';
+  if(s.unable) pills+='<span class="unable-pill">Unable</span>';
+
+  return '<div class="subtask-row'+(s.unable?' is-unable':'')+'" id="sr-'+pid+'">'
+    +'<div class="check'+(s.done?' done':s.unable?' unable':'')+'"'
+    +(s.done||s.unable?' onclick="openUndo('+t.id+','+i+')" title="Click to undo"':' style="cursor:default"')+'>'
+    +(s.done?checkSvg():s.unable?'!':'')
+    +'</div>'
+    +'<div class="subtask-main">'
+    +'<div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">'
+    +'<span class="subtask-text'+(s.done?' done':s.unable?' unable-txt':'')+'" id="st-'+pid+'" ondblclick="startEditSubtask('+t.id+','+i+')">'+esc(s.text)+'</span>'
+    +pills
+    +'</div>'
+    +'<input class="inline-edit" id="se-'+pid+'" value="'+esc(s.text)+'" onkeydown="subtaskEditKey(event,'+t.id+','+i+')"/>'
+    +'<div class="edit-actions" id="sea-'+pid+'">'
+    +'<button class="btn btn-xs btn-primary" onclick="saveSubtaskEdit('+t.id+','+i+')">Save</button>'
+    +'<button class="btn btn-xs" onclick="cancelSubtaskEdit('+t.id+','+i+')">Cancel</button>'
+    +'</div>'
+    +(s.done?'<div class="by-tag">Done: '+esc(s.by)+' &middot; '+fmtTime(s.completedAt)+(s.note?' &middot; '+esc(s.note):'')+'</div>':'')
+    +(s.unable?'<div class="unable-reason">Unable: '+esc(s.by)+' &mdash; "'+esc(s.reason)+'" &middot; '+fmtTime(s.completedAt)+'</div>':'')
+    +'<div class="sub-meta-edit" id="sme-'+pid+'">'
+    +'<div style="font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Subtask settings</div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+    +'<div style="flex:1;min-width:120px"><div style="font-size:11px;color:var(--muted);margin-bottom:2px">Priority</div>'
+    +'<select onchange="changeSubPriority('+t.id+','+i+',this.value)">'
+    +'<option value="normal"'+(( s.priority||'normal')==='normal'?' selected':'')+'>Normal</option>'
+    +'<option value="urgent"'+(s.priority==='urgent'?' selected':'')+'>Urgent</option>'
+    +'<option value="high"'+(s.priority==='high'?' selected':'')+'>High</option>'
+    +'<option value="low"'+(s.priority==='low'?' selected':'')+'>Low</option>'
+    +'</select></div>'
+    +'<div style="flex:2;min-width:180px"><div style="font-size:11px;color:var(--muted);margin-bottom:2px">Due date &amp; time</div>'
+    +'<input type="datetime-local" value="'+(s.due||'')+'" onchange="changeSubDue('+t.id+','+i+',this.value)"/>'
+    +'</div></div>'
+    +'<div style="margin-top:6px"><div style="font-size:11px;color:var(--muted);margin-bottom:2px">Assigned volunteer(s)</div>'
+    +'<input type="text" value="'+esc(s.assigned||'')+'" placeholder="e.g. John, Mary" onchange="changeSubAssigned('+t.id+','+i+',this.value)"/>'
+    +'</div></div>'
+    +'</div>'
+    +'<div class="subtask-actions">'
+    +'<button class="btn btn-xs" onclick="toggleSubMeta(\''+pid+'\')" title="Settings" style="font-size:11px;padding:3px 6px">&#9881;</button>'
+    +'<button class="btn btn-danger btn-xs" onclick="removeSubtask('+t.id+','+i+')" title="Remove">x</button>'
+    +'</div>'
+    +'</div>';
+}
+
+function buildSubVolunteer(t,s,i){
+  if(volFilter==='incomplete'&&(s.done||s.unable)) return '';
+  var od=isOverdue(s.due);
+  var pills='';
+  if(s.priority&&s.priority!=='normal') pills+='<span class="pri-pill pri-'+s.priority+'">'+priLabel(s.priority)+'</span> ';
+  if(s.due) pills+='<span class="due-pill'+(od?' overdue':'')+'">Due: '+esc(fmtDue(s.due))+(od?' OVERDUE':'')+'</span> ';
+  if(s.assigned) pills+='<span class="assigned-pill">'+esc(s.assigned)+'</span> ';
+  if(s.unable) pills+='<span class="unable-pill">Unable</span>';
+
+  var clickable=!s.done&&!s.unable;
+  return '<div class="subtask-row'+(s.unable?' is-unable':'')+'"'
+    +(clickable?' style="cursor:pointer" onclick="openComplete('+t.id+','+i+')"':'')+'>'
+    +'<div class="check'+(s.done?' done':s.unable?' unable':'')+'">'+(s.done?checkSvg():s.unable?'!':'')+'</div>'
+    +'<div class="subtask-main">'
+    +'<div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">'
+    +'<span class="subtask-text'+(s.done?' done':s.unable?' unable-txt':'')+'">'+esc(s.text)+'</span>'
+    +pills
+    +'</div>'
+    +(s.done?'<div class="by-tag">Done by '+esc(s.by)+' &middot; '+fmtTime(s.completedAt)+(s.note?' &middot; <em>'+esc(s.note)+'</em>':'')+'</div>':'')
+    +(s.unable?'<div class="unable-reason">'+esc(s.by)+' flagged unable: "'+esc(s.reason)+'"</div>':'')
+    +(!s.done&&!s.unable?'<div class="tap-hint">Tap to complete or flag as unable</div>':'')
+    +'</div></div>';
+}
+
+function buildLocationGroup(g,isAdmin){
+  var key=makeKey(g.location);
+  var gp=groupProgress(g.tasks);
+  var total=gp.total,done=gp.done,unable=gp.unable;
+
+  if(!isAdmin&&volFilter==='incomplete'){
+    var vis=g.tasks.reduce(function(a,t){return a+t.subtasks.filter(function(s){return !s.done&&!s.unable;}).length;},0);
+    if(vis===0) return '';
   }
 
-  const pct = total ? Math.round(done/total*100) : 0;
-  const allDone = done===total;
-  const bc = allDone?'badge-done':done>0?'badge-partial':'badge-pending';
-  const bt = allDone?'Done':done>0?pct+'%':'Pending';
+  var pct=total?Math.round(done/total*100):0;
+  var allDone=done===total;
+  var bc=allDone?'badge-done':unable>0?'badge-blocked':done>0?'badge-partial':'badge-pending';
+  var bt=allDone?'Done':unable>0?unable+' blocked':done>0?pct+'%':'Pending';
   if(openGroups[key]===undefined) openGroups[key]=isAdmin;
-  const isOpen = openGroups[key];
+  var isOpen=openGroups[key];
 
-  // sort subtasks within tasks: urgent first, then high, then normal, then low
-  const priOrder = {urgent:0,high:1,normal:2,low:3};
-
-  const tasksHtml = g.tasks.map(t=>{
-    const sortedSubs = t.subtasks.map((s,i)=>({s,i})).sort((a,b)=>(priOrder[a.s.priority||'normal']||2)-(priOrder[b.s.priority||'normal']||2));
-    const subsHtml = sortedSubs.map(({s,i})=> isAdmin ? buildSubtaskAdmin(t,s,i) : buildSubtaskVolunteer(t,s,i)).join('');
-
-    const tdone = t.subtasks.filter(s=>s.done).length;
-    const ttotal = t.subtasks.length;
-
+  var tasksHtml=g.tasks.map(function(t){
+    var sorted=t.subtasks.map(function(s,i){return {s:s,i:i};}).sort(function(a,b){return priOrd(a.s.priority||'normal')-priOrd(b.s.priority||'normal');});
+    var subsHtml=sorted.map(function(x){return isAdmin?buildSubAdmin(t,x.s,x.i):buildSubVolunteer(t,x.s,x.i);}).join('');
+    var tdone=t.subtasks.filter(function(s){return s.done;}).length;
+    var ttotal=t.subtasks.length;
     if(isAdmin){
-      return `<div style="border-bottom:1px solid var(--border)">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 16px;background:var(--bg)">
-          <div style="display:flex;align-items:center;gap:8px">
-            <span style="font-size:11px;font-family:var(--mono);color:var(--muted)">${tdone}/${ttotal} done</span>
-          </div>
-          <button class="btn btn-danger btn-xs" onclick="deleteTask(${t.id})" title="Delete this group">Delete group</button>
-        </div>
-        ${subsHtml}
-        <div class="add-sub-wrap">
-          <input id="add-sub-${t.id}" placeholder="Add subtask…" onkeydown="if(event.key==='Enter') addSubtask(${t.id})"/>
-          <button class="btn btn-sm btn-primary" onclick="addSubtask(${t.id})">Add</button>
-        </div>
-      </div>`;
-    } else {
-      return subsHtml;
+      return '<div style="border-bottom:1px solid var(--border)">'
+        +'<div class="section-bar"><span style="font-size:11px;font-family:var(--mono);color:var(--muted)">'+tdone+'/'+ttotal+' done</span>'
+        +'<button class="btn btn-danger btn-xs" onclick="deleteTask('+t.id+')">Delete group</button></div>'
+        +subsHtml
+        +'<div class="add-sub-wrap"><input id="add-sub-'+t.id+'" placeholder="Add subtask..." onkeydown="if(event.key===\'Enter\') addSubtask('+t.id+')"/>'
+        +'<button class="btn btn-sm btn-primary" onclick="addSubtask('+t.id+')">Add</button></div>'
+        +'</div>';
     }
+    return subsHtml;
   }).join('');
 
-  const progressBar = `<div class="progress-bar" style="margin:0 0 0 0;padding:0"><div class="progress-bar-inner" style="width:${pct}%"></div></div>`;
+  var editWrap=isAdmin?'<div id="gloc-edit-wrap-'+key+'" style="display:none;padding:10px 16px;border-top:1px solid var(--border)">'
+    +'<input id="gloc-edit-'+key+'" value="'+esc(g.location)+'" style="font-size:14px"/>'
+    +'<div style="display:flex;gap:6px;margin-top:6px">'
+    +'<button class="btn btn-sm btn-primary" onclick="saveLocationEdit(\''+key+'\','+JSON.stringify(g.location)+')">Save</button>'
+    +'<button class="btn btn-sm" onclick="cancelLocationEdit(\''+key+'\')">Cancel</button>'
+    +'</div></div>':'';
 
-  return `<div class="group">
-    <div class="group-header" onclick="toggleGroup('${key}')">
-      <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
-        <span class="group-title" id="gloc-${key}" ondblclick="${isAdmin?`event.stopPropagation();startEditLocation('${key}',${JSON.stringify(g.location)})`:''}">${esc(g.location)}</span>
-      </div>
-      <div class="group-meta">
-        <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">${done}/${total}</span>
-        <span class="badge ${bc}">${bt}</span>
-        <span class="chevron${isOpen?' open':''}" id="gc-${key}">▾</span>
-      </div>
-    </div>
-    ${isAdmin?`<div id="gloc-edit-wrap-${key}" style="display:none;padding:10px 16px;border-top:1px solid var(--border)">
-      <input id="gloc-edit-${key}" value="${esc(g.location)}" style="font-size:14px"/>
-      <div style="display:flex;gap:6px;margin-top:6px">
-        <button class="btn btn-sm btn-primary" onclick="saveLocationEdit('${key}',${JSON.stringify(g.location)})">Save</button>
-        <button class="btn btn-sm" onclick="cancelLocationEdit('${key}')">Cancel</button>
-      </div>
-    </div>`:''}
-    <div class="group-body${isOpen?' open':''}" id="gb-${key}">
-      ${tasksHtml}
-      ${!isAdmin?`<div style="padding:0 0 2px">${progressBar}</div>`:''}
-    </div>
-    ${isAdmin?progressBar:''}
-  </div>`;
+  return '<div class="group">'
+    +'<div class="group-header" onclick="toggleGroup(\''+key+'\')">'
+    +'<span class="group-title" id="gloc-'+key+'"'
+    +(isAdmin?' ondblclick="event.stopPropagation();startEditLocation(\''+key+'\','+JSON.stringify(g.location)+')"':'')+'>'+esc(g.location)+'</span>'
+    +'<div class="group-meta">'
+    +'<span style="font-family:var(--mono);font-size:12px;color:var(--muted)">'+done+'/'+total+'</span>'
+    +'<span class="badge '+bc+'">'+bt+'</span>'
+    +'<span class="chevron'+(isOpen?' open':'')+'" id="gc-'+key+'">&#9662;</span>'
+    +'</div></div>'
+    +editWrap
+    +'<div class="group-body'+(isOpen?' open':'')+'" id="gb-'+key+'">'+tasksHtml+'</div>'
+    +'<div class="progress-bar" style="margin:4px 16px 8px"><div class="progress-bar-inner" style="width:'+pct+'%"></div></div>'
+    +'</div>';
 }
 
-// ── render screens ────────────────────────────────────────
 function renderAdmin(){
-  const el=document.getElementById('pane-list');
-  if(!el) return;
+  var el=document.getElementById('pane-list'); if(!el) return;
   if(!tasks.length){el.innerHTML='<div class="empty">No tasks yet. Add one or paste from a spreadsheet.</div>';return;}
-  el.innerHTML=groupByLocation(tasks).map(g=>buildLocationGroup(g,true)).join('');
+  el.innerHTML=groupByLocation(tasks).map(function(g){return buildLocationGroup(g,true);}).join('');
 }
 
 function renderVolunteer(){
-  const el=document.getElementById('vol-task-list');
-  if(!el) return;
-  if(!tasks.length){el.innerHTML='<div class="empty">No tasks yet — check back soon.</div>';return;}
-  const html=groupByLocation(tasks).map(g=>buildLocationGroup(g,false)).join('');
-  el.innerHTML=html||'<div class="empty">All tasks complete! 🎉</div>';
+  var el=document.getElementById('vol-task-list'); if(!el) return;
+  if(!tasks.length){el.innerHTML='<div class="empty">No tasks yet.</div>';return;}
+  var html=groupByLocation(tasks).map(function(g){return buildLocationGroup(g,false);}).join('');
+  el.innerHTML=html||'<div class="empty">All tasks complete!</div>';
 }
 
 function renderProgress(){
-  const total=tasks.reduce((a,t)=>a+t.subtasks.length,0);
-  const done=tasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0);
-  const full=tasks.filter(t=>taskStatus(t)==='done').length;
-  const pct=total?Math.round(done/total*100):0;
-  document.getElementById('stats-row').innerHTML=`
-    <div class="stat"><div class="stat-n">${tasks.length}</div><div class="stat-l">Groups</div></div>
-    <div class="stat"><div class="stat-n">${done}/${total}</div><div class="stat-l">Subtasks</div></div>
-    <div class="stat"><div class="stat-n">${full}</div><div class="stat-l">Complete</div></div>
-    <div class="stat"><div class="stat-n">${pct}%</div><div class="stat-l">Overall</div></div>
-  `;
-  document.getElementById('progress-detail').innerHTML=groupByLocation(tasks).map(g=>{
-    const {total:gt,done:gd}=groupProgress(g.tasks);
-    const gp=Math.round(gd/gt*100);
-    return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 16px;margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-        <span style="font-weight:600;font-size:14px">📍 ${esc(g.location)}</span>
-        <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">${gd}/${gt} (${gp}%)</span>
-      </div>
-      <div class="progress-bar" style="margin:0 0 10px"><div class="progress-bar-inner" style="width:${gp}%"></div></div>
-      ${g.tasks.map(t=>t.subtasks.map(s=>`<div style="font-size:12px;padding:3px 0;color:var(--muted);display:flex;align-items:flex-start;gap:6px">
-        <span style="color:${s.done?'var(--green)':'var(--faint)'};flex-shrink:0">${s.done?'✓':'○'}</span>
-        <span>${esc(s.text)}${s.priority&&s.priority!=='normal'?` <span style="font-size:10px;opacity:.7">${priLabel(s.priority)}</span>`:''}${s.done?` — <strong>${esc(s.by)}</strong> <span style="color:var(--faint)">${fmtTime(s.completedAt)}</span>${s.note?` <em>"${esc(s.note)}"</em>`:''}`:''}</span>
-      </div>`).join('')).join('')}
-    </div>`;
+  var total=tasks.reduce(function(a,t){return a+t.subtasks.length;},0);
+  var done=tasks.reduce(function(a,t){return a+t.subtasks.filter(function(s){return s.done;}).length;},0);
+  var unable=tasks.reduce(function(a,t){return a+t.subtasks.filter(function(s){return s.unable;}).length;},0);
+  var pct=total?Math.round(done/total*100):0;
+  document.getElementById('stats-row').innerHTML=
+    '<div class="stat"><div class="stat-n">'+done+'/'+total+'</div><div class="stat-l">Done</div></div>'
+    +'<div class="stat"><div class="stat-n">'+pct+'%</div><div class="stat-l">Overall</div></div>'
+    +'<div class="stat"><div class="stat-n" style="color:var(--red)">'+unable+'</div><div class="stat-l">Blocked</div></div>'
+    +'<div class="stat"><div class="stat-n">'+tasks.length+'</div><div class="stat-l">Groups</div></div>';
+
+  document.getElementById('progress-detail').innerHTML=groupByLocation(tasks).map(function(g){
+    var gp=groupProgress(g.tasks);
+    var gd=gp.done,gt=gp.total,gu=gp.unable;
+    var gpct=Math.round(gd/gt*100);
+    var subsHtml=g.tasks.map(function(t){
+      return t.subtasks.map(function(s){
+        var color=s.done?'var(--green)':s.unable?'var(--red)':'var(--faint)';
+        var sym=s.done?'done':s.unable?'unable':'pending';
+        var detail='';
+        if(s.due) detail+=' | Due: '+fmtDue(s.due);
+        if(s.assigned) detail+=' | Assigned: '+s.assigned;
+        if(s.done) detail+=' | Done by: '+s.by+' '+fmtTime(s.completedAt)+(s.note?' "'+s.note+'"':'');
+        if(s.unable) detail+=' | Unable: '+s.by+' "'+s.reason+'"';
+        return '<div style="font-size:12px;padding:3px 0;color:var(--muted);display:flex;gap:6px">'
+          +'<span style="color:'+color+';flex-shrink:0">'+(s.done?'done':s.unable?'unable':'pending')+'</span>'
+          +'<span>'+esc(s.text)+esc(detail)+'</span></div>';
+      }).join('');
+    }).join('');
+    return '<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 16px;margin-bottom:10px">'
+      +'<div style="display:flex;justify-content:space-between;margin-bottom:5px">'
+      +'<span style="font-weight:600;font-size:14px">'+esc(g.location)+'</span>'
+      +'<span style="font-family:var(--mono);font-size:12px;color:var(--muted)">'+gd+'/'+gt+' ('+gpct+'%)'+(gu?' | '+gu+' blocked':'')+'</span>'
+      +'</div>'
+      +'<div class="progress-bar" style="margin:0 0 10px"><div class="progress-bar-inner" style="width:'+gpct+'%"></div></div>'
+      +subsHtml+'</div>';
   }).join('');
 }
 
-// ── add task ──────────────────────────────────────────────
-function openAddModal(){ document.getElementById('add-modal').classList.add('open'); setTimeout(()=>document.getElementById('new-location').focus(),50); }
-function closeModal(){ document.querySelectorAll('.modal-bg').forEach(m=>m.classList.remove('open')); pendingComplete=null; pendingUndo=null; }
+function openAddModal(){ document.getElementById('add-modal').classList.add('open'); setTimeout(function(){document.getElementById('new-location').focus();},50); }
+function closeModal(){ document.querySelectorAll('.modal-bg').forEach(function(m){m.classList.remove('open');}); pendingComplete=null; pendingUndo=null; }
 
 async function saveTask(){
-  const location=document.getElementById('new-location').value.trim();
-  const raw=document.getElementById('new-subtasks').value.trim();
+  var location=document.getElementById('new-location').value.trim();
+  var raw=document.getElementById('new-subtasks').value.trim();
   if(!location||!raw){alert('Fill in location and at least one subtask.');return;}
-  const subtasks=raw.split('\n').map(s=>s.trim()).filter(Boolean).map(text=>({text,done:false,by:'',note:'',completedAt:null,priority:'normal'}));
-  tasks.push({id:nextId++,location,subtasks});
+  var subtasks=raw.split('\n').map(function(s){return s.trim();}).filter(Boolean).map(function(text){return {text:text,done:false,unable:false,by:'',note:'',reason:'',completedAt:null,priority:'normal',due:'',assigned:''};});
+  tasks.push({id:nextId++,location:location,subtasks:subtasks});
   await saveData();
   document.getElementById('new-location').value='';
   document.getElementById('new-subtasks').value='';
   closeModal(); renderAdmin(); toast('Task group saved');
 }
 
-// ── delete task group ─────────────────────────────────────
-async function deleteTask(id){ if(!confirm('Delete this task group?')) return; tasks=tasks.filter(t=>t.id!==id); await saveData(); renderAdmin(); toast('Deleted'); }
-
-// ── add/remove subtask ────────────────────────────────────
-async function addSubtask(taskId){
-  const inp=document.getElementById('add-sub-'+taskId);
-  const text=inp.value.trim(); if(!text) return;
-  const task=tasks.find(t=>t.id===taskId); if(!task) return;
-  task.subtasks.push({text,done:false,by:'',note:'',completedAt:null,priority:'normal'});
-  inp.value='';
-  await saveData(); renderAdmin(); toast('Subtask added');
+async function deleteTask(id){
+  if(!confirm('Delete this task group?')) return;
+  tasks=tasks.filter(function(t){return t.id!==id;});
+  await saveData(); renderAdmin(); toast('Deleted');
 }
+
+async function addSubtask(taskId){
+  var inp=document.getElementById('add-sub-'+taskId);
+  var text=inp.value.trim(); if(!text) return;
+  var task=tasks.find(function(t){return t.id===taskId;}); if(!task) return;
+  task.subtasks.push({text:text,done:false,unable:false,by:'',note:'',reason:'',completedAt:null,priority:'normal',due:'',assigned:''});
+  inp.value=''; await saveData(); renderAdmin(); toast('Subtask added');
+}
+
 async function removeSubtask(taskId,idx){
   if(!confirm('Remove this subtask?')) return;
-  const task=tasks.find(t=>t.id===taskId); if(!task) return;
+  var task=tasks.find(function(t){return t.id===taskId;}); if(!task) return;
   task.subtasks.splice(idx,1);
-  await saveData(); renderAdmin(); toast('Subtask removed');
+  await saveData(); renderAdmin(); toast('Removed');
 }
 
-// ── inline edit: subtask text ─────────────────────────────
 function startEditSubtask(taskId,idx){
-  const pid=`${taskId}-${idx}`;
+  var pid=taskId+'-'+idx;
   document.getElementById('st-'+pid).style.display='none';
-  const inp=document.getElementById('se-'+pid); const ea=document.getElementById('sea-'+pid);
+  var inp=document.getElementById('se-'+pid),ea=document.getElementById('sea-'+pid);
   inp.classList.add('active'); ea.classList.add('active'); inp.focus(); inp.select();
 }
 function cancelSubtaskEdit(taskId,idx){
-  const pid=`${taskId}-${idx}`;
-  const task=tasks.find(t=>t.id===taskId);
+  var pid=taskId+'-'+idx;
+  var task=tasks.find(function(t){return t.id===taskId;});
   document.getElementById('se-'+pid).value=task.subtasks[idx].text;
   document.getElementById('se-'+pid).classList.remove('active');
   document.getElementById('sea-'+pid).classList.remove('active');
   document.getElementById('st-'+pid).style.display='';
 }
 async function saveSubtaskEdit(taskId,idx){
-  const pid=`${taskId}-${idx}`;
-  const val=document.getElementById('se-'+pid).value.trim();
+  var pid=taskId+'-'+idx;
+  var val=document.getElementById('se-'+pid).value.trim();
   if(!val){alert('Cannot be empty.');return;}
-  tasks.find(t=>t.id===taskId).subtasks[idx].text=val;
+  tasks.find(function(t){return t.id===taskId;}).subtasks[idx].text=val;
   await saveData(); renderAdmin(); toast('Saved');
 }
 function subtaskEditKey(e,taskId,idx){ if(e.key==='Enter') saveSubtaskEdit(taskId,idx); if(e.key==='Escape') cancelSubtaskEdit(taskId,idx); }
 
-// ── inline edit: location ─────────────────────────────────
 function startEditLocation(key,oldLoc){
   document.getElementById('gloc-'+key).style.display='none';
   document.getElementById('gloc-edit-wrap-'+key).style.display='block';
@@ -557,101 +632,129 @@ function cancelLocationEdit(key){
   document.getElementById('gloc-'+key).style.display='';
 }
 async function saveLocationEdit(key,oldLoc){
-  const val=document.getElementById('gloc-edit-'+key).value.trim();
+  var val=document.getElementById('gloc-edit-'+key).value.trim();
   if(!val){alert('Cannot be empty.');return;}
-  tasks.forEach(t=>{ if(t.location===oldLoc) t.location=val; });
+  tasks.forEach(function(t){if(t.location===oldLoc) t.location=val;});
   await saveData(); renderAdmin(); toast('Location updated');
 }
 
-// ── subtask priority ──────────────────────────────────────
 async function changeSubPriority(taskId,idx,val){
-  const task=tasks.find(t=>t.id===taskId); if(!task) return;
-  task.subtasks[idx].priority=val;
-  await saveData(); renderAdmin();
+  var t=tasks.find(function(t){return t.id===taskId;}); if(t){t.subtasks[idx].priority=val; await saveData();}
+}
+async function changeSubDue(taskId,idx,val){
+  var t=tasks.find(function(t){return t.id===taskId;}); if(t){t.subtasks[idx].due=val; await saveData(); renderAdmin();}
+}
+async function changeSubAssigned(taskId,idx,val){
+  var t=tasks.find(function(t){return t.id===taskId;}); if(t){t.subtasks[idx].assigned=val;}
 }
 
-// ── admin check ───────────────────────────────────────────
-async function adminCheck(taskId,idx){
-  const task=tasks.find(t=>t.id===taskId); if(!task) return;
-  const s=task.subtasks[idx]; s.done=true; s.by='Admin'; s.completedAt=new Date().toISOString(); s.note='';
-  await saveData(); renderAdmin(); toast('Marked complete');
-}
-
-// ── volunteer complete ────────────────────────────────────
 function openComplete(taskId,idx){
-  const task=tasks.find(t=>t.id===taskId); if(!task) return;
-  pendingComplete={taskId,idx};
+  var task=tasks.find(function(t){return t.id===taskId;}); if(!task) return;
+  pendingComplete={taskId:taskId,idx:idx};
   document.getElementById('complete-sub').textContent=task.subtasks[idx].text;
   document.getElementById('completer-name').value='';
   document.getElementById('completer-note').value='';
   document.getElementById('complete-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('completer-name').focus(),60);
-}
-async function confirmComplete(){
-  const name=document.getElementById('completer-name').value.trim();
-  if(!name){alert('Please enter your name.');return;}
-  const note=document.getElementById('completer-note').value.trim();
-  const task=tasks.find(t=>t.id===pendingComplete.taskId);
-  const s=task.subtasks[pendingComplete.idx];
-  s.done=true; s.by=name; s.note=note; s.completedAt=new Date().toISOString();
-  await saveData(); closeModal(); renderVolunteer(); toast('Marked complete ✓');
+  setTimeout(function(){document.getElementById('completer-name').focus();},60);
 }
 
-// ── undo ──────────────────────────────────────────────────
+async function confirmComplete(){
+  var name=document.getElementById('completer-name').value.trim();
+  if(!name){alert('Please enter your name.');return;}
+  var note=document.getElementById('completer-note').value.trim();
+  var s=tasks.find(function(t){return t.id===pendingComplete.taskId;}).subtasks[pendingComplete.idx];
+  s.done=true; s.unable=false; s.by=name; s.note=note; s.reason=''; s.completedAt=new Date().toISOString();
+  await saveData(); closeModal(); renderVolunteer(); toast('Marked complete');
+}
+
+function switchToUnable(){
+  var sub=document.getElementById('complete-sub').textContent;
+  var name=document.getElementById('completer-name').value;
+  document.getElementById('complete-modal').classList.remove('open');
+  document.getElementById('unable-sub').textContent=sub;
+  document.getElementById('unable-name').value=name;
+  document.getElementById('unable-reason').value='';
+  document.getElementById('unable-modal').classList.add('open');
+  setTimeout(function(){document.getElementById('unable-name').focus();},60);
+}
+
+function switchToComplete(){
+  var sub=document.getElementById('unable-sub').textContent;
+  var name=document.getElementById('unable-name').value;
+  document.getElementById('unable-modal').classList.remove('open');
+  document.getElementById('complete-sub').textContent=sub;
+  document.getElementById('completer-name').value=name;
+  document.getElementById('completer-note').value='';
+  document.getElementById('complete-modal').classList.add('open');
+}
+
+async function confirmUnable(){
+  var name=document.getElementById('unable-name').value.trim();
+  if(!name){alert('Please enter your name.');return;}
+  var reason=document.getElementById('unable-reason').value.trim();
+  if(!reason){alert('Please enter a reason.');return;}
+  var s=tasks.find(function(t){return t.id===pendingComplete.taskId;}).subtasks[pendingComplete.idx];
+  s.done=false; s.unable=true; s.by=name; s.reason=reason; s.note=''; s.completedAt=new Date().toISOString();
+  await saveData(); closeModal(); renderVolunteer(); toast('Flagged as unable');
+}
+
 function openUndo(taskId,idx){
-  const task=tasks.find(t=>t.id===taskId); if(!task) return;
-  const s=task.subtasks[idx]; pendingUndo={taskId,idx};
+  var task=tasks.find(function(t){return t.id===taskId;}); if(!task) return;
+  var s=task.subtasks[idx]; pendingUndo={taskId:taskId,idx:idx};
+  document.getElementById('undo-title').textContent=s.unable?'Clear unable flag?':'Undo completion?';
   document.getElementById('undo-sub').textContent=s.text;
-  document.getElementById('undo-by').textContent=s.by+(s.completedAt?' on '+fmtTime(s.completedAt):'');
+  document.getElementById('undo-desc').textContent=(s.unable?'Flagged unable by ':'Completed by ')+(s.by||'')+(s.completedAt?' on '+fmtTime(s.completedAt):'');
   document.getElementById('undo-modal').classList.add('open');
 }
+
 async function confirmUndo(){
-  const task=tasks.find(t=>t.id===pendingUndo.taskId);
-  const s=task.subtasks[pendingUndo.idx]; s.done=false; s.by=''; s.note=''; s.completedAt=null;
-  await saveData(); closeModal(); renderAdmin(); toast('Completion undone');
+  var s=tasks.find(function(t){return t.id===pendingUndo.taskId;}).subtasks[pendingUndo.idx];
+  s.done=false; s.unable=false; s.by=''; s.note=''; s.reason=''; s.completedAt=null;
+  await saveData(); closeModal(); renderAdmin(); toast('Cleared');
 }
 
-// ── import ────────────────────────────────────────────────
 async function importPaste(){
-  const raw=document.getElementById('paste-input').value.trim();
-  const msg=document.getElementById('paste-msg');
-  if(!raw) return;
-  let count=0;
-  raw.split('\n').filter(l=>l.trim()).forEach(line=>{
-    const cols=line.includes('\t')?line.split('\t'):line.split(',');
-    const c=cols.map(x=>x.trim().replace(/^"|"$/g,''));
+  var raw=document.getElementById('paste-input').value.trim();
+  var msg=document.getElementById('paste-msg'); if(!raw) return;
+  var count=0;
+  raw.split('\n').filter(function(l){return l.trim();}).forEach(function(line){
+    var cols=line.includes('\t')?line.split('\t'):line.split(',');
+    var c=cols.map(function(x){return x.trim().replace(/^"|"$/g,'');});
     if(c.length<2) return;
-    const [location,...rest]=c;
-    const subtasks=rest.filter(Boolean).flatMap(s=>s.split('/').map(x=>x.trim())).filter(Boolean).map(text=>({text,done:false,by:'',note:'',completedAt:null,priority:'normal'}));
+    var location=c[0];
+    var rest=c.slice(1);
+    var subtasks=rest.filter(Boolean).reduce(function(a,s){return a.concat(s.split('/').map(function(x){return x.trim();}).filter(Boolean));},[]).map(function(text){return {text:text,done:false,unable:false,by:'',note:'',reason:'',completedAt:null,priority:'normal',due:'',assigned:''};});
     if(!subtasks.length) return;
-    tasks.push({id:nextId++,location,subtasks}); count++;
+    tasks.push({id:nextId++,location:location,subtasks:subtasks}); count++;
   });
   if(count){
-    await saveData(); msg.style.color='var(--green)'; msg.textContent=`Imported ${count} group${count!==1?'s':''}.`;
+    await saveData();
+    msg.style.color='var(--green)'; msg.textContent='Imported '+count+' group'+(count!==1?'s':'')+'.';
     document.getElementById('paste-input').value='';
-    setTimeout(()=>showTab('list'),900); toast(`${count} group${count!==1?'s':''} imported`);
-  } else { msg.style.color='var(--red)'; msg.textContent='No valid rows. Expected: Location | Subtask1 | Subtask2 ...'; }
+    setTimeout(function(){showTab('list');},900);
+    toast(count+' group'+(count!==1?'s':'')+' imported');
+  } else {
+    msg.style.color='var(--red)'; msg.textContent='No valid rows. Expected: Location | Subtask1 | Subtask2 ...';
+  }
 }
 
-// ── reset ─────────────────────────────────────────────────
 async function confirmReset(){
-  if(!confirm('Reset ALL completions? This keeps your tasks but clears all names, notes and timestamps.')) return;
-  tasks.forEach(t=>t.subtasks.forEach(s=>{ s.done=false; s.by=''; s.note=''; s.completedAt=null; }));
+  if(!confirm('Reset ALL completions and unable flags? Keeps tasks, clears all names/notes/timestamps.')) return;
+  tasks.forEach(function(t){t.subtasks.forEach(function(s){s.done=false;s.unable=false;s.by='';s.note='';s.reason='';s.completedAt=null;});});
   await saveData(); renderAdmin(); toast('All completions reset');
 }
 
-// ── CSV export ────────────────────────────────────────────
 function exportCSV(){
-  const rows=[['Location','Subtask','Priority','Status','Completed By','Completed At','Note']];
-  tasks.forEach(t=>t.subtasks.forEach(s=>rows.push([t.location,s.text,s.priority||'normal',s.done?'Done':'Pending',s.by||'',s.completedAt?fmtTime(s.completedAt):'',s.note||''])));
-  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download='tasks-'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); toast('CSV downloaded');
+  var rows=[['Location','Subtask','Priority','Assigned','Due','Status','By','At','Note/Reason']];
+  tasks.forEach(function(t){t.subtasks.forEach(function(s){rows.push([t.location,s.text,s.priority||'normal',s.assigned||'',s.due?fmtDue(s.due):'',s.done?'Done':s.unable?'Unable':'Pending',s.by||'',s.completedAt?fmtTime(s.completedAt):'',s.done?s.note||'':s.unable?s.reason||'':'']);});});
+  var csv=rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download='tasks-'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); toast('CSV downloaded');
 }
 
-// ── keyboard ──────────────────────────────────────────────
-document.addEventListener('keydown',e=>{
+document.addEventListener('keydown',function(e){
   if(e.key==='Escape') closeModal();
   if(e.key==='Enter'&&document.getElementById('complete-modal').classList.contains('open')) confirmComplete();
+  if(e.key==='Enter'&&document.getElementById('unable-modal').classList.contains('open')&&e.target.tagName!=='TEXTAREA') confirmUnable();
   if(e.key==='Enter'&&document.getElementById('add-modal').classList.contains('open')&&e.target.tagName!=='TEXTAREA') saveTask();
 });
 
