@@ -32,8 +32,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15
 .btn-primary:hover{opacity:.82;background:var(--text)}
 .btn-danger{color:var(--red);border-color:transparent;background:none;padding:4px 7px}
 .btn-danger:hover{background:var(--red-bg);border-color:var(--red)}
-.btn-ghost{border-color:transparent;background:none;color:var(--muted);padding:4px 7px}
-.btn-ghost:hover{background:var(--bg);color:var(--text);border-color:var(--border)}
 .btn-sm{padding:4px 9px;font-size:12px}
 .btn-xs{padding:3px 7px;font-size:11px}
 label{font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin:12px 0 4px}
@@ -45,50 +43,47 @@ textarea{resize:vertical;min-height:80px}
 .badge-partial{background:var(--blue-bg);color:var(--blue)}
 .badge-pending{background:var(--amber-bg);color:var(--amber)}
 
-/* priority colors */
-.pri-urgent{border-left:3px solid #C0392B}
-.pri-high{border-left:3px solid #E67E22}
-.pri-normal{border-left:3px solid transparent}
-.pri-low{border-left:3px solid #95A5A6}
-.pri-dot-urgent{background:#C0392B}
-.pri-dot-high{background:#E67E22}
-.pri-dot-normal{background:#3498DB}
-.pri-dot-low{background:#95A5A6}
-.pri-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+/* priority indicators on subtasks */
+.pri-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-family:var(--mono);padding:1px 6px;border-radius:99px;font-weight:600;flex-shrink:0}
+.pri-urgent{background:#FDECEA;color:#8B2020}
+.pri-high{background:#FFF3CD;color:#7D5A00}
+.pri-normal{display:none}
+.pri-low{background:var(--bg);color:var(--faint)}
 
 /* groups */
 .group{margin-bottom:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface)}
-.group-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;user-select:none;gap:10px}
+.group-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;gap:10px}
 .group-header:hover{background:var(--bg)}
 .group-title{font-size:15px;font-weight:600;flex:1}
 .group-meta{display:flex;align-items:center;gap:7px;flex-shrink:0}
 .group-body{border-top:1px solid var(--border);display:none}
 .group-body.open{display:block}
-.task-item{border-bottom:1px solid var(--border);padding:13px 16px}
-.task-item:last-child{border-bottom:none}
-.location-label{font-size:13px;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.due-badge{font-size:11px;font-family:var(--mono);padding:1px 7px;border-radius:4px;background:var(--amber-bg);color:var(--amber)}
-.due-badge.overdue{background:var(--red-bg);color:var(--red)}
 
 /* subtasks */
-.subtask-row{display:flex;align-items:flex-start;gap:9px;padding:6px 0;border-bottom:1px solid var(--border)}
+.subtask-row{display:flex;align-items:flex-start;gap:9px;padding:10px 16px;border-bottom:1px solid var(--border)}
 .subtask-row:last-child{border-bottom:none}
 .check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .12s;cursor:pointer}
 .check.done{background:var(--green);border-color:var(--green)}
 .check:hover:not(.done){border-color:var(--text)}
-.subtask-text{flex:1;font-size:14px;line-height:1.5}
+.subtask-main{flex:1;min-width:0}
+.subtask-text{font-size:14px;line-height:1.5}
 .subtask-text.done{text-decoration:line-through;color:var(--faint)}
 .by-tag{font-size:11px;font-family:var(--mono);color:var(--muted);margin-top:2px}
 .note-tag{font-size:11px;color:var(--muted);font-style:italic;margin-top:1px}
 .tap-hint{font-size:11px;color:var(--faint);margin-top:2px}
-.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-top:10px}
-.progress-fill{height:100%;border-radius:2px;background:var(--green);transition:width .4s}
+.subtask-actions{display:flex;align-items:center;gap:3px;flex-shrink:0}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;margin:10px 16px 0}
+.progress-bar-inner{height:100%;border-radius:2px;background:var(--green);transition:width .4s}
 
 /* inline edit */
-.inline-edit{display:none;width:100%;font-size:14px;padding:4px 7px;border:1px solid var(--text);border-radius:4px;font-family:var(--font);background:var(--surface);color:var(--text);outline:none}
+.inline-edit{display:none;width:100%;font-size:13px;padding:4px 7px;border:1px solid var(--text);border-radius:4px;font-family:var(--font);background:var(--surface);color:var(--text);outline:none;margin-top:3px}
 .inline-edit.active{display:block}
 .edit-actions{display:none;gap:4px;margin-top:4px}
 .edit-actions.active{display:flex}
+
+/* add subtask */
+.add-sub-wrap{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:6px}
+.add-sub-wrap input{font-size:13px;padding:5px 8px}
 
 /* tabs */
 .tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px;overflow-x:auto}
@@ -105,21 +100,17 @@ textarea{resize:vertical;min-height:80px}
 .modal h2{font-size:16px;font-weight:600;margin-bottom:14px}
 .url-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:9px 13px;display:flex;align-items:center;gap:8px;margin-top:5px}
 .url-text{font-family:var(--mono);font-size:12px;flex:1;word-break:break-all}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:9px 18px;border-radius:8px;font-size:13px;font-family:var(--mono);opacity:0;transition:opacity .2s;z-index:100;pointer-events:none;white-space:nowrap}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:9px 18px;border-radius:8px;font-size:13px;font-family:var(--mono);opacity:0;transition:opacity .2s;z-index:100;pointer-events:none}
 .toast.show{opacity:1}
 .saving{font-size:12px;font-family:var(--mono);color:var(--muted);display:none}
 .saving.on{display:inline}
 .empty{text-align:center;padding:36px 20px;color:var(--muted);font-size:14px}
 .loading{text-align:center;padding:36px;color:var(--muted);font-family:var(--mono);font-size:13px}
-.chevron{transition:transform .18s;font-size:14px;color:var(--muted);display:inline-block;margin-left:2px}
+.chevron{transition:transform .18s;font-size:14px;color:var(--muted);display:inline-block}
 .chevron.open{transform:rotate(180deg)}
 .filter-bar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
 .filter-btn{padding:5px 12px;font-size:12px;border-radius:99px;border:1px solid var(--border2);background:var(--surface);cursor:pointer;font-family:var(--font);color:var(--muted);transition:all .12s}
 .filter-btn.active{background:var(--text);color:var(--bg);border-color:var(--text)}
-.task-actions{display:flex;gap:4px;align-items:center;flex-shrink:0}
-.divider{height:1px;background:var(--border);margin:12px 0}
-.add-subtask-row{display:flex;gap:6px;margin-top:8px}
-.add-subtask-row input{font-size:13px;padding:5px 8px}
 </style>
 </head>
 <body>
@@ -138,7 +129,7 @@ textarea{resize:vertical;min-height:80px}
         <button class="btn btn-sm" onclick="showTab('progress')">📊 Progress</button>
         <button class="btn btn-sm" onclick="loadData(true)">↻ Refresh</button>
         <button class="btn btn-sm" onclick="exportCSV()">⬇ CSV</button>
-        <button class="btn btn-sm btn-danger" style="color:var(--red)" onclick="confirmReset()">↺ Reset</button>
+        <button class="btn btn-sm" style="color:var(--red);border-color:var(--border2)" onclick="confirmReset()">↺ Reset</button>
         <span class="saving" id="saving-ind">saving…</span>
       </div>
       <div class="tabs">
@@ -149,9 +140,12 @@ textarea{resize:vertical;min-height:80px}
       </div>
       <div id="pane-list"><div class="loading">Loading…</div></div>
       <div id="pane-paste" style="display:none">
-        <p style="font-size:13px;color:var(--muted);margin-bottom:10px"><strong>Column order: Topic | Location | Subtask 1 | Subtask 2 | …</strong><br>Tabs or commas. Subtasks can be slash-separated in one cell.</p>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">
+          <strong>Column order: Location | Subtask 1 | Subtask 2 | …</strong><br>
+          Tabs or commas between columns. Subtasks can be slash-separated in one cell.
+        </p>
         <label>Paste spreadsheet data</label>
-        <textarea id="paste-input" style="min-height:150px" placeholder="AV Ancillary Rooms&#9;Amphitheater&#9;Move A/V to dining hall&#9;Stack chairs&#9;Clean kitchen"></textarea>
+        <textarea id="paste-input" style="min-height:150px" placeholder="Amphitheater&#9;Move A/V to dining hall&#9;Stack chairs&#9;Clean kitchen"></textarea>
         <div style="margin-top:10px;display:flex;gap:8px">
           <button class="btn btn-primary btn-sm" onclick="importPaste()">Import</button>
           <button class="btn btn-sm" onclick="document.getElementById('paste-input').value='';document.getElementById('paste-msg').textContent=''">Clear</button>
@@ -169,7 +163,7 @@ textarea{resize:vertical;min-height:80px}
           <div class="url-box"><span class="url-text" id="admin-url">—</span><button class="btn btn-sm" onclick="copyUrl('admin-url','ca')"><span id="ca">Copy</span></button></div>
           <label style="margin-top:14px">Volunteer (share with team)</label>
           <div class="url-box"><span class="url-text" id="vol-url">—</span><button class="btn btn-sm" onclick="copyUrl('vol-url','cv')"><span id="cv">Copy</span></button></div>
-          <p style="font-size:13px;color:var(--muted);margin-top:12px;line-height:1.6">Volunteers can view tasks, mark subtasks complete, and leave notes. They cannot add, edit, or delete tasks.</p>
+          <p style="font-size:13px;color:var(--muted);margin-top:12px;line-height:1.6">Volunteers can view tasks, mark subtasks complete, and leave notes. They cannot edit or delete tasks.</p>
         </div>
       </div>
     </div>
@@ -191,20 +185,9 @@ textarea{resize:vertical;min-height:80px}
 <!-- ADD TASK MODAL -->
 <div class="modal-bg" id="add-modal">
   <div class="modal">
-    <h2>Add task</h2>
-    <label>Topic (category)</label>
-    <input id="new-topic" placeholder="e.g. AV Ancillary Rooms"/>
+    <h2>Add task group</h2>
     <label>Location</label>
     <input id="new-location" placeholder="e.g. Amphitheater and Fitness Center"/>
-    <label>Priority</label>
-    <select id="new-priority">
-      <option value="normal">Normal</option>
-      <option value="urgent">🔴 Urgent</option>
-      <option value="high">🟠 High</option>
-      <option value="low">⚪ Low</option>
-    </select>
-    <label>Due time (optional)</label>
-    <input id="new-due" type="time" placeholder="14:00"/>
     <label>Subtasks (one per line)</label>
     <textarea id="new-subtasks" placeholder="Move A/V to dining hall&#10;Stack up chairs&#10;Clean kitchen space"></textarea>
     <div style="margin-top:14px;display:flex;gap:8px">
@@ -230,14 +213,14 @@ textarea{resize:vertical;min-height:80px}
   </div>
 </div>
 
-<!-- UNDO COMPLETE MODAL -->
+<!-- UNDO MODAL -->
 <div class="modal-bg" id="undo-modal">
   <div class="modal">
     <h2>Undo completion?</h2>
     <p style="font-size:14px;color:var(--muted);margin-bottom:6px" id="undo-sub"></p>
     <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Completed by <strong id="undo-by"></strong>. This will mark it incomplete again.</p>
     <div style="display:flex;gap:8px">
-      <button class="btn btn-primary" onclick="confirmUndo()">Undo completion</button>
+      <button class="btn btn-primary" onclick="confirmUndo()">Undo</button>
       <button class="btn" onclick="closeModal()">Cancel</button>
     </div>
   </div>
@@ -250,6 +233,7 @@ const API_KEY = '$2a$10$NrfVE4jDUcOGoO6.3Z9kyuBsPMNZ63FaibBUBDH2Xa270MC4k9/Oe';
 const BIN_ID  = '6a05ecc8250b1311c34d8a47';
 const BASE    = 'https://api.jsonbin.io/v3';
 
+// tasks shape: { id, location, subtasks: [{text, done, by, note, completedAt, priority}] }
 let tasks = [];
 let nextId = 1;
 let pendingComplete = null;
@@ -258,30 +242,22 @@ let isSaving = false;
 let openGroups = {};
 let volFilter = 'all';
 
-// ── helpers ──────────────────────────────────────────────
+// ── helpers ───────────────────────────────────────────────
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function toast(msg,dur=2200){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),dur);
-}
+function toast(msg,dur=2200){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),dur); }
 function checkSvg(){ return '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
-function taskStatus(t){ const d=t.subtasks.filter(s=>s.done).length; return d===t.subtasks.length?'done':d>0?'partial':'pending'; }
 function fmtTime(iso){ if(!iso) return ''; try{ return new Date(iso).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}); }catch(e){ return ''; } }
-function isOverdue(due){ if(!due) return false; const[h,m]=due.split(':').map(Number); const now=new Date(); return now.getHours()*60+now.getMinutes() > h*60+m; }
-function groupByTopic(list){
+
+function groupByLocation(list){
   const map={},order=[];
-  list.forEach(t=>{ if(!map[t.topic]){map[t.topic]=[];order.push(t.topic);} map[t.topic].push(t); });
-  return order.map(topic=>({topic,tasks:map[topic]}));
+  list.forEach(t=>{ if(!map[t.location]){map[t.location]=[];order.push(t.location);} map[t.location].push(t); });
+  return order.map(loc=>({location:loc, tasks:map[loc]}));
 }
-function groupProgress(gTasks){ return {total:gTasks.reduce((a,t)=>a+t.subtasks.length,0),done:gTasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0)}; }
-function makeKey(topic){ return btoa(encodeURIComponent(topic)).replace(/[^a-z0-9]/gi,'').slice(0,20); }
-function toggleGroup(key){
-  openGroups[key]=!openGroups[key];
-  const b=document.getElementById('gb-'+key),c=document.getElementById('gc-'+key);
-  if(b) b.classList.toggle('open',openGroups[key]);
-  if(c) c.classList.toggle('open',openGroups[key]);
+function groupProgress(gTasks){
+  return { total:gTasks.reduce((a,t)=>a+t.subtasks.length,0), done:gTasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0) };
 }
+function taskStatus(t){ const d=t.subtasks.filter(s=>s.done).length; return d===t.subtasks.length?'done':d>0?'partial':'pending'; }
+function makeKey(str){ try{ return btoa(encodeURIComponent(str)).replace(/[^a-z0-9]/gi,'').slice(0,20); }catch(e){ return Math.random().toString(36).slice(2,10); } }
 
 // ── API ───────────────────────────────────────────────────
 async function apiGet(){
@@ -299,8 +275,10 @@ async function loadData(showToast=false){
     const rec=await apiGet();
     tasks=Array.isArray(rec.tasks)?rec.tasks:[];
     nextId=rec.nextId||(tasks.length?Math.max(...tasks.map(t=>t.id))+1:1);
+    // migrate old tasks that have topic but no subtask priority
+    tasks.forEach(t=>{ t.subtasks.forEach(s=>{ if(!s.priority) s.priority='normal'; }); });
     if(showToast) toast('Refreshed');
-  }catch(e){ console.error(e); toast('Failed to load'); }
+  }catch(e){ console.error(e); toast('Failed to load — check connection'); }
   renderCurrent();
 }
 async function saveData(){
@@ -309,7 +287,7 @@ async function saveData(){
   const ind=document.getElementById('saving-ind');
   if(ind) ind.classList.add('on');
   try{ await apiPut({tasks,nextId}); }
-  catch(e){ console.error(e); toast('Save failed — check connection'); }
+  catch(e){ console.error(e); toast('Save failed'); }
   isSaving=false;
   if(ind) ind.classList.remove('on');
 }
@@ -332,125 +310,117 @@ async function init(){
 }
 
 // ── share / tabs ──────────────────────────────────────────
-function setShareUrls(){
-  const base=window.location.href.split('?')[0];
-  document.getElementById('admin-url').textContent=base+'?mode=admin';
-  document.getElementById('vol-url').textContent=base+'?mode=volunteer';
-}
+function setShareUrls(){ const base=window.location.href.split('?')[0]; document.getElementById('admin-url').textContent=base+'?mode=admin'; document.getElementById('vol-url').textContent=base+'?mode=volunteer'; }
 function copyUrl(src,btn){ navigator.clipboard.writeText(document.getElementById(src).textContent).then(()=>{ const el=document.getElementById(btn); el.textContent='Copied!'; setTimeout(()=>el.textContent='Copy',2000); }); }
 function showTab(tab){
-  ['list','paste','progress','share'].forEach(t=>{
-    const p=document.getElementById('pane-'+t),b=document.getElementById('tab-'+t);
-    if(p) p.style.display=t===tab?'block':'none';
-    if(b) b.classList.toggle('active',t===tab);
-  });
+  ['list','paste','progress','share'].forEach(t=>{ const p=document.getElementById('pane-'+t),b=document.getElementById('tab-'+t); if(p) p.style.display=t===tab?'block':'none'; if(b) b.classList.toggle('active',t===tab); });
   if(tab==='progress') renderProgress();
   if(tab==='list') renderAdmin();
 }
+function setFilter(f){ volFilter=f; document.getElementById('filter-all').classList.toggle('active',f==='all'); document.getElementById('filter-incomplete').classList.toggle('active',f==='incomplete'); renderVolunteer(); }
+function toggleGroup(key){ openGroups[key]=!openGroups[key]; const b=document.getElementById('gb-'+key),c=document.getElementById('gc-'+key); if(b) b.classList.toggle('open',openGroups[key]); if(c) c.classList.toggle('open',openGroups[key]); }
 
-// ── filter ────────────────────────────────────────────────
-function setFilter(f){
-  volFilter=f;
-  document.getElementById('filter-all').classList.toggle('active',f==='all');
-  document.getElementById('filter-incomplete').classList.toggle('active',f==='incomplete');
-  renderVolunteer();
+// ── render group ──────────────────────────────────────────
+function priLabel(p){ return p==='urgent'?'🔴 Urgent':p==='high'?'🟠 High':p==='low'?'⚪ Low':''; }
+
+function buildSubtaskAdmin(t, s, realIdx){
+  const pid = `${t.id}-${realIdx}`;
+  return `<div class="subtask-row" id="sr-${pid}">
+    <div class="check${s.done?' done':''}" onclick="${s.done?`openUndo(${t.id},${realIdx})`:`adminCheck(${t.id},${realIdx})`}" title="${s.done?'Undo':'Complete'}">${s.done?checkSvg():''}</div>
+    <div class="subtask-main">
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        <span class="subtask-text${s.done?' done':''}" id="st-${pid}" ondblclick="startEditSubtask(${t.id},${realIdx})">${esc(s.text)}</span>
+        ${s.priority&&s.priority!=='normal'?`<span class="pri-pill pri-${s.priority}">${priLabel(s.priority)}</span>`:''}
+      </div>
+      <input class="inline-edit" id="se-${pid}" value="${esc(s.text)}" onkeydown="subtaskEditKey(event,${t.id},${realIdx})"/>
+      <div class="edit-actions" id="sea-${pid}">
+        <button class="btn btn-xs btn-primary" onclick="saveSubtaskEdit(${t.id},${realIdx})">Save</button>
+        <button class="btn btn-xs" onclick="cancelSubtaskEdit(${t.id},${realIdx})">Cancel</button>
+      </div>
+      ${s.done?`<div class="by-tag">✓ ${esc(s.by)} · ${fmtTime(s.completedAt)}${s.note?` · <em>${esc(s.note)}</em>`:''}</div>`:''}
+    </div>
+    <div class="subtask-actions">
+      <select style="border:1px solid var(--border2);border-radius:4px;font-size:11px;padding:2px 4px;background:var(--surface);cursor:pointer;font-family:var(--font)" onchange="changeSubPriority(${t.id},${realIdx},this.value)" title="Priority">
+        <option value="normal" ${(s.priority||'normal')==='normal'?'selected':''}>◦ Normal</option>
+        <option value="urgent" ${s.priority==='urgent'?'selected':''}>🔴 Urgent</option>
+        <option value="high"   ${s.priority==='high'?'selected':''}>🟠 High</option>
+        <option value="low"    ${s.priority==='low'?'selected':''}>⚪ Low</option>
+      </select>
+      <button class="btn btn-danger" onclick="removeSubtask(${t.id},${realIdx})" title="Remove">✕</button>
+    </div>
+  </div>`;
 }
 
-// ── build group HTML ──────────────────────────────────────
-function buildGroupHtml(g, isAdmin){
-  const key=makeKey(g.topic);
-  let gTasks=g.tasks;
-  if(!isAdmin && volFilter==='incomplete') gTasks=gTasks.filter(t=>t.subtasks.some(s=>!s.done));
-  if(!gTasks.length) return '';
-  const {total,done}=groupProgress(gTasks);
-  const pct=Math.round(done/total*100);
-  const allDone=done===total;
-  const bc=allDone?'badge-done':done>0?'badge-partial':'badge-pending';
-  const bt=allDone?'Done':done>0?pct+'%':'Pending';
-  if(openGroups[key]===undefined) openGroups[key]=isAdmin;
-  const isOpen=openGroups[key];
-
-  const tasksHtml=gTasks.map(t=>{
-    const tdone=t.subtasks.filter(s=>s.done).length,ttotal=t.subtasks.length;
-    const st=taskStatus(t);
-    const tbc=st==='done'?'badge-done':st==='partial'?'badge-partial':'badge-pending';
-    const tbt=st==='done'?'Complete':st==='partial'?`${tdone}/${ttotal} done`:'Pending';
-    const priClass=`pri-${t.priority||'normal'}`;
-    const overdueFlag=t.due&&isOverdue(t.due)&&st!=='done';
-
-    let subs=t.subtasks;
-    if(!isAdmin && volFilter==='incomplete') subs=subs.filter(s=>!s.done);
-
-    const subsHtml=subs.map((s,i)=>{
-      const realIdx=t.subtasks.indexOf(s);
-      if(isAdmin){
-        return `<div class="subtask-row" id="sr-${t.id}-${realIdx}">
-          <div class="check${s.done?' done':''}" onclick="${s.done?`openUndo(${t.id},${realIdx})`:`adminCheck(${t.id},${realIdx})`}" title="${s.done?'Click to undo':'Click to complete'}">${s.done?checkSvg():''}</div>
-          <div style="flex:1">
-            <div class="subtask-text${s.done?' done':''}" id="st-${t.id}-${realIdx}" ondblclick="startEditSubtask(${t.id},${realIdx})">${esc(s.text)}</div>
-            <input class="inline-edit" id="se-${t.id}-${realIdx}" value="${esc(s.text)}" onkeydown="subtaskEditKey(event,${t.id},${realIdx})"/>
-            <div class="edit-actions" id="sea-${t.id}-${realIdx}">
-              <button class="btn btn-xs btn-primary" onclick="saveSubtaskEdit(${t.id},${realIdx})">Save</button>
-              <button class="btn btn-xs" onclick="cancelSubtaskEdit(${t.id},${realIdx})">Cancel</button>
-            </div>
-            ${s.done?`<div class="by-tag">✓ ${esc(s.by)} · ${fmtTime(s.completedAt)}${s.note?` · <em>${esc(s.note)}</em>`:''}</div>`:''}
-          </div>
-          <button class="btn-danger btn" onclick="removeSubtask(${t.id},${realIdx})" title="Remove subtask">✕</button>
-        </div>`;
-      } else {
-        const clickable=!s.done;
-        return `<div class="subtask-row"${clickable?` style="cursor:pointer" onclick="openComplete(${t.id},${realIdx})"`:''}>
-          <div class="check${s.done?' done':''}">${s.done?checkSvg():''}</div>
-          <div style="flex:1">
-            <div class="subtask-text${s.done?' done':''}">${esc(s.text)}</div>
-            ${s.done?`<div class="by-tag">✓ ${esc(s.by)} · ${fmtTime(s.completedAt)}</div>${s.note?`<div class="note-tag">"${esc(s.note)}"</div>`:''}`:
-              '<div class="tap-hint">tap to mark complete</div>'}
-          </div>
-        </div>`;
-      }
-    }).join('');
-
-    const addSubtaskRow=isAdmin?`<div class="add-subtask-row">
-      <input id="add-sub-${t.id}" placeholder="Add subtask…" onkeydown="if(event.key==='Enter') addSubtask(${t.id})"/>
-      <button class="btn btn-sm btn-primary" onclick="addSubtask(${t.id})">Add</button>
-    </div>`:'';
-
-    return `<div class="task-item ${priClass}">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px">
-        <div style="flex:1">
-          <div class="location-label">
-            📍 <span id="loc-${t.id}" ondblclick="${isAdmin?`startEditField(${t.id},'location')`:''}">${esc(t.location)}</span>
-            ${t.due?`<span class="due-badge${overdueFlag?' overdue':''}">⏱ ${t.due}${overdueFlag?' OVERDUE':''}</span>`:''}
-          </div>
-          <input class="inline-edit" id="loc-edit-${t.id}" value="${esc(t.location)}" onkeydown="fieldEditKey(event,${t.id},'location')" style="margin-bottom:4px"/>
-          <div class="edit-actions" id="loc-ea-${t.id}">
-            <button class="btn btn-xs btn-primary" onclick="saveFieldEdit(${t.id},'location')">Save</button>
-            <button class="btn btn-xs" onclick="cancelFieldEdit(${t.id},'location')">Cancel</button>
-          </div>
-        </div>
-        <div class="task-actions">
-          <span class="badge ${tbc}">${tbt}</span>
-          ${isAdmin?`
-          <select class="btn btn-xs" style="width:auto;padding:3px 6px;font-size:11px" onchange="changePriority(${t.id},this.value)" title="Priority">
-            <option value="normal" ${(t.priority||'normal')==='normal'?'selected':''}>◦ Normal</option>
-            <option value="urgent" ${t.priority==='urgent'?'selected':''}>🔴 Urgent</option>
-            <option value="high"   ${t.priority==='high'?'selected':''}>🟠 High</option>
-            <option value="low"    ${t.priority==='low'?'selected':''}>⚪ Low</option>
-          </select>
-          <input type="time" class="btn btn-xs" style="width:auto;padding:3px 6px;font-size:11px;border:1px solid var(--border2)" value="${t.due||''}" onchange="changeDue(${t.id},this.value)" title="Due time"/>
-          <button class="btn btn-danger" onclick="deleteTask(${t.id})" title="Delete task">🗑</button>`:''}
-        </div>
+function buildSubtaskVolunteer(t, s, realIdx){
+  if(volFilter==='incomplete' && s.done) return '';
+  return `<div class="subtask-row"${!s.done?` style="cursor:pointer" onclick="openComplete(${t.id},${realIdx})"`:''}>
+    <div class="check${s.done?' done':''}">${s.done?checkSvg():''}</div>
+    <div class="subtask-main">
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        <span class="subtask-text${s.done?' done':''}">${esc(s.text)}</span>
+        ${s.priority&&s.priority!=='normal'?`<span class="pri-pill pri-${s.priority}">${priLabel(s.priority)}</span>`:''}
       </div>
-      ${subsHtml}
-      ${addSubtaskRow}
-      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(tdone/ttotal*100)}%"></div></div>
-    </div>`;
+      ${s.done
+        ?`<div class="by-tag">✓ ${esc(s.by)} · ${fmtTime(s.completedAt)}</div>${s.note?`<div class="note-tag">"${esc(s.note)}"</div>`:''}`
+        :`<div class="tap-hint">tap to mark complete</div>`}
+    </div>
+  </div>`;
+}
+
+function buildLocationGroup(g, isAdmin){
+  const key = makeKey(g.location);
+  const {total, done} = groupProgress(g.tasks);
+
+  // for volunteer incomplete filter: count visible subtasks
+  let visibleTotal = total, visibleDone = done;
+  if(!isAdmin && volFilter==='incomplete'){
+    visibleTotal = g.tasks.reduce((a,t)=>a+t.subtasks.filter(s=>!s.done).length, 0);
+    visibleDone = 0;
+    if(visibleTotal===0) return ''; // skip fully complete locations in incomplete filter
+  }
+
+  const pct = total ? Math.round(done/total*100) : 0;
+  const allDone = done===total;
+  const bc = allDone?'badge-done':done>0?'badge-partial':'badge-pending';
+  const bt = allDone?'Done':done>0?pct+'%':'Pending';
+  if(openGroups[key]===undefined) openGroups[key]=isAdmin;
+  const isOpen = openGroups[key];
+
+  // sort subtasks within tasks: urgent first, then high, then normal, then low
+  const priOrder = {urgent:0,high:1,normal:2,low:3};
+
+  const tasksHtml = g.tasks.map(t=>{
+    const sortedSubs = t.subtasks.map((s,i)=>({s,i})).sort((a,b)=>(priOrder[a.s.priority||'normal']||2)-(priOrder[b.s.priority||'normal']||2));
+    const subsHtml = sortedSubs.map(({s,i})=> isAdmin ? buildSubtaskAdmin(t,s,i) : buildSubtaskVolunteer(t,s,i)).join('');
+
+    const tdone = t.subtasks.filter(s=>s.done).length;
+    const ttotal = t.subtasks.length;
+
+    if(isAdmin){
+      return `<div style="border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 16px;background:var(--bg)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:11px;font-family:var(--mono);color:var(--muted)">${tdone}/${ttotal} done</span>
+          </div>
+          <button class="btn btn-danger btn-xs" onclick="deleteTask(${t.id})" title="Delete this group">Delete group</button>
+        </div>
+        ${subsHtml}
+        <div class="add-sub-wrap">
+          <input id="add-sub-${t.id}" placeholder="Add subtask…" onkeydown="if(event.key==='Enter') addSubtask(${t.id})"/>
+          <button class="btn btn-sm btn-primary" onclick="addSubtask(${t.id})">Add</button>
+        </div>
+      </div>`;
+    } else {
+      return subsHtml;
+    }
   }).join('');
+
+  const progressBar = `<div class="progress-bar" style="margin:0 0 0 0;padding:0"><div class="progress-bar-inner" style="width:${pct}%"></div></div>`;
 
   return `<div class="group">
     <div class="group-header" onclick="toggleGroup('${key}')">
       <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
-        <div class="group-title" id="gtitle-${key}" ondblclick="${isAdmin?`event.stopPropagation();startEditTopic('${key}',${JSON.stringify(g.topic)})`:''}">${esc(g.topic)}</div>
+        <span class="group-title" id="gloc-${key}" ondblclick="${isAdmin?`event.stopPropagation();startEditLocation('${key}',${JSON.stringify(g.location)})`:''}">${esc(g.location)}</span>
       </div>
       <div class="group-meta">
         <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">${done}/${total}</span>
@@ -458,94 +428,90 @@ function buildGroupHtml(g, isAdmin){
         <span class="chevron${isOpen?' open':''}" id="gc-${key}">▾</span>
       </div>
     </div>
-    <div id="gtitle-edit-wrap-${key}" style="display:none;padding:10px 16px;border-top:1px solid var(--border)">
-      <input id="gtitle-edit-${key}" style="font-size:14px" value="${esc(g.topic)}"/>
+    ${isAdmin?`<div id="gloc-edit-wrap-${key}" style="display:none;padding:10px 16px;border-top:1px solid var(--border)">
+      <input id="gloc-edit-${key}" value="${esc(g.location)}" style="font-size:14px"/>
       <div style="display:flex;gap:6px;margin-top:6px">
-        <button class="btn btn-sm btn-primary" onclick="saveTopicEdit('${key}',${JSON.stringify(g.topic)})">Save</button>
-        <button class="btn btn-sm" onclick="cancelTopicEdit('${key}')">Cancel</button>
+        <button class="btn btn-sm btn-primary" onclick="saveLocationEdit('${key}',${JSON.stringify(g.location)})">Save</button>
+        <button class="btn btn-sm" onclick="cancelLocationEdit('${key}')">Cancel</button>
       </div>
+    </div>`:''}
+    <div class="group-body${isOpen?' open':''}" id="gb-${key}">
+      ${tasksHtml}
+      ${!isAdmin?`<div style="padding:0 0 2px">${progressBar}</div>`:''}
     </div>
-    <div class="group-body${isOpen?' open':''}" id="gb-${key}">${tasksHtml}</div>
+    ${isAdmin?progressBar:''}
   </div>`;
 }
 
-// ── render admin ──────────────────────────────────────────
+// ── render screens ────────────────────────────────────────
 function renderAdmin(){
   const el=document.getElementById('pane-list');
   if(!el) return;
   if(!tasks.length){el.innerHTML='<div class="empty">No tasks yet. Add one or paste from a spreadsheet.</div>';return;}
-  const sortedTasks=[...tasks].sort((a,b)=>{const p={urgent:0,high:1,normal:2,low:3};return (p[a.priority||'normal']||2)-(p[b.priority||'normal']||2);});
-  el.innerHTML=groupByTopic(sortedTasks).map(g=>buildGroupHtml(g,true)).join('');
+  el.innerHTML=groupByLocation(tasks).map(g=>buildLocationGroup(g,true)).join('');
 }
 
-// ── render volunteer ──────────────────────────────────────
 function renderVolunteer(){
   const el=document.getElementById('vol-task-list');
   if(!el) return;
   if(!tasks.length){el.innerHTML='<div class="empty">No tasks yet — check back soon.</div>';return;}
-  const html=groupByTopic(tasks).map(g=>buildGroupHtml(g,false)).join('');
+  const html=groupByLocation(tasks).map(g=>buildLocationGroup(g,false)).join('');
   el.innerHTML=html||'<div class="empty">All tasks complete! 🎉</div>';
 }
 
-// ── render progress ───────────────────────────────────────
 function renderProgress(){
   const total=tasks.reduce((a,t)=>a+t.subtasks.length,0);
   const done=tasks.reduce((a,t)=>a+t.subtasks.filter(s=>s.done).length,0);
   const full=tasks.filter(t=>taskStatus(t)==='done').length;
   const pct=total?Math.round(done/total*100):0;
   document.getElementById('stats-row').innerHTML=`
-    <div class="stat"><div class="stat-n">${tasks.length}</div><div class="stat-l">Tasks</div></div>
+    <div class="stat"><div class="stat-n">${tasks.length}</div><div class="stat-l">Groups</div></div>
     <div class="stat"><div class="stat-n">${done}/${total}</div><div class="stat-l">Subtasks</div></div>
     <div class="stat"><div class="stat-n">${full}</div><div class="stat-l">Complete</div></div>
     <div class="stat"><div class="stat-n">${pct}%</div><div class="stat-l">Overall</div></div>
   `;
-  document.getElementById('progress-detail').innerHTML=groupByTopic(tasks).map(g=>{
+  document.getElementById('progress-detail').innerHTML=groupByLocation(tasks).map(g=>{
     const {total:gt,done:gd}=groupProgress(g.tasks);
     const gp=Math.round(gd/gt*100);
     return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 16px;margin-bottom:10px">
       <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-        <span style="font-weight:600;font-size:14px">${esc(g.topic)}</span>
+        <span style="font-weight:600;font-size:14px">📍 ${esc(g.location)}</span>
         <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">${gd}/${gt} (${gp}%)</span>
       </div>
-      <div class="progress-bar" style="margin-top:0;margin-bottom:10px"><div class="progress-fill" style="width:${gp}%"></div></div>
-      ${g.tasks.map(t=>`<div style="margin-bottom:8px">
-        <div style="font-size:12px;color:var(--muted);margin-bottom:3px">📍 ${esc(t.location)}</div>
-        ${t.subtasks.map(s=>`<div style="font-size:12px;padding:2px 0;color:var(--muted)">
-          <span style="color:${s.done?'var(--green)':'var(--faint)'}">${s.done?'✓':'○'}</span>
-          ${esc(s.text)}${s.done?` — <strong>${esc(s.by)}</strong> <span style="color:var(--faint)">${fmtTime(s.completedAt)}</span>${s.note?` <em>"${esc(s.note)}"</em>`:''}` :''}
-        </div>`).join('')}
-      </div>`).join('')}
+      <div class="progress-bar" style="margin:0 0 10px"><div class="progress-bar-inner" style="width:${gp}%"></div></div>
+      ${g.tasks.map(t=>t.subtasks.map(s=>`<div style="font-size:12px;padding:3px 0;color:var(--muted);display:flex;align-items:flex-start;gap:6px">
+        <span style="color:${s.done?'var(--green)':'var(--faint)'};flex-shrink:0">${s.done?'✓':'○'}</span>
+        <span>${esc(s.text)}${s.priority&&s.priority!=='normal'?` <span style="font-size:10px;opacity:.7">${priLabel(s.priority)}</span>`:''}${s.done?` — <strong>${esc(s.by)}</strong> <span style="color:var(--faint)">${fmtTime(s.completedAt)}</span>${s.note?` <em>"${esc(s.note)}"</em>`:''}`:''}</span>
+      </div>`).join('')).join('')}
     </div>`;
   }).join('');
 }
 
 // ── add task ──────────────────────────────────────────────
-function openAddModal(){ document.getElementById('add-modal').classList.add('open'); setTimeout(()=>document.getElementById('new-topic').focus(),50); }
+function openAddModal(){ document.getElementById('add-modal').classList.add('open'); setTimeout(()=>document.getElementById('new-location').focus(),50); }
 function closeModal(){ document.querySelectorAll('.modal-bg').forEach(m=>m.classList.remove('open')); pendingComplete=null; pendingUndo=null; }
+
 async function saveTask(){
-  const topic=document.getElementById('new-topic').value.trim();
   const location=document.getElementById('new-location').value.trim();
   const raw=document.getElementById('new-subtasks').value.trim();
-  const priority=document.getElementById('new-priority').value;
-  const due=document.getElementById('new-due').value;
-  if(!topic||!location||!raw){alert('Fill in topic, location and at least one subtask.');return;}
-  const subtasks=raw.split('\n').map(s=>s.trim()).filter(Boolean).map(text=>({text,done:false,by:'',note:'',completedAt:null}));
-  tasks.push({id:nextId++,topic,location,priority,due,subtasks});
+  if(!location||!raw){alert('Fill in location and at least one subtask.');return;}
+  const subtasks=raw.split('\n').map(s=>s.trim()).filter(Boolean).map(text=>({text,done:false,by:'',note:'',completedAt:null,priority:'normal'}));
+  tasks.push({id:nextId++,location,subtasks});
   await saveData();
-  ['new-topic','new-location','new-subtasks','new-due'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('new-priority').value='normal';
-  closeModal(); renderAdmin(); toast('Task saved');
+  document.getElementById('new-location').value='';
+  document.getElementById('new-subtasks').value='';
+  closeModal(); renderAdmin(); toast('Task group saved');
 }
 
-// ── delete task ───────────────────────────────────────────
-async function deleteTask(id){ if(!confirm('Delete this task?')) return; tasks=tasks.filter(t=>t.id!==id); await saveData(); renderAdmin(); toast('Task deleted'); }
+// ── delete task group ─────────────────────────────────────
+async function deleteTask(id){ if(!confirm('Delete this task group?')) return; tasks=tasks.filter(t=>t.id!==id); await saveData(); renderAdmin(); toast('Deleted'); }
 
 // ── add/remove subtask ────────────────────────────────────
 async function addSubtask(taskId){
   const inp=document.getElementById('add-sub-'+taskId);
   const text=inp.value.trim(); if(!text) return;
   const task=tasks.find(t=>t.id===taskId); if(!task) return;
-  task.subtasks.push({text,done:false,by:'',note:'',completedAt:null});
+  task.subtasks.push({text,done:false,by:'',note:'',completedAt:null,priority:'normal'});
   inp.value='';
   await saveData(); renderAdmin(); toast('Subtask added');
 }
@@ -558,76 +524,56 @@ async function removeSubtask(taskId,idx){
 
 // ── inline edit: subtask text ─────────────────────────────
 function startEditSubtask(taskId,idx){
-  document.getElementById('st-'+taskId+'-'+idx).style.display='none';
-  const inp=document.getElementById('se-'+taskId+'-'+idx);
-  const ea=document.getElementById('sea-'+taskId+'-'+idx);
+  const pid=`${taskId}-${idx}`;
+  document.getElementById('st-'+pid).style.display='none';
+  const inp=document.getElementById('se-'+pid); const ea=document.getElementById('sea-'+pid);
   inp.classList.add('active'); ea.classList.add('active'); inp.focus(); inp.select();
 }
 function cancelSubtaskEdit(taskId,idx){
+  const pid=`${taskId}-${idx}`;
   const task=tasks.find(t=>t.id===taskId);
-  const inp=document.getElementById('se-'+taskId+'-'+idx);
-  inp.value=esc(task.subtasks[idx].text);
-  inp.classList.remove('active');
-  document.getElementById('sea-'+taskId+'-'+idx).classList.remove('active');
-  document.getElementById('st-'+taskId+'-'+idx).style.display='';
+  document.getElementById('se-'+pid).value=task.subtasks[idx].text;
+  document.getElementById('se-'+pid).classList.remove('active');
+  document.getElementById('sea-'+pid).classList.remove('active');
+  document.getElementById('st-'+pid).style.display='';
 }
 async function saveSubtaskEdit(taskId,idx){
-  const inp=document.getElementById('se-'+taskId+'-'+idx);
-  const val=inp.value.trim(); if(!val){alert('Subtask text cannot be empty.');return;}
-  const task=tasks.find(t=>t.id===taskId);
-  task.subtasks[idx].text=val;
+  const pid=`${taskId}-${idx}`;
+  const val=document.getElementById('se-'+pid).value.trim();
+  if(!val){alert('Cannot be empty.');return;}
+  tasks.find(t=>t.id===taskId).subtasks[idx].text=val;
   await saveData(); renderAdmin(); toast('Saved');
 }
 function subtaskEditKey(e,taskId,idx){ if(e.key==='Enter') saveSubtaskEdit(taskId,idx); if(e.key==='Escape') cancelSubtaskEdit(taskId,idx); }
 
 // ── inline edit: location ─────────────────────────────────
-function startEditField(taskId,field){
-  document.getElementById('loc-'+taskId).parentElement.style.display='none';
-  document.getElementById('loc-edit-'+taskId).classList.add('active');
-  document.getElementById('loc-ea-'+taskId).classList.add('active');
-  document.getElementById('loc-edit-'+taskId).focus();
+function startEditLocation(key,oldLoc){
+  document.getElementById('gloc-'+key).style.display='none';
+  document.getElementById('gloc-edit-wrap-'+key).style.display='block';
+  document.getElementById('gloc-edit-'+key).focus();
 }
-function cancelFieldEdit(taskId,field){
-  document.getElementById('loc-edit-'+taskId).classList.remove('active');
-  document.getElementById('loc-ea-'+taskId).classList.remove('active');
-  document.getElementById('loc-'+taskId).parentElement.style.display='';
+function cancelLocationEdit(key){
+  document.getElementById('gloc-edit-wrap-'+key).style.display='none';
+  document.getElementById('gloc-'+key).style.display='';
 }
-async function saveFieldEdit(taskId,field){
-  const val=document.getElementById('loc-edit-'+taskId).value.trim();
-  if(!val){alert('Location cannot be empty.');return;}
-  const task=tasks.find(t=>t.id===taskId); task.location=val;
-  await saveData(); renderAdmin(); toast('Saved');
-}
-function fieldEditKey(e,taskId,field){ if(e.key==='Enter') saveFieldEdit(taskId,field); if(e.key==='Escape') cancelFieldEdit(taskId,field); }
-
-// ── inline edit: topic ────────────────────────────────────
-function startEditTopic(key,oldTopic){
-  document.getElementById('gtitle-'+key).style.display='none';
-  document.getElementById('gtitle-edit-wrap-'+key).style.display='block';
-  document.getElementById('gtitle-edit-'+key).focus();
-}
-function cancelTopicEdit(key){
-  document.getElementById('gtitle-edit-wrap-'+key).style.display='none';
-  document.getElementById('gtitle-'+key).style.display='';
-}
-async function saveTopicEdit(key,oldTopic){
-  const val=document.getElementById('gtitle-edit-'+key).value.trim();
-  if(!val){alert('Topic cannot be empty.');return;}
-  tasks.forEach(t=>{ if(t.topic===oldTopic) t.topic=val; });
-  await saveData(); renderAdmin(); toast('Topic updated');
+async function saveLocationEdit(key,oldLoc){
+  const val=document.getElementById('gloc-edit-'+key).value.trim();
+  if(!val){alert('Cannot be empty.');return;}
+  tasks.forEach(t=>{ if(t.location===oldLoc) t.location=val; });
+  await saveData(); renderAdmin(); toast('Location updated');
 }
 
-// ── priority / due ────────────────────────────────────────
-async function changePriority(taskId,val){ const t=tasks.find(t=>t.id===taskId); if(t){t.priority=val; await saveData(); renderAdmin();} }
-async function changeDue(taskId,val){ const t=tasks.find(t=>t.id===taskId); if(t){t.due=val; await saveData(); renderAdmin();} }
+// ── subtask priority ──────────────────────────────────────
+async function changeSubPriority(taskId,idx,val){
+  const task=tasks.find(t=>t.id===taskId); if(!task) return;
+  task.subtasks[idx].priority=val;
+  await saveData(); renderAdmin();
+}
 
-// ── admin check (without name prompt) ────────────────────
+// ── admin check ───────────────────────────────────────────
 async function adminCheck(taskId,idx){
   const task=tasks.find(t=>t.id===taskId); if(!task) return;
-  task.subtasks[idx].done=true;
-  task.subtasks[idx].by='Admin';
-  task.subtasks[idx].completedAt=new Date().toISOString();
-  task.subtasks[idx].note='';
+  const s=task.subtasks[idx]; s.done=true; s.by='Admin'; s.completedAt=new Date().toISOString(); s.note='';
   await saveData(); renderAdmin(); toast('Marked complete');
 }
 
@@ -646,26 +592,22 @@ async function confirmComplete(){
   if(!name){alert('Please enter your name.');return;}
   const note=document.getElementById('completer-note').value.trim();
   const task=tasks.find(t=>t.id===pendingComplete.taskId);
-  task.subtasks[pendingComplete.idx].done=true;
-  task.subtasks[pendingComplete.idx].by=name;
-  task.subtasks[pendingComplete.idx].note=note;
-  task.subtasks[pendingComplete.idx].completedAt=new Date().toISOString();
+  const s=task.subtasks[pendingComplete.idx];
+  s.done=true; s.by=name; s.note=note; s.completedAt=new Date().toISOString();
   await saveData(); closeModal(); renderVolunteer(); toast('Marked complete ✓');
 }
 
-// ── undo completion ───────────────────────────────────────
+// ── undo ──────────────────────────────────────────────────
 function openUndo(taskId,idx){
   const task=tasks.find(t=>t.id===taskId); if(!task) return;
-  const s=task.subtasks[idx];
-  pendingUndo={taskId,idx};
+  const s=task.subtasks[idx]; pendingUndo={taskId,idx};
   document.getElementById('undo-sub').textContent=s.text;
   document.getElementById('undo-by').textContent=s.by+(s.completedAt?' on '+fmtTime(s.completedAt):'');
   document.getElementById('undo-modal').classList.add('open');
 }
 async function confirmUndo(){
   const task=tasks.find(t=>t.id===pendingUndo.taskId);
-  const s=task.subtasks[pendingUndo.idx];
-  s.done=false; s.by=''; s.note=''; s.completedAt=null;
+  const s=task.subtasks[pendingUndo.idx]; s.done=false; s.by=''; s.note=''; s.completedAt=null;
   await saveData(); closeModal(); renderAdmin(); toast('Completion undone');
 }
 
@@ -678,39 +620,32 @@ async function importPaste(){
   raw.split('\n').filter(l=>l.trim()).forEach(line=>{
     const cols=line.includes('\t')?line.split('\t'):line.split(',');
     const c=cols.map(x=>x.trim().replace(/^"|"$/g,''));
-    if(c.length<3) return;
-    const [topic,location,...rest]=c;
-    const subtasks=rest.filter(Boolean).flatMap(s=>s.split('/').map(x=>x.trim())).filter(Boolean).map(text=>({text,done:false,by:'',note:'',completedAt:null}));
+    if(c.length<2) return;
+    const [location,...rest]=c;
+    const subtasks=rest.filter(Boolean).flatMap(s=>s.split('/').map(x=>x.trim())).filter(Boolean).map(text=>({text,done:false,by:'',note:'',completedAt:null,priority:'normal'}));
     if(!subtasks.length) return;
-    tasks.push({id:nextId++,topic,location,priority:'normal',due:'',subtasks});
-    count++;
+    tasks.push({id:nextId++,location,subtasks}); count++;
   });
   if(count){
-    await saveData();
-    msg.style.color='var(--green)'; msg.textContent=`Imported ${count} task${count!==1?'s':''}.`;
+    await saveData(); msg.style.color='var(--green)'; msg.textContent=`Imported ${count} group${count!==1?'s':''}.`;
     document.getElementById('paste-input').value='';
-    setTimeout(()=>showTab('list'),900);
-    toast(`${count} task${count!==1?'s':''} imported`);
-  } else { msg.style.color='var(--red)'; msg.textContent='No valid rows found. Expected: Topic | Location | Subtask1 | Subtask2 ...'; }
+    setTimeout(()=>showTab('list'),900); toast(`${count} group${count!==1?'s':''} imported`);
+  } else { msg.style.color='var(--red)'; msg.textContent='No valid rows. Expected: Location | Subtask1 | Subtask2 ...'; }
 }
 
 // ── reset ─────────────────────────────────────────────────
 async function confirmReset(){
-  const choice=confirm('Reset ALL completions (keeps tasks, clears who did what)?\n\nClick OK to reset completions only.\nClick Cancel to do nothing.');
-  if(!choice) return;
+  if(!confirm('Reset ALL completions? This keeps your tasks but clears all names, notes and timestamps.')) return;
   tasks.forEach(t=>t.subtasks.forEach(s=>{ s.done=false; s.by=''; s.note=''; s.completedAt=null; }));
   await saveData(); renderAdmin(); toast('All completions reset');
 }
 
 // ── CSV export ────────────────────────────────────────────
 function exportCSV(){
-  const rows=[['Topic','Location','Subtask','Status','Completed By','Completed At','Note']];
-  tasks.forEach(t=>t.subtasks.forEach(s=>rows.push([t.topic,t.location,s.text,s.done?'Done':'Pending',s.by||'',s.completedAt?fmtTime(s.completedAt):'',s.note||''])));
+  const rows=[['Location','Subtask','Priority','Status','Completed By','Completed At','Note']];
+  tasks.forEach(t=>t.subtasks.forEach(s=>rows.push([t.location,s.text,s.priority||'normal',s.done?'Done':'Pending',s.by||'',s.completedAt?fmtTime(s.completedAt):'',s.note||''])));
   const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download='task-tracker-'+new Date().toISOString().slice(0,10)+'.csv';
-  a.click(); toast('CSV downloaded');
+  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download='tasks-'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); toast('CSV downloaded');
 }
 
 // ── keyboard ──────────────────────────────────────────────
