@@ -57,7 +57,9 @@ textarea{resize:vertical;min-height:70px}
 .group{margin-bottom:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface)}
 .group-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;gap:10px}
 .group-header:hover{background:var(--bg)}
-.group-title{font-size:15px;font-weight:600;flex:1}
+.group-title{font-size:15px;font-weight:600;flex:1;display:flex;align-items:center;gap:6px}
+.edit-hint{font-size:12px;color:var(--faint);opacity:0;transition:opacity .15s;cursor:pointer;user-select:none}
+.group-header:hover .edit-hint{opacity:1}
 .group-meta{display:flex;align-items:center;gap:7px;flex-shrink:0}
 .group-body{border-top:1px solid var(--border);display:none}
 .group-body.open{display:block}
@@ -531,7 +533,9 @@ function buildLocationGroup(g,isAdmin){
   return '<div class="group">'
     +'<div class="group-header" onclick="toggleGroup(\''+key+'\')">'
     +'<span class="group-title" id="gloc-'+key+'"'
-    +(isAdmin?' ondblclick="event.stopPropagation();startEditLocation(\''+key+'\','+JSON.stringify(g.location)+')"':'')+'>'+esc(g.location)+'</span>'
+    +(isAdmin?' ondblclick="event.stopPropagation();startEditLocation(\''+key+'\',' +JSON.stringify(g.location)+')"':'')+'>'+esc(g.location)
+    +(isAdmin?'<span class="edit-hint" onclick="event.stopPropagation();startEditLocation(\''+key+'\',' +JSON.stringify(g.location)+')" title="Double-click or click to edit location">&#9998; edit</span>':'')
+    +'</span>'
     +'<div class="group-meta">'
     +'<span style="font-family:var(--mono);font-size:12px;color:var(--muted)">'+done+'/'+total+'</span>'
     +'<span class="badge '+bc+'">'+bt+'</span>'
