@@ -246,9 +246,10 @@ textarea{resize:vertical;min-height:70px}
 <div class="toast" id="toast"></div>
 
 <script>
-var API_KEY = '$2a$10$NrfVE4jDUcOGoO6.3Z9kyuBsPMNZ63FaibBUBDH2Xa270MC4k9/Oe';
-var BIN_ID  = '6a05ecc8250b1311c34d8a47';
-var BASE    = 'https://api.jsonbin.io/v3';
+var API_KEY  = '$2a$10$NrfVE4jDUcOGoO6.3Z9kyuBsPMNZ63FaibBUBDH2Xa270MC4k9/Oe';
+var BIN_ID_1 = '6a05ecc8250b1311c34d8a47'; // main tasks
+var BIN_ID_2 = '6a080c31c0954111d82f4675'; // cabin tasks
+var BASE     = 'https://api.jsonbin.io/v3';
 
 var tasks = [];
 var nextId = 1;
@@ -297,23 +298,34 @@ function makeKey(str){ try{ return btoa(encodeURIComponent(str)).replace(/[^a-z0
 
 function priOrd(p){ return p==='urgent'?0:p==='high'?1:p==='low'?3:2; }
 
-async function apiGet(){
-  var r=await fetch(BASE+'/b/'+BIN_ID+'/latest',{headers:{'X-Master-Key':API_KEY,'X-Bin-Versioning':'false'}});
-  if(!r.ok) throw new Error('GET '+r.status);
+async function binGet(binId){
+  var r=await fetch(BASE+'/b/'+binId+'/latest',{headers:{'X-Master-Key':API_KEY,'X-Bin-Versioning':'false'}});
+  if(!r.ok) throw new Error('GET '+r.status+' bin '+binId);
   return (await r.json()).record;
 }
 
-async function apiPut(data){
-  var r=await fetch(BASE+'/b/'+BIN_ID,{method:'PUT',headers:{'X-Master-Key':API_KEY,'Content-Type':'application/json','X-Bin-Versioning':'false'},body:JSON.stringify(data)});
-  if(!r.ok) throw new Error('PUT '+r.status);
+async function binPut(binId,data){
+  var r=await fetch(BASE+'/b/'+binId,{method:'PUT',headers:{'X-Master-Key':API_KEY,'Content-Type':'application/json','X-Bin-Versioning':'false'},body:JSON.stringify(data)});
+  if(!r.ok) throw new Error('PUT '+r.status+' bin '+binId);
   return r.json();
 }
 
 async function loadData(showToast){
   try{
-    var rec=await apiGet();
-    tasks=Array.isArray(rec.tasks)?rec.tasks:[];
-    nextId=rec.nextId||(tasks.length?Math.max.apply(null,tasks.map(function(t){return t.id;}))+1:1);
+    // fetch both bins in parallel
+    var results=await Promise.allSettled([binGet(BIN_ID_1),binGet(BIN_ID_2)]);
+    var rec1=results[0].status==='fulfilled'?results[0].value:{tasks:[],nextId:1};
+    var rec2=results[1].status==='fulfilled'?results[1].value:{tasks:[],nextId:1};
+    if(results[0].status==='rejected') toast('Warning: main bin failed to load');
+    if(results[1].status==='rejected') toast('Warning: cabin bin failed to load');
+    // tag each task with which bin it came from
+    var t1=Array.isArray(rec1.tasks)?rec1.tasks:[];
+    var t2=Array.isArray(rec2.tasks)?rec2.tasks:[];
+    t1.forEach(function(t){t._bin=1;});
+    t2.forEach(function(t){t._bin=2;});
+    tasks=t1.concat(t2);
+    // nextId tracked per-bin; for new admin tasks we always use bin 1's nextId
+    nextId=rec1.nextId||(t1.length?Math.max.apply(null,t1.map(function(t){return t.id;}))+1:1);
     tasks.forEach(function(t){t.subtasks.forEach(function(s){migrate(s);});});
     if(showToast) toast('Refreshed');
   }catch(e){ console.error(e); toast('Failed to load'); }
@@ -325,8 +337,18 @@ async function saveData(){
   isSaving=true;
   var ind=document.getElementById('saving-ind');
   if(ind) ind.classList.add('on');
-  try{ await apiPut({tasks:tasks,nextId:nextId}); }
-  catch(e){ console.error(e); toast('Save failed'); }
+  try{
+    // split tasks back by bin
+    var bin1Tasks=tasks.filter(function(t){return t._bin!==2;});
+    var bin2Tasks=tasks.filter(function(t){return t._bin===2;});
+    // strip _bin tag before saving
+    function strip(arr){return arr.map(function(t){var c=Object.assign({},t);delete c._bin;return c;});}
+    // compute bin2's nextId
+    var nextId2=bin2Tasks.length?Math.max.apply(null,bin2Tasks.map(function(t){return t.id;}))+1:1;
+    var saves=[binPut(BIN_ID_1,{tasks:strip(bin1Tasks),nextId:nextId})];
+    if(bin2Tasks.length) saves.push(binPut(BIN_ID_2,{tasks:strip(bin2Tasks),nextId:nextId2}));
+    await Promise.all(saves);
+  }catch(e){ console.error(e); toast('Save failed'); }
   isSaving=false;
   if(ind) ind.classList.remove('on');
 }
