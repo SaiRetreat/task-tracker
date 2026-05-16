@@ -57,6 +57,7 @@ textarea{resize:vertical;min-height:70px}
 .group{margin-bottom:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface)}
 .group-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;user-select:none;gap:10px;cursor:default}
 .group-title{font-size:15px;font-weight:600;flex:1}
+.group-title[data-key]{cursor:text}
 .group-meta{display:flex;align-items:center;gap:7px;flex-shrink:0;cursor:pointer;border-radius:6px;padding:5px 8px;margin:-5px -8px}
 .group-meta:hover{background:var(--border)}
 .group-body{border-top:1px solid var(--border);display:none}
@@ -529,17 +530,17 @@ function buildLocationGroup(g,isAdmin){
     +'</div></div>':'';
 
   return '<div class="group">'
-    +'<div class="group-header" style="cursor:default">'
-    +'<span class="group-title" id="gloc-'+key+'"'
-    +(isAdmin?' ondblclick="startEditLocation(\''+key+'\','+JSON.stringify(g.location)+')" style="cursor:default" title="Double-click to edit"':'')
+    +'<div class="group-header">'
+    +'<span class="group-title" id="gloc-'+key+'" data-key="'+key+'" data-loc="'+esc(g.location)+'"'
+    +(isAdmin?' title="Double-click to edit location"':'')
     +'>'+esc(g.location)+'</span>'
-    +'<div class="group-meta" onclick="toggleGroup(\''+key+'\')" style="cursor:pointer;padding:4px 0 4px 12px;margin:-4px 0 -4px -12px">'
+    +'<div class="group-meta" onclick="toggleGroup(\''+key+'\')" >'
     +'<span style="font-family:var(--mono);font-size:12px;color:var(--muted)">'+done+'/'+total+'</span>'
     +'<span class="badge '+bc+'">'+bt+'</span>'
-    +'<span class="chevron'+(isOpen?' open':'')+'" id="gc-'+key+'">&#9662;</span>'
+    +'<span class="chevron'+(isOpen?' open':'')+' id="gc-'+key+'">&#9662;</span>'
     +'</div></div>'
     +editWrap
-    +'<div class="group-body'+(isOpen?' open':'')+'" id="gb-'+key+'">'+tasksHtml+'</div>'
+    +'<div class="group-body'+(isOpen?' open':'')+' id="gb-'+key+'">'+tasksHtml+'</div>'
     +'<div class="progress-bar" style="margin:4px 16px 8px"><div class="progress-bar-inner" style="width:'+pct+'%"></div></div>'
     +'</div>';
 }
@@ -660,24 +661,28 @@ async function saveSubtaskEdit(taskId,idx){
 function subtaskEditKey(e,taskId,idx){ if(e.key==='Enter') saveSubtaskEdit(taskId,idx); if(e.key==='Escape') cancelSubtaskEdit(taskId,idx); }
 
 function startEditLocation(key,oldLoc){
-  // hide the title span and the pencil button, show edit wrap
   var titleEl=document.getElementById('gloc-'+key);
-  if(titleEl) titleEl.style.display='none';
-  // hide the pencil button (next sibling of title)
-  if(titleEl&&titleEl.nextElementSibling&&titleEl.nextElementSibling.tagName==='BUTTON') titleEl.nextElementSibling.style.display='none';
-  document.getElementById('gloc-edit-wrap-'+key).style.display='block';
+  var wrapEl=document.getElementById('gloc-edit-wrap-'+key);
   var inp=document.getElementById('gloc-edit-'+key);
+  if(!titleEl||!wrapEl||!inp) return;
+  inp.value=titleEl.getAttribute('data-loc')||'';
+  titleEl.style.display='none';
+  wrapEl.style.display='block';
   inp.focus(); inp.select();
 }
 function cancelLocationEdit(key){
-  document.getElementById('gloc-edit-wrap-'+key).style.display='none';
+  var wrapEl=document.getElementById('gloc-edit-wrap-'+key);
   var titleEl=document.getElementById('gloc-'+key);
-  if(titleEl){ titleEl.style.display=''; if(titleEl.nextElementSibling&&titleEl.nextElementSibling.tagName==='BUTTON') titleEl.nextElementSibling.style.display=''; }
+  if(wrapEl) wrapEl.style.display='none';
+  if(titleEl) titleEl.style.display='';
 }
 async function saveLocationEdit(key,oldLoc){
-  var val=document.getElementById('gloc-edit-'+key).value.trim();
+  var inp=document.getElementById('gloc-edit-'+key);
+  var val=inp.value.trim();
   if(!val){alert('Cannot be empty.');return;}
-  tasks.forEach(function(t){if(t.location===oldLoc) t.location=val;});
+  var titleEl=document.getElementById('gloc-'+key);
+  var actualOld=titleEl?titleEl.getAttribute('data-loc'):oldLoc;
+  tasks.forEach(function(t){if(t.location===actualOld) t.location=val;});
   await saveData(); renderAdmin(); toast('Location updated');
 }
 function locationEditKey(e,key,oldLoc){
@@ -797,6 +802,14 @@ function exportCSV(){
   var csv=rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
   var a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download='tasks-'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); toast('CSV downloaded');
 }
+
+// Global double-click: edit location title in admin
+document.addEventListener('dblclick',function(e){
+  if(getMode()!=='admin') return;
+  var el=e.target.closest('[data-key][data-loc]');
+  if(!el) return;
+  startEditLocation(el.getAttribute('data-key'), el.getAttribute('data-loc'));
+});
 
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape') closeModal();
