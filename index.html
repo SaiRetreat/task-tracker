@@ -523,9 +523,9 @@ function buildLocationGroup(g,isAdmin){
   }).join('');
 
   var editWrap=isAdmin?'<div id="gloc-edit-wrap-'+key+'" style="display:none;padding:10px 16px;border-top:1px solid var(--border)">'
-    +'<input id="gloc-edit-'+key+'" value="'+esc(g.location)+'" style="font-size:15px;font-weight:600" onkeydown="locationEditKey(event,\''+key+'\','+JSON.stringify(g.location)+')" />'
+    +'<input id="gloc-edit-'+key+'" value="'+esc(g.location)+'" style="font-size:15px;font-weight:600" onkeydown="locationEditKey(event,\''+key+'\')" />'
     +'<div style="display:flex;gap:6px;margin-top:8px">'
-    +'<button class="btn btn-sm btn-primary" onclick="saveLocationEdit(\''+key+'\','+JSON.stringify(g.location)+')">Save</button>'
+    +'<button class="btn btn-sm btn-primary" onclick="saveLocationEdit(\''+key+'\')">Save</button>'
     +'<button class="btn btn-sm" onclick="cancelLocationEdit(\''+key+'\')">Cancel</button>'
     +'</div></div>':'';
 
@@ -676,17 +676,17 @@ function cancelLocationEdit(key){
   if(wrapEl) wrapEl.style.display='none';
   if(titleEl) titleEl.style.display='';
 }
-async function saveLocationEdit(key,oldLoc){
+async function saveLocationEdit(key){
   var inp=document.getElementById('gloc-edit-'+key);
   var val=inp.value.trim();
   if(!val){alert('Cannot be empty.');return;}
   var titleEl=document.getElementById('gloc-'+key);
-  var actualOld=titleEl?titleEl.getAttribute('data-loc'):oldLoc;
-  tasks.forEach(function(t){if(t.location===actualOld) t.location=val;});
+  var oldLoc=titleEl?titleEl.getAttribute('data-loc'):'';
+  tasks.forEach(function(t){if(t.location===oldLoc) t.location=val;});
   await saveData(); renderAdmin(); toast('Location updated');
 }
-function locationEditKey(e,key,oldLoc){
-  if(e.key==='Enter') saveLocationEdit(key,oldLoc);
+function locationEditKey(e,key){
+  if(e.key==='Enter') saveLocationEdit(key);
   if(e.key==='Escape') cancelLocationEdit(key);
 }
 
