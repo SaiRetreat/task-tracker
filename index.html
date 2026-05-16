@@ -55,12 +55,10 @@ textarea{resize:vertical;min-height:70px}
 .due-pill.overdue{background:var(--red-bg);color:var(--red)}
 .assigned-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-family:var(--mono);padding:1px 7px;border-radius:99px;background:var(--blue-bg);color:var(--blue);flex-shrink:0}
 .group{margin-bottom:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface)}
-.group-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;gap:10px}
-.group-header:hover{background:var(--bg)}
-.group-title{font-size:15px;font-weight:600;flex:1;display:flex;align-items:center;gap:6px}
-.edit-hint{font-size:12px;color:var(--faint);opacity:0;transition:opacity .15s;cursor:pointer;user-select:none}
-.group-header:hover .edit-hint{opacity:1}
-.group-meta{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.group-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;user-select:none;gap:10px;cursor:default}
+.group-title{font-size:15px;font-weight:600;flex:1}
+.group-meta{display:flex;align-items:center;gap:7px;flex-shrink:0;cursor:pointer;border-radius:6px;padding:5px 8px;margin:-5px -8px}
+.group-meta:hover{background:var(--border)}
 .group-body{border-top:1px solid var(--border);display:none}
 .group-body.open{display:block}
 .subtask-row{display:flex;align-items:flex-start;gap:9px;padding:10px 16px;border-bottom:1px solid var(--border)}
@@ -531,12 +529,11 @@ function buildLocationGroup(g,isAdmin){
     +'</div></div>':'';
 
   return '<div class="group">'
-    +'<div class="group-header" onclick="toggleGroup(\''+key+'\')">'
+    +'<div class="group-header" style="cursor:default">'
     +'<span class="group-title" id="gloc-'+key+'"'
-    +(isAdmin?' ondblclick="event.stopPropagation();startEditLocation(\''+key+'\','+JSON.stringify(g.location)+')" title="Double-click to edit"':'')
+    +(isAdmin?' ondblclick="startEditLocation(\''+key+'\','+JSON.stringify(g.location)+')" style="cursor:default" title="Double-click to edit"':'')
     +'>'+esc(g.location)+'</span>'
-    +(isAdmin?'<button style="background:none;border:none;cursor:pointer;color:var(--faint);font-size:13px;padding:2px 6px;flex-shrink:0;line-height:1" onclick="event.stopPropagation();startEditLocation(\''+key+'\','+JSON.stringify(g.location)+')" title="Edit location">&#9998;</button>':'')
-    +'<div class="group-meta">'
+    +'<div class="group-meta" onclick="toggleGroup(\''+key+'\')" style="cursor:pointer;padding:4px 0 4px 12px;margin:-4px 0 -4px -12px">'
     +'<span style="font-family:var(--mono);font-size:12px;color:var(--muted)">'+done+'/'+total+'</span>'
     +'<span class="badge '+bc+'">'+bt+'</span>'
     +'<span class="chevron'+(isOpen?' open':'')+'" id="gc-'+key+'">&#9662;</span>'
