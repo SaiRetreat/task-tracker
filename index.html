@@ -524,8 +524,8 @@ function buildLocationGroup(g,isAdmin){
   }).join('');
 
   var editWrap=isAdmin?'<div id="gloc-edit-wrap-'+key+'" style="display:none;padding:10px 16px;border-top:1px solid var(--border)">'
-    +'<input id="gloc-edit-'+key+'" value="'+esc(g.location)+'" style="font-size:14px"/>'
-    +'<div style="display:flex;gap:6px;margin-top:6px">'
+    +'<input id="gloc-edit-'+key+'" value="'+esc(g.location)+'" style="font-size:15px;font-weight:600" onkeydown="locationEditKey(event,\''+key+'\','+JSON.stringify(g.location)+')" />'
+    +'<div style="display:flex;gap:6px;margin-top:8px">'
     +'<button class="btn btn-sm btn-primary" onclick="saveLocationEdit(\''+key+'\','+JSON.stringify(g.location)+')">Save</button>'
     +'<button class="btn btn-sm" onclick="cancelLocationEdit(\''+key+'\')">Cancel</button>'
     +'</div></div>':'';
@@ -533,9 +533,9 @@ function buildLocationGroup(g,isAdmin){
   return '<div class="group">'
     +'<div class="group-header" onclick="toggleGroup(\''+key+'\')">'
     +'<span class="group-title" id="gloc-'+key+'"'
-    +(isAdmin?' ondblclick="event.stopPropagation();startEditLocation(\''+key+'\',' +JSON.stringify(g.location)+')"':'')+'>'+esc(g.location)
-    +(isAdmin?'<span class="edit-hint" onclick="event.stopPropagation();startEditLocation(\''+key+'\',' +JSON.stringify(g.location)+')" title="Double-click or click to edit location">&#9998; edit</span>':'')
-    +'</span>'
+    +(isAdmin?' ondblclick="event.stopPropagation();startEditLocation(\''+key+'\','+JSON.stringify(g.location)+')" title="Double-click to edit"':'')
+    +'>'+esc(g.location)+'</span>'
+    +(isAdmin?'<button style="background:none;border:none;cursor:pointer;color:var(--faint);font-size:13px;padding:2px 6px;flex-shrink:0;line-height:1" onclick="event.stopPropagation();startEditLocation(\''+key+'\','+JSON.stringify(g.location)+')" title="Edit location">&#9998;</button>':'')
     +'<div class="group-meta">'
     +'<span style="font-family:var(--mono);font-size:12px;color:var(--muted)">'+done+'/'+total+'</span>'
     +'<span class="badge '+bc+'">'+bt+'</span>'
@@ -663,19 +663,29 @@ async function saveSubtaskEdit(taskId,idx){
 function subtaskEditKey(e,taskId,idx){ if(e.key==='Enter') saveSubtaskEdit(taskId,idx); if(e.key==='Escape') cancelSubtaskEdit(taskId,idx); }
 
 function startEditLocation(key,oldLoc){
-  document.getElementById('gloc-'+key).style.display='none';
+  // hide the title span and the pencil button, show edit wrap
+  var titleEl=document.getElementById('gloc-'+key);
+  if(titleEl) titleEl.style.display='none';
+  // hide the pencil button (next sibling of title)
+  if(titleEl&&titleEl.nextElementSibling&&titleEl.nextElementSibling.tagName==='BUTTON') titleEl.nextElementSibling.style.display='none';
   document.getElementById('gloc-edit-wrap-'+key).style.display='block';
-  document.getElementById('gloc-edit-'+key).focus();
+  var inp=document.getElementById('gloc-edit-'+key);
+  inp.focus(); inp.select();
 }
 function cancelLocationEdit(key){
   document.getElementById('gloc-edit-wrap-'+key).style.display='none';
-  document.getElementById('gloc-'+key).style.display='';
+  var titleEl=document.getElementById('gloc-'+key);
+  if(titleEl){ titleEl.style.display=''; if(titleEl.nextElementSibling&&titleEl.nextElementSibling.tagName==='BUTTON') titleEl.nextElementSibling.style.display=''; }
 }
 async function saveLocationEdit(key,oldLoc){
   var val=document.getElementById('gloc-edit-'+key).value.trim();
   if(!val){alert('Cannot be empty.');return;}
   tasks.forEach(function(t){if(t.location===oldLoc) t.location=val;});
   await saveData(); renderAdmin(); toast('Location updated');
+}
+function locationEditKey(e,key,oldLoc){
+  if(e.key==='Enter') saveLocationEdit(key,oldLoc);
+  if(e.key==='Escape') cancelLocationEdit(key);
 }
 
 async function changeSubPriority(taskId,idx,val){
