@@ -682,8 +682,19 @@ async function saveLocationEdit(key){
   if(!val){alert('Cannot be empty.');return;}
   var titleEl=document.getElementById('gloc-'+key);
   var oldLoc=titleEl?titleEl.getAttribute('data-loc'):'';
+  if(!oldLoc){alert('Could not find location to update.');return;}
+  // update tasks in memory
   tasks.forEach(function(t){if(t.location===oldLoc) t.location=val;});
-  await saveData(); renderAdmin(); toast('Location updated');
+  // update the title span in place (no full re-render needed)
+  if(titleEl){
+    titleEl.textContent=val;
+    titleEl.setAttribute('data-loc',val);
+  }
+  // hide edit wrap and show title again
+  cancelLocationEdit(key);
+  // save to server
+  await saveData();
+  toast('Location updated');
 }
 function locationEditKey(e,key){
   if(e.key==='Enter') saveLocationEdit(key);
