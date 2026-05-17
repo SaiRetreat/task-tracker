@@ -530,17 +530,17 @@ function buildLocationGroup(g,isAdmin){
     +'</div></div>':'';
 
   return '<div class="group">'
-    +'<div class="group-header">'
+    +'<div class="group-header"'+(isAdmin?'':' onclick="toggleGroup(\''+key+'\')" style="cursor:pointer"')+'>'
     +'<span class="group-title" id="gloc-'+key+'" data-key="'+key+'" data-loc="'+esc(g.location)+'"'
     +(isAdmin?' title="Double-click to edit location"':'')
     +'>'+esc(g.location)+'</span>'
-    +'<div class="group-meta" onclick="toggleGroup(\''+key+'\')" >'
+    +'<div class="group-meta"'+(isAdmin?' onclick="toggleGroup(\''+key+'\')"':'')+' >'
     +'<span style="font-family:var(--mono);font-size:12px;color:var(--muted)">'+done+'/'+total+'</span>'
     +'<span class="badge '+bc+'">'+bt+'</span>'
-    +'<span class="chevron'+(isOpen?' open':'')+' id="gc-'+key+'">&#9662;</span>'
+    +'<span class="chevron'+(isOpen?' open':'')+'" id="gc-'+key+'">&#9662;</span>'
     +'</div></div>'
     +editWrap
-    +'<div class="group-body'+(isOpen?' open':'')+' id="gb-'+key+'">'+tasksHtml+'</div>'
+    +'<div class="group-body'+(isOpen?' open':'')+'" id="gb-'+key+'">'+tasksHtml+'</div>'
     +'<div class="progress-bar" style="margin:4px 16px 8px"><div class="progress-bar-inner" style="width:'+pct+'%"></div></div>'
     +'</div>';
 }
