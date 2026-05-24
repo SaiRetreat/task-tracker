@@ -295,7 +295,12 @@ function groupProgress(gTasks){
   };
 }
 
-function makeKey(str){ try{ return btoa(encodeURIComponent(str)).replace(/[^a-z0-9]/gi,'').slice(0,20); }catch(e){ return Math.random().toString(36).slice(2,10); } }
+function makeKey(str){
+  // simple djb2 hash to avoid collisions from truncation
+  var h=5381;
+  for(var i=0;i<str.length;i++) h=((h<<5)+h)+str.charCodeAt(i);
+  return 'k'+(h>>>0).toString(36);
+}
 
 function priOrd(p){ return p==='urgent'?0:p==='high'?1:p==='low'?3:2; }
 
